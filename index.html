@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>대구우리교회 | 말씀 동반자</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<style>
+:root {
+  --primary:#1B3A7A; --primary-l:#2E5CB8; --primary-p:#EEF4FF;
+  --gold:#8B6914; --gold-l:#E8C84A; --gold-p:#FDF8ED;
+  --bg:#FBF7F0; --card:#FFFFFF; --border:#DDD0B8;
+  --text:#1A1A2E; --muted:#6B6880; --success:#2D7D46; --danger:#C0392B;
+  --fs:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR','맑은 고딕',sans-serif;font-size:var(--fs);background:var(--bg);color:var(--text);line-height:1.75;min-height:100vh;}
+
+/* === SCREEN === */
+.screen{display:none;}
+.screen.active{display:block;}
+
+/* === LOGIN === */
+#login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem 1.2rem;background:linear-gradient(160deg,#1B3A7A 0%,#0F2150 50%,#2C1810 100%);}
+.login-box{background:rgba(255,255,255,0.97);border-radius:24px;padding:2.5rem 2rem 2rem;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.35);text-align:center;}
+.cross-icon{font-size:2.8rem;margin-bottom:0.4rem;display:block;}
+.church-title{font-size:1.5rem;font-weight:800;color:var(--primary);letter-spacing:-0.02em;}
+.sermon-info{font-size:0.88rem;color:var(--muted);margin:0.3rem 0 1.8rem;line-height:1.5;}
+.role-row{display:flex;gap:0.8rem;margin-bottom:1.4rem;}
+.role-btn{flex:1;padding:0.85rem 0.5rem;border:2px solid var(--border);border-radius:12px;background:white;font-size:0.95rem;font-family:inherit;cursor:pointer;transition:all 0.2s;color:var(--text);}
+.role-btn.active{border-color:var(--primary);background:var(--primary);color:white;font-weight:700;}
+.pw-input{width:100%;padding:0.9rem 1.1rem;border:2px solid var(--border);border-radius:12px;font-size:1rem;font-family:inherit;outline:none;transition:border-color 0.2s;margin-bottom:0.8rem;}
+.pw-input:focus{border-color:var(--primary);}
+.login-btn{width:100%;padding:0.95rem;background:var(--primary);color:white;border:none;border-radius:12px;font-size:1.05rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background 0.2s;}
+.login-btn:hover{background:var(--primary-l);}
+.login-err{color:var(--danger);font-size:0.88rem;margin-top:0.5rem;min-height:1.2rem;}
+.login-hint{font-size:0.82rem;color:var(--muted);margin-top:0.8rem;}
+
+/* === HEADER === */
+.app-header{background:var(--primary);color:white;padding:0.9rem 1.2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.h-title{font-size:1rem;font-weight:700;}
+.h-sub{font-size:0.78rem;opacity:0.75;}
+.h-right{display:flex;align-items:center;gap:0.5rem;}
+.hbtn{background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:0.3rem 0.65rem;font-size:0.85rem;font-family:inherit;cursor:pointer;}
+.hbtn:hover{background:rgba(255,255,255,0.25);}
+
+/* === TAB BAR === */
+.tab-bar{display:flex;background:white;border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:190;}
+.tab{flex:1;padding:0.85rem 0.4rem;text-align:center;font-size:0.88rem;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s;font-family:inherit;background:none;border-top:none;border-left:none;border-right:none;}
+.tab.on{color:var(--primary);border-bottom-color:var(--primary);font-weight:700;}
+
+/* === PANELS === */
+.panel{display:none;}
+.panel.on{display:block;max-width:700px;margin:0 auto;padding:1.4rem 1.2rem 7rem;}
+
+/* === CARDS === */
+.card{background:var(--card);border-radius:18px;padding:1.4rem;margin-bottom:1.4rem;box-shadow:0 2px 14px rgba(0,0,0,0.07);border:1px solid var(--border);}
+.card-head{font-size:1.05rem;font-weight:700;color:var(--primary);margin-bottom:1rem;padding-bottom:0.65rem;border-bottom:2px solid #F0E8D0;display:flex;align-items:center;gap:0.5rem;}
+
+/* === GUIDE === */
+.guide-box{background:linear-gradient(135deg,#EEF4FF 0%,#F4EEFF 100%);border-left:4px solid var(--primary);border-radius:0 14px 14px 0;padding:1.1rem 1.3rem;margin-bottom:1.3rem;font-size:0.97rem;line-height:1.85;color:#1E3060;}
+.steps{list-style:none;}
+.step{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.75rem;}
+.sn{background:var(--primary);color:white;border-radius:50%;min-width:28px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:0.82rem;font-weight:700;flex-shrink:0;margin-top:0.15rem;}
+
+/* === SCRIPTURE === */
+.bible-box{background:var(--gold-p);border:1px solid #DDD0B8;border-radius:14px;padding:1.4rem;margin-bottom:1rem;font-size:0.98rem;line-height:2;}
+.vn{color:var(--gold);font-weight:700;margin-right:0.25rem;font-size:0.85rem;}
+.verse{margin-bottom:0.6rem;}
+
+/* === GLOSSARY === */
+.glos-item{border:1px solid var(--border);border-radius:11px;margin-bottom:0.7rem;overflow:hidden;}
+.glos-trigger{width:100%;padding:0.95rem 1.1rem;background:white;border:none;text-align:left;font-family:inherit;font-size:0.97rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background 0.15s;}
+.glos-trigger:hover{background:#F5F5FF;}
+.gword{color:var(--primary);font-weight:700;}
+.gvref{font-size:0.82rem;color:var(--muted);margin-left:0.4rem;}
+.garrow{transition:transform 0.2s;color:var(--muted);flex-shrink:0;}
+.glos-item.open .garrow{transform:rotate(180deg);}
+.glos-body{display:none;padding:0.9rem 1.1rem;background:var(--primary-p);border-top:1px solid var(--border);font-size:0.93rem;line-height:1.8;color:#1E3060;}
+.glos-item.open .glos-body{display:block;}
+
+/* === QUESTIONS === */
+.q-card{border:1px solid var(--border);border-radius:14px;padding:1.3rem;margin-bottom:1.1rem;background:white;}
+.q-badge{display:inline-block;background:var(--primary);color:white;border-radius:8px;padding:0.18rem 0.65rem;font-size:0.82rem;font-weight:700;margin-bottom:0.7rem;}
+.q-text{font-size:1rem;line-height:1.85;margin-bottom:0.8rem;}
+.q-hint{background:#F5F5F5;border-radius:8px;padding:0.45rem 0.8rem;font-size:0.87rem;color:var(--muted);margin-bottom:0.8rem;}
+.q-ta{width:100%;min-height:80px;padding:0.75rem 0.9rem;border:2px solid var(--border);border-radius:10px;font-size:0.97rem;font-family:inherit;resize:vertical;outline:none;line-height:1.7;transition:border-color 0.2s;}
+.q-ta:focus{border-color:var(--primary);}
+.reveal-btn{margin-top:0.7rem;padding:0.55rem 1.1rem;background:var(--primary-p);color:var(--primary);border:1px solid #B8CAEE;border-radius:9px;font-size:0.9rem;font-family:inherit;cursor:pointer;transition:all 0.2s;}
+.reveal-btn:hover{background:var(--primary);color:white;border-color:var(--primary);}
+.ans-box{display:none;margin-top:0.7rem;padding:0.9rem 1.1rem;background:var(--primary-p);border-left:3px solid var(--primary);border-radius:0 11px 11px 0;font-size:0.93rem;line-height:1.8;}
+.ans-box.show{display:block;}
+.ans-label{font-weight:700;color:var(--primary);margin-bottom:0.3rem;font-size:0.88rem;}
+
+/* === DURING TAB === */
+.ref-card{background:var(--gold-p);border:1px solid #DDD0B8;border-radius:14px;padding:1.2rem 1.3rem;margin-bottom:0.9rem;}
+.ref-tag{font-size:0.82rem;color:var(--gold);font-weight:700;margin-bottom:0.35rem;}
+.ref-txt{font-size:0.97rem;line-height:1.85;color:#2A2A3A;}
+.person-card{background:linear-gradient(135deg,#EEF4FF,#E8F4F0);border:1px solid #C0D4EE;border-radius:14px;padding:1.4rem;margin-bottom:1rem;}
+.pname{font-size:1.1rem;font-weight:800;color:var(--primary);}
+.pdates{font-size:0.82rem;color:var(--muted);margin-bottom:0.5rem;}
+.pbio{font-size:0.93rem;line-height:1.8;margin-bottom:0.9rem;}
+.quote{background:white;border-left:4px solid var(--gold-l);border-radius:0 11px 11px 0;padding:0.8rem 1.1rem;font-style:italic;font-size:0.97rem;line-height:1.8;color:#2A2A2A;}
+.qsource{font-style:normal;font-size:0.82rem;color:var(--muted);margin-top:0.4rem;}
+.news-a{display:flex;align-items:flex-start;gap:0.8rem;padding:1rem 1.1rem;background:white;border:1px solid var(--border);border-radius:13px;margin-bottom:0.8rem;text-decoration:none;color:var(--text);transition:all 0.2s;}
+.news-a:hover{background:var(--primary-p);border-color:var(--primary);}
+.news-ico{font-size:1.4rem;flex-shrink:0;margin-top:0.1rem;}
+.news-ttl{font-size:0.93rem;font-weight:600;color:var(--primary);line-height:1.55;}
+.news-src{font-size:0.78rem;color:var(--muted);margin-top:0.2rem;}
+.flow-box{background:#F5F8FF;border:1px solid #C5D4EE;border-radius:12px;padding:1.1rem 1.3rem;font-size:0.95rem;line-height:2;}
+
+/* === AFTER TAB === */
+.prayer-item{background:var(--gold-p);border-radius:12px;padding:1rem 1.2rem;margin-bottom:0.8rem;}
+.pnum{font-size:0.82rem;color:var(--gold);font-weight:700;margin-bottom:0.3rem;}
+.ptxt{font-size:0.95rem;color:#2A2A3A;line-height:1.8;}
+.note-lbl{font-weight:700;color:var(--primary);margin-bottom:0.45rem;font-size:0.97rem;}
+.note-ta{width:100%;min-height:100px;padding:0.75rem 0.9rem;border:2px solid var(--border);border-radius:11px;font-size:0.97rem;font-family:inherit;resize:vertical;outline:none;line-height:1.7;margin-bottom:1.1rem;transition:border-color 0.2s;}
+.note-ta:focus{border-color:var(--primary);}
+.summary-card{background:linear-gradient(135deg,#1B3A7A,#2E5CB8);border-radius:14px;padding:1.3rem 1.4rem;color:white;margin-bottom:1rem;font-size:0.95rem;line-height:1.9;}
+.summary-card strong{color:var(--gold-l);}
+.print-btn{width:100%;padding:0.95rem;background:var(--success);color:white;border:none;border-radius:12px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;margin-top:0.5rem;transition:background 0.2s;}
+.print-btn:hover{background:#1A5C30;}
+
+/* === SEND FORM === */
+.send-card{background:white;border:2px solid var(--primary);border-radius:18px;padding:1.4rem;margin-top:1.4rem;}
+.send-ttl{font-size:1.05rem;font-weight:700;color:var(--primary);margin-bottom:1rem;}
+.f-lbl{display:block;font-size:0.87rem;font-weight:600;color:var(--muted);margin-bottom:0.4rem;}
+.f-input{width:100%;padding:0.75rem 0.9rem;border:2px solid var(--border);border-radius:10px;font-size:0.97rem;font-family:inherit;outline:none;margin-bottom:0.9rem;transition:border-color 0.2s;}
+.f-input:focus{border-color:var(--primary);}
+.type-row{display:flex;gap:0.7rem;margin-bottom:0.9rem;}
+.type-btn{flex:1;padding:0.7rem 0.5rem;border:2px solid var(--border);border-radius:10px;background:white;font-size:0.93rem;font-family:inherit;cursor:pointer;text-align:center;transition:all 0.2s;}
+.type-btn.on{border-color:var(--primary);background:var(--primary);color:white;font-weight:700;}
+.send-btn{width:100%;padding:0.95rem;background:var(--gold);color:white;border:none;border-radius:12px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background 0.2s;}
+.send-btn:hover{background:#6B4E0F;}
+.save-btn{width:100%;padding:0.95rem;background:var(--primary);color:white;border:none;border-radius:12px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background 0.2s;margin-bottom:0.8rem;}
+.save-btn:hover{background:var(--primary-l);}
+.send-ok{display:none;text-align:center;padding:1.5rem 1rem;}
+.send-ok-icon{font-size:2.5rem;}
+.send-ok-msg{font-size:1.05rem;font-weight:700;color:var(--success);margin:0.5rem 0;}
+.send-ok-sub{font-size:0.9rem;color:var(--muted);}
+.retry-btn{margin-top:1rem;padding:0.6rem 1.3rem;background:var(--primary);color:white;border:none;border-radius:9px;font-size:0.93rem;font-family:inherit;cursor:pointer;}
+
+/* === REPLIES === */
+.msg-item{background:white;border:1px solid var(--border);border-radius:13px;padding:1.1rem 1.2rem;margin-bottom:0.8rem;}
+.msg-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;}
+.msg-type{font-size:0.78rem;background:var(--primary-p);color:var(--primary);border-radius:6px;padding:0.15rem 0.55rem;font-weight:700;}
+.msg-date{font-size:0.78rem;color:var(--muted);}
+.msg-content{font-size:0.95rem;line-height:1.75;margin-bottom:0.6rem;}
+.reply-box{background:var(--primary-p);border-left:3px solid var(--primary);border-radius:0 9px 9px 0;padding:0.7rem 0.9rem;font-size:0.9rem;line-height:1.75;}
+.reply-lbl{font-size:0.78rem;color:var(--primary);font-weight:700;margin-bottom:0.2rem;}
+.no-reply{font-size:0.85rem;color:var(--muted);font-style:italic;}
+.reload-btn{width:100%;padding:0.7rem;background:#F0F0F0;border:1px solid var(--border);border-radius:10px;font-size:0.9rem;font-family:inherit;cursor:pointer;margin-top:0.7rem;}
+.reload-btn:hover{background:#E0E0E0;}
+
+/* === PASTOR ROOM === */
+.pastor-inner{max-width:700px;margin:0 auto;padding:1.4rem 1.2rem 7rem;}
+.inbox-head{font-size:1.1rem;font-weight:700;color:var(--primary);margin-bottom:1.1rem;padding-bottom:0.65rem;border-bottom:2px solid #F0E8D0;display:flex;align-items:center;justify-content:space-between;}
+.badge-new{background:var(--danger);color:white;font-size:0.75rem;border-radius:10px;padding:0.1rem 0.5rem;font-weight:700;}
+.inbox-item{background:white;border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.3rem;margin-bottom:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+.inbox-item.unread{border-left:4px solid var(--primary);}
+.inbox-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;}
+.inbox-sender{font-weight:700;font-size:0.95rem;}
+.inbox-type-p{font-size:0.78rem;padding:0.15rem 0.55rem;border-radius:7px;font-weight:600;}
+.tp{background:#FFF0E8;color:#9A4010;}
+.tq{background:#E8F0FF;color:#102880;}
+.inbox-date{font-size:0.78rem;color:var(--muted);}
+.inbox-content{font-size:0.97rem;line-height:1.8;margin:0.6rem 0;}
+.reply-ta{width:100%;min-height:80px;padding:0.7rem 0.9rem;border:2px solid var(--border);border-radius:10px;font-size:0.95rem;font-family:inherit;resize:vertical;outline:none;transition:border-color 0.2s;}
+.reply-ta:focus{border-color:var(--primary);}
+.reply-submit{margin-top:0.6rem;padding:0.6rem 1.3rem;background:var(--primary);color:white;border:none;border-radius:9px;font-size:0.93rem;font-family:inherit;cursor:pointer;}
+.done-box{background:var(--primary-p);border-left:3px solid var(--primary);border-radius:0 9px 9px 0;padding:0.7rem 0.9rem;margin-top:0.6rem;font-size:0.9rem;line-height:1.75;}
+.done-lbl{font-size:0.78rem;color:var(--success);font-weight:700;margin-bottom:0.2rem;}
+.empty-msg{text-align:center;padding:3.5rem 1rem;color:var(--muted);font-size:0.97rem;}
+
+/* === ADMIN FORM === */
+.admin-section{border:1px solid var(--border);border-radius:12px;margin-bottom:1rem;overflow:hidden;}
+.admin-trigger{width:100%;padding:1rem 1.2rem;background:#F8F5EE;border:none;text-align:left;font-family:inherit;font-size:1rem;font-weight:700;color:var(--primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
+.admin-trigger:hover{background:#F0E8D0;}
+.admin-body{display:none;padding:1.2rem;background:white;}
+.admin-section.open .admin-body{display:block;}
+.admin-section.open .admin-arrow{transform:rotate(180deg);}
+.admin-arrow{transition:transform 0.2s;color:var(--muted);}
+.a-lbl{display:block;font-size:0.87rem;font-weight:600;color:var(--muted);margin-bottom:0.4rem;margin-top:0.8rem;}
+.a-lbl:first-child{margin-top:0;}
+.a-input{width:100%;padding:0.7rem 0.9rem;border:2px solid var(--border);border-radius:10px;font-size:0.95rem;font-family:inherit;outline:none;transition:border-color 0.2s;}
+.a-input:focus{border-color:var(--primary);}
+.a-ta{width:100%;min-height:120px;padding:0.7rem 0.9rem;border:2px solid var(--border);border-radius:10px;font-size:0.93rem;font-family:inherit;resize:vertical;outline:none;line-height:1.7;transition:border-color 0.2s;}
+.a-ta:focus{border-color:var(--primary);}
+.a-hint{font-size:0.8rem;color:var(--muted);margin-top:0.3rem;margin-bottom:0.5rem;}
+.a-sep{border:none;border-top:1px dashed var(--border);margin:1rem 0;}
+.admin-save-btn{width:100%;padding:1rem;background:var(--success);color:white;border:none;border-radius:12px;font-size:1.05rem;font-weight:700;font-family:inherit;cursor:pointer;margin-top:1rem;transition:background 0.2s;}
+.admin-save-btn:hover{background:#1A5C30;}
+
+/* === NOTES VIEW (PASTOR) === */
+.note-view-item{background:white;border:1px solid var(--border);border-radius:13px;padding:1.2rem;margin-bottom:0.9rem;}
+.nv-head{display:flex;justify-content:space-between;margin-bottom:0.6rem;}
+.nv-name{font-weight:700;font-size:0.95rem;color:var(--primary);}
+.nv-date{font-size:0.78rem;color:var(--muted);}
+.nv-label{font-size:0.8rem;color:var(--gold);font-weight:700;margin-top:0.6rem;margin-bottom:0.2rem;}
+.nv-content{font-size:0.93rem;line-height:1.75;color:#2A2A3A;}
+
+/* === FLOATING FONT BUTTON === */
+#font-float{position:fixed;bottom:1.5rem;right:1rem;z-index:500;display:flex;flex-direction:column;gap:0.4rem;display:none;}
+#font-float.show{display:flex;}
+.ff-btn{width:46px;height:46px;border-radius:50%;background:var(--primary);color:white;border:none;font-family:inherit;font-size:0.9rem;cursor:pointer;box-shadow:0 3px 14px rgba(27,58,122,0.35);display:flex;align-items:center;justify-content:center;}
+.ff-btn:hover{background:var(--primary-l);}
+
+/* === LOADING === */
+.loading-box{text-align:center;padding:2rem;color:var(--muted);font-size:0.95rem;}
+
+/* === UTILS === */
+.hidden{display:none!important;}
+.mt1{margin-top:1rem;}
+
+@media(max-width:400px){
+  :root{--fs:16px;}
+  .tab{font-size:0.8rem;padding:0.75rem 0.2rem;}
+  .card{padding:1.1rem;}
+}
+
+@media print{
+  .app-header,.tab-bar,#font-float,#screen-login,
+  .send-card,#replies-section,.print-btn,.reload-btn,
+  .reveal-btn,.q-ta,.hbtn,.save-btn{display:none!important;}
+  .panel{display:block!important;}
+  #panel-before,#panel-during{display:none!important;}
+  #panel-after{display:block!important;}
+  .card{box-shadow:none!important;border:1px solid #ccc!important;}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== LOGIN ===================== -->
+<div id="login-screen" class="screen active">
+  <div class="login-box">
+    <span class="cross-icon">✝</span>
+    <div class="church-title">대구우리교회</div>
+    <div class="sermon-info" id="login-sermon-info">말씀 동반자</div>
+    <div class="role-row">
+      <button class="role-btn active" onclick="setRole('deacon')" id="rb-deacon">🙏 성도 입장</button>
+      <button class="role-btn"        onclick="setRole('pastor')" id="rb-pastor">🗝 문지기방</button>
+    </div>
+    <input type="password" class="pw-input" id="pw" placeholder="비밀번호를 입력하세요" onkeydown="if(event.key==='Enter')doLogin()">
+    <div class="login-err" id="login-err"></div>
+    <button class="login-btn" onclick="doLogin()">입장하기 →</button>
+    <div class="login-hint" id="login-hint">성도님 비밀번호를 입력해 주세요</div>
+  </div>
+</div>
+
+<!-- ===================== 성도방 ===================== -->
+<div id="screen-deacon" class="screen hidden">
+  <div class="app-header">
+    <div>
+      <div class="h-title">대구우리교회 말씀 동반자</div>
+      <div class="h-sub" id="deacon-header-sub">불러오는 중...</div>
+    </div>
+    <div class="h-right">
+      <button class="hbtn" onclick="logout()">나가기</button>
+    </div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab on"  onclick="showPanel('before')" id="tb-before">📖 예배 전</button>
+    <button class="tab"     onclick="showPanel('during')" id="tb-during">📝 설교 중</button>
+    <button class="tab"     onclick="showPanel('after')"  id="tb-after">🙏 예배 후</button>
+  </div>
+
+  <!-- ── 예배 전 ── -->
+  <div class="panel on" id="panel-before">
+    <div class="guide-box">
+      안녕하세요, 성도님 😊<br>
+      오늘 말씀을 함께 준비해 보겠습니다.<br>
+      아래 순서대로 <strong>천천히</strong> 따라오시면 됩니다.
+    </div>
+    <div class="card">
+      <div class="card-head">✅ 시작 전 준비 순서</div>
+      <ul class="steps">
+        <li class="step"><div class="sn">1</div><div>성경책을 펴서 아래 <strong>본문</strong>을 찾아보세요.</div></li>
+        <li class="step"><div class="sn">2</div><div>본문을 <strong>소리 내어 한 절씩</strong> 읽어보세요.</div></li>
+        <li class="step"><div class="sn">3</div><div>낯선 단어는 <strong>'어려운 단어 미리 보기'</strong>를 눌러 확인하세요.</div></li>
+        <li class="step"><div class="sn">4</div><div>문제를 읽고 성경에서 <strong>직접 찾아</strong> 적어보세요. 틀려도 됩니다!</div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-head">📖 오늘의 본문</div>
+      <div id="scripture-ref" style="font-size:0.88rem;color:var(--gold);font-weight:700;margin-bottom:0.7rem;">불러오는 중...</div>
+      <div class="bible-box" id="scripture-text"><div class="loading-box">본문을 불러오는 중입니다...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-head">📚 어려운 단어 미리 보기</div>
+      <p style="font-size:0.88rem;color:var(--muted);margin-bottom:0.9rem">단어를 눌러보세요 🔍</p>
+      <div id="glossary-list"><div class="loading-box">불러오는 중...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-head">✏️ 본문 이해 문제</div>
+      <p style="font-size:0.9rem;color:var(--muted);margin-bottom:1.1rem">성경을 보시면서 찾아 적어보세요.<br>다 적으신 후 '정답 확인' 버튼을 누르세요!</p>
+      <div id="questions-list"><div class="loading-box">불러오는 중...</div></div>
+    </div>
+  </div>
+
+  <!-- ── 설교 중 ── -->
+  <div class="panel" id="panel-during">
+    <div class="guide-box">
+      📝 <strong>설교를 들으시면서 함께 보세요.</strong><br>
+      설교 중 언급되는 성경구절, 인물, 기사들입니다.
+    </div>
+    <div class="card">
+      <div class="card-head">📋 오늘 설교 흐름</div>
+      <div class="flow-box" id="sermon-outline"><div class="loading-box">불러오는 중...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-head">📖 참고 성경구절</div>
+      <div id="crossrefs-list"><div class="loading-box">불러오는 중...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-head">👤 오늘 소개되는 인물</div>
+      <div id="person-card"><div class="loading-box">불러오는 중...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-head">📰 설교 중 언급되는 기사</div>
+      <p style="font-size:0.88rem;color:var(--muted);margin-bottom:0.9rem">제목을 누르시면 기사로 연결됩니다.</p>
+      <div id="news-list"><div class="loading-box">불러오는 중...</div></div>
+    </div>
+  </div>
+
+  <!-- ── 예배 후 ── -->
+  <div class="panel" id="panel-after">
+    <div class="guide-box">
+      🙏 <strong>예배 후 — 집에서 이어가는 말씀</strong><br>
+      오늘 말씀을 마음에 담아두세요.<br>
+      집에서 다시 펼쳐보시며 기도하실 수 있습니다.
+    </div>
+    <div class="card">
+      <div class="card-head">💡 오늘 설교 핵심 정리</div>
+      <div class="summary-card" id="sermon-summary"><div style="opacity:0.7">불러오는 중...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-head">🙏 이번 주 기도제목</div>
+      <div id="prayer-list"><div class="loading-box">불러오는 중...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-head">✏️ 나의 설교 노트</div>
+      <div class="note-lbl">📌 오늘 말씀 중 가장 마음에 남은 구절이나 문장</div>
+      <textarea class="note-ta" id="n-verse" placeholder="마음에 와닿은 말씀을 적어보세요..."></textarea>
+      <div class="note-lbl">🌱 이번 주 내 삶에 적용할 한 가지</div>
+      <textarea class="note-ta" id="n-apply" placeholder="구체적으로 한 가지만 적어보세요..."></textarea>
+      <div class="note-lbl">💬 더 묵상하고 싶은 것 / 궁금한 것</div>
+      <textarea class="note-ta" id="n-memo" placeholder="더 생각해 보고 싶은 내용을 적어보세요..."></textarea>
+      <button class="save-btn" onclick="saveNote()">☁️ 목사님께 노트 저장하기</button>
+      <button class="print-btn" onclick="window.print()">🖨️ 인쇄하기</button>
+      <div class="send-ok" id="note-ok">
+        <div class="send-ok-icon">✅</div>
+        <div class="send-ok-msg">노트가 저장되었습니다!</div>
+        <div class="send-ok-sub">목사님이 확인하실 수 있습니다.</div>
+      </div>
+    </div>
+    <div class="send-card" id="send-card">
+      <div class="send-ttl">💌 목사님께 보내기</div>
+      <p style="font-size:0.92rem;color:var(--muted);margin-bottom:1.1rem">기도제목이나 질문이 있으시면 보내주세요.<br>목사님이 직접 확인하고 답변해 드립니다.</p>
+      <div id="send-form">
+        <label class="f-lbl">이름</label>
+        <input type="text" class="f-input" id="f-name" placeholder="이름을 입력해 주세요">
+        <label class="f-lbl">종류를 선택해 주세요</label>
+        <div class="type-row">
+          <button class="type-btn on" onclick="setType('기도제목',this)">🙏 기도제목</button>
+          <button class="type-btn"    onclick="setType('질문',this)">❓ 질문</button>
+        </div>
+        <label class="f-lbl">내용</label>
+        <textarea class="f-input" id="f-content" style="min-height:120px;resize:vertical;" placeholder="내용을 적어주세요..."></textarea>
+        <button class="send-btn" onclick="sendMsg()">📨 목사님께 보내기</button>
+      </div>
+      <div class="send-ok" id="send-ok">
+        <div class="send-ok-icon">✅</div>
+        <div class="send-ok-msg">잘 전달되었습니다!</div>
+        <div class="send-ok-sub">목사님께서 확인하시고 답변해 주실 거예요.</div>
+        <button class="retry-btn" onclick="resetForm()">또 보내기</button>
+      </div>
+    </div>
+    <div class="card mt1" id="replies-section">
+      <div class="card-head">📬 목사님의 답변 확인</div>
+      <div id="replies-list"><div class="loading-box">불러오는 중...</div></div>
+      <button class="reload-btn" onclick="loadReplies()">🔄 새로고침</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== 문지기방 ===================== -->
+<div id="screen-pastor" class="screen hidden">
+  <div class="app-header">
+    <div>
+      <div class="h-title">🗝 문지기방</div>
+      <div class="h-sub" id="pastor-status">확인 중...</div>
+    </div>
+    <div class="h-right">
+      <button class="hbtn" onclick="loadPastorInbox()">🔄</button>
+      <button class="hbtn" onclick="logout()">나가기</button>
+    </div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab on" onclick="showPastorPanel('inbox')"  id="ptb-inbox">📥 받은 메시지</button>
+    <button class="tab"    onclick="showPastorPanel('config')" id="ptb-config">⚙️ 설교 설정</button>
+    <button class="tab"    onclick="showPastorPanel('notes')"  id="ptb-notes">📖 노트 보기</button>
+  </div>
+
+  <!-- ── 받은 메시지 ── -->
+  <div class="pastor-inner" id="ppanel-inbox">
+    <div class="inbox-head">
+      📥 성도들의 기도제목 &amp; 질문
+      <span class="badge-new hidden" id="new-badge">새 메시지</span>
+    </div>
+    <div id="pastor-inbox"><div class="empty-msg">불러오는 중...</div></div>
+  </div>
+
+  <!-- ── 설교 설정 ── -->
+  <div class="pastor-inner hidden" id="ppanel-config">
+    <div class="card">
+      <div class="card-head">⚙️ 이번 주 설교 설정</div>
+      <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1rem">각 항목을 수정하고 맨 아래 '저장하기'를 눌러주세요.</p>
+
+      <!-- 기본 정보 -->
+      <div class="admin-section open">
+        <button class="admin-trigger" onclick="togAdmin(this)">
+          📋 기본 정보 <span class="admin-arrow">▼</span>
+        </button>
+        <div class="admin-body">
+          <label class="a-lbl">설교 제목</label>
+          <input class="a-input" id="cfg-title" placeholder="예: 그렇다면, 남은 것은 무엇인가">
+          <label class="a-lbl">날짜</label>
+          <input class="a-input" id="cfg-date" placeholder="예: 2025년 5월 27일 수요기도회">
+          <label class="a-lbl">본문 성경 구절</label>
+          <input class="a-input" id="cfg-ref" placeholder="예: 고린도전서 7:29~35">
+        </div>
+      </div>
+
+      <!-- 본문 -->
+      <div class="admin-section">
+        <button class="admin-trigger" onclick="togAdmin(this)">
+          📖 본문 성경 구절 <span class="admin-arrow">▼</span>
+        </button>
+        <div class="admin-body">
+          <div class="a-hint">형식: 절번호|내용 (한 줄에 한 절)<br>예: 29|형제들아 내가 이 말을 하노니...</div>
+          <textarea class="a-ta" id="cfg-verses" style="min-height:200px;" placeholder="29|형제들아 내가 이 말을 하노니...&#10;30|우는 자들은..."></textarea>
+        </div>
+      </div>
+
+      <!-- 설교 흐름 -->
+      <div class="admin-section">
+        <button class="admin-trigger" onclick="togAdmin(this)">
+          📝 설교 흐름 &amp; 핵심 정리 <span class="admin-arrow">▼</span>
+        </button>
+        <div class="admin-body">
+          <label class="a-lbl">흐름 제목</label>
+          <input class="a-input" id="cfg-otitle" placeholder="예: 그렇다면, 남은 것은 무엇인가">
+          <label class="a-lbl">1번째 포인트</label>
+          <input class="a-input" id="cfg-o1" placeholder="예: 진단 — 마음이 갈라지며">
+          <label class="a-lbl">2번째 포인트</label>
+          <input class="a-input" id="cfg-o2" placeholder="예: 처방 — 더 큰 사랑">
+          <label class="a-lbl">3번째 포인트</label>
+          <input class="a-input" id="cfg-o3" placeholder="예: 선언 — 예수님이 먼저 하셨습니다">
+          <label class="a-lbl">핵심 정리 (예배 후 탭에 표시)</label>
+          <textarea class="a-ta" id="cfg-summary" placeholder="오늘 설교 핵심 내용을 요약해 주세요..."></textarea>
+        </div>
+      </div>
+
+      <!-- 기도제목 -->
+      <div class="admin-section">
+        <button class="admin-trigger" onclick="togAdmin(this)">
+          🙏 기도제목 (3가지) <span class="admin-arrow">▼</span>
+        </button>
+        <div class="admin-body">
+          <label class="a-lbl">① 기도제목 제목</label>
+          <input class="a-input" id="cfg-p1t" placeholder="예: 나와 주님">
+          <label class="a-lbl">① 기도제목 내용</label>
+          <textarea class="a-ta" style="min-height:80px;" id="cfg-p1c" placeholder="내용..."></textarea>
+          <hr class="a-sep">
+          <label class="a-lbl">② 기도제목 제목</label>
+          <input class="a-input" id="cfg-p2t" placeholder="예: 우리 가정">
+          <label class="a-lbl">② 기도제목 내용</label>
+          <textarea class="a-ta" style="min-height:80px;" id="cfg-p2c" placeholder="내용..."></textarea>
+          <hr class="a-sep">
+          <label class="a-lbl">③ 기도제목 제목</label>
+          <input class="a-input" id="cfg-p3t" placeholder="예: 우리 교회">
+          <label class="a-lbl">③ 기도제목 내용</label>
+          <textarea class="a-ta" style="min-height:80px;" id="cfg-p3c" placeholder="내용..."></textarea>
+        </div>
+      </div>
+
+      <!-- 참고 성경구절 -->
+      <div class="admin-section">
+        <button class="admin-trigger" onclick="togAdmin(this)">
+          📖 참고 성경구절 (3개) <span class="admin-arrow">▼</span>
+        </button>
+        <div class="admin-body">
+          <label class="a-lbl">① 구절 (예: 고린도후서 8:9)</label>
+          <input class="a-input" id="cfg-r1ref">
+          <label class="a-lbl">① 설명 레이블</label>
+          <input class="a-input" id="cfg-r1lbl" placeholder="예: 예수님의 자기 비움">
+          <label class="a-lbl">① 본문</label>
+          <textarea class="a-ta" style="min-height:70px;" id="cfg-r1txt"></textarea>
+          <hr class="a-sep">
+          <label class="a-lbl">② 구절</label>
+          <input class="a-input" id="cfg-r2ref">
+          <label class="a-lbl">② 설명 레이블</label>
+          <input class="a-input" id="cfg-r2lbl">
+          <label class="a-lbl">② 본문</label>
+          <textarea class="a-ta" style="min-height:70px;" id="cfg-r2txt"></textarea>
+          <hr class="a-sep">
+          <label class="a-lbl">③ 구절</label>
+          <input class="a-input" id="cfg-r3ref">
+          <label class="a-lbl">③ 설명 레이블</label>
+          <input class="a-input" id="cfg-r3lbl">
+          <label class="a-lbl">③ 본문</label>
+          <textarea class="a-ta" style="min-height:70px;" id="cfg-r3txt"></textarea>
+        </div>
+      </div>
+
+      <!-- 인물 카드 -->
+      <div class="admin-section">
+        <button class="admin-trigger" onclick="togAdmin(this)">
+          👤 인물 카드 <span class="admin-arrow">▼</span>
+        </button>
+        <div class="admin-body">
+          <label class="a-lbl">이름</label>
+          <input class="a-input" id="cfg-pname">
+          <label class="a-lbl">생몰년 / 소개</label>
+          <input class="a-input" id="cfg-pdates">
+          <label class="a-lbl">인물 설명</label>
+          <textarea class="a-ta" style="min-height:80px;" id="cfg-pbio"></textarea>
+          <label class="a-lbl">명언</label>
+          <textarea class="a-ta" style="min-height:70px;" id="cfg-pquote"></textarea>
+          <label class="a-lbl">명언 출처</label>
+          <input class="a-input" id="cfg-psource">
+        </div>
+      </div>
+
+      <!-- 뉴스 기사 -->
+      <div class="admin-section">
+        <button class="admin-trigger" onclick="togAdmin(this)">
+          📰 뉴스 기사 (2개) <span class="admin-arrow">▼</span>
+        </button>
+        <div class="admin-body">
+          <label class="a-lbl">① 기사 제목</label>
+          <input class="a-input" id="cfg-n1t">
+          <label class="a-lbl">① URL</label>
+          <input class="a-input" id="cfg-n1u" placeholder="https://...">
+          <label class="a-lbl">① 출처</label>
+          <input class="a-input" id="cfg-n1s" placeholder="예: 리포테라 | 2025년 5월">
+          <hr class="a-sep">
+          <label class="a-lbl">② 기사 제목</label>
+          <input class="a-input" id="cfg-n2t">
+          <label class="a-lbl">② URL</label>
+          <input class="a-input" id="cfg-n2u" placeholder="https://...">
+          <label class="a-lbl">② 출처</label>
+          <input class="a-input" id="cfg-n2s">
+        </div>
+      </div>
+
+      <button class="admin-save-btn" onclick="saveSermon()">💾 저장하기</button>
+      <div id="save-ok" style="display:none;text-align:center;padding:1rem;color:var(--success);font-weight:700;">✅ 저장되었습니다!</div>
+    </div>
+  </div>
+
+  <!-- ── 노트 보기 ── -->
+  <div class="pastor-inner hidden" id="ppanel-notes">
+    <div class="inbox-head">📖 성도들의 설교 노트</div>
+    <button class="reload-btn" style="margin-bottom:1rem;" onclick="loadNotes()">🔄 새로고침</button>
+    <div id="notes-list"><div class="empty-msg">불러오는 중...</div></div>
+  </div>
+</div>
+
+<!-- ===================== FLOATING FONT BUTTON ===================== -->
+<div id="font-float">
+  <button class="ff-btn" onclick="fz(1)" title="글자 크게">가+</button>
+  <button class="ff-btn" onclick="fz(-1)" title="글자 작게">가-</button>
+</div>
+
+<!-- ===================== SCRIPT ===================== -->
+<script>
+// ================================================
+// 🔥 파이어베이스 설정
+// ================================================
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyCFIs7e7z8t2nzsgHSwcX72COjzBNTJz_s",
+  authDomain:        "daegu-woorinote.firebaseapp.com",
+  projectId:         "daegu-woorinote",
+  storageBucket:     "daegu-woorinote.firebasestorage.app",
+  messagingSenderId: "1047053636423",
+  appId:             "1:1047053636423:web:9dfcad4b55678879403262"
+};
+
+// ================================================
+// 🔑 비밀번호
+// ================================================
+const PW = { deacon:"3230", pastor:"5025" };
+
+// ================================================
+// 📖 기본 설교 데이터 (파이어베이스 미설정시 사용)
+// ================================================
+const DEFAULT_SERMON = {
+  title:"그렇다면, 남은 것은 무엇인가",
+  date:"2025년 5월 27일 수요기도회",
+  scriptureRef:"고린도전서 7:29~35",
+  verses:"29|형제들아 내가 이 말을 하노니 그 때가 단축하여진 고로 이 후부터 아내 있는 자들은 없는 자 같이 하며\n30|우는 자들은 울지 않는 자 같이 하며 기쁜 자들은 기쁘지 않은 자 같이 하며 매매하는 자들은 없는 자 같이 하며\n31|세상 물건을 쓰는 자들은 다 쓰지 못하는 자 같이 하라 이 세상의 외형은 지나감이니라\n32|너희가 염려 없기를 원하노라 장가 가지 않은 자는 주의 일을 염려하여 어찌하여야 주를 기쁘시게 할까 하되\n33|장가 간 자는 세상 일을 염려하여 어찌하여야 아내를 기쁘게 할까 하여\n34|마음이 갈라지며 시집 가지 않은 자와 처녀는 주의 일을 염려하여 몸과 영을 다 거룩하게 하려 하되 시집 간 자는 세상 일을 염려하여 어찌하여야 남편을 기쁘게 할까 하느니라\n35|내가 이것을 말함은 너희의 유익을 위함이요 너희에게 올무를 놓으려 함이 아니니 오직 너희로 하여금 이치에 합당하게 하여 흐트러짐이 없이 주를 섬기게 하려 함이라",
+  outlineTitle:"그렇다면, 남은 것은 무엇인가",
+  o1:"1️⃣ 진단 — \"마음이 갈라지며\" (세상 것에 존재를 묶을 때 일어나는 일)",
+  o2:"2️⃣ 처방 — 더 큰 사랑이 있을 때만 가능한 자유 (토마스 찰머스의 추방 능력)",
+  o3:"3️⃣ 선언 — 예수님이 먼저 하셨습니다 (십자가의 비움 → 부활의 충만)",
+  summary:"우리는 평생 붙잡아 온 것들 — 직함, 역할, 가족, 건강 — 이 흔들릴 때 마음이 사방으로 갈라집니다. 그것들에 내 존재 전체를 묶어두었기 때문입니다.\n\n바울의 처방은 억지로 손을 펴는 것이 아닙니다. 더 큰 사랑이 내 마음에 들어올 때, 자연스럽게 손이 펴집니다.\n\n예수님은 모든 것을 잃으시고도 부활하셨습니다. 그분은 세상 끝날까지 우리 곁에 계십니다.\n\n세상의 모든 무대 장치가 내려가도 — 예수님은 남아 계십니다.",
+  p1t:"나와 주님", p1c:"세상 지나가는 것들에 내 존재를 묶어두고 갈라졌던 마음을 회개하고, 영원히 곁에 계실 예수님의 더 큰 사랑으로 내 영혼이 채워지기를 구하는 기도",
+  p2t:"우리 가정",  p2c:"가정을 향한 지독한 집착의 손을 펴고, 영원한 반석이신 주님께 온전히 맡겨드리며, 주님이 주시는 넉넉한 평안 안에 가정이 거하기를 구하는 기도",
+  p3t:"우리 교회",  p3c:"세상 이름표에 흔들리지 않고, 오직 예수님 한 분만으로 만족하며 흐트러짐 없이 주를 섬기는 공동체가 되기를 구하는 기도",
+  r1ref:"고린도후서 8:9",  r1lbl:"예수님의 자기 비움",     r1txt:"우리 주 예수 그리스도의 은혜를 너희가 알거니와 부요하신 이로서 너희를 위하여 가난하게 되심은 그의 가난함으로 말미암아 너희를 부요하게 하려 하심이라",
+  r2ref:"마태복음 28:20",  r2lbl:"세상 끝날까지 함께",    r2txt:"내가 너희에게 분부한 모든 것을 가르쳐 지키게 하라 볼지어다 내가 세상 끝날까지 너희와 항상 함께 있으리라 하시니라",
+  r3ref:"요한계시록 2:17", r3lbl:"흰 돌과 새 이름",       r3txt:"귀 있는 자는 성령이 교회들에게 하시는 말씀을 들을지어다 이기는 그에게는 내가 감추었던 만나를 주고 또 흰 돌을 줄 터인데 그 돌 위에 새 이름을 기록한 것이 있나니 받는 자 밖에는 그 이름을 알 사람이 없느니라",
+  pname:"토마스 찰머스 (Thomas Chalmers)", pdates:"1780~1847 | 스코틀랜드 장로교 신학자·목사·사회 개혁가",
+  pbio:"스코틀랜드 개혁교회의 대표적 지도자로, 사회복지와 교회 개혁에 헌신했습니다. 그의 유명한 설교 \"The Expulsive Power of a New Affection\"(새로운 사랑의 추방 능력)은 기독교 역사에서 가장 위대한 설교 중 하나로 꼽힙니다.",
+  pquote:"낡은 집착과 욕망은 의지의 힘으로 뽑아낼 수 없다. 오직 더 크고 강한 새로운 사랑이 마음에 밀려들어올 때, 비로소 옛것이 밀려나간다.",
+  psource:"The Expulsive Power of a New Affection (새로운 사랑의 추방 능력)",
+  n1t:"\"오늘도 바빴다\" — 갈 곳 없는 60대 남성, 고독사 통계 '절반' 차지한 현실", n1u:"https://www.reportera.co.kr/news/60s-men-social-isolation-loneliness-crisis/#google_vignette", n1s:"리포테라 | 2025년 5월",
+  n2t:"5060 세대의 불행을 가중시키는 가장 큰 요인은 미래에 대한 기대 소멸이다", n2u:"https://www.reportera.co.kr/news/5060-generation-time-paradox-unhappiness/", n2s:"리포테라 | 2025년 3월"
+};
+
+// ================================================
+// 📚 어려운 단어 (매주 Claude로 업데이트)
+// ================================================
+const GLOSSARY = [
+  {word:"때가 단축하여진", verse:"29절", meaning:"예수님이 다시 오실 날이 가까워졌다는 뜻입니다. 바울은 이것을 근거로 세상일에 너무 매이지 말라고 권면합니다."},
+  {word:"없는 자 같이 하라", verse:"29~31절", meaning:"아내를 버리거나 슬퍼도 울지 말라는 뜻이 아닙니다. 세상 것들을 붙잡되 너무 꽉 쥐지 말고, 그것이 내 존재의 전부가 되지 않도록 가볍게 쥐라는 뜻입니다."},
+  {word:"외형은 지나감이니라", verse:"31절", meaning:"외형은 눈에 보이는 세상의 겉모습입니다. 연극 무대의 장치처럼, 세상에서 우리가 경험하는 것들은 결국 지나갑니다."},
+  {word:"염려 없기를 원하노라", verse:"32절", meaning:"단순한 걱정 없음이 아닙니다. 원어(헬라어)로는 마음이 쪼개지지 않은 상태, 시선이 한 곳을 향한 상태를 말합니다."},
+  {word:"마음이 갈라지며", verse:"34절", meaning:"마음이 여러 방향으로 찢어지고 쪼개진 상태를 말합니다. 이쪽으로도 끌리고, 저쪽으로도 당겨지며 온전히 하나로 모이지 못하는 상태입니다."},
+  {word:"올무를 놓으려 함이 아니니", verse:"35절", meaning:"올무는 짐승을 잡는 덫입니다. 내가 이 말로 여러분에게 규칙을 강요하거나 옭아매려는 게 아니라고 말하는 것입니다."},
+  {word:"이치에 합당하게 / 흐트러짐이 없이", verse:"35절", meaning:"이치에 합당하게는 바른 질서, 제자리를 찾은 상태입니다. 흐트러짐이 없이는 산만하지 않고 한 곳에 온전히 집중된 상태입니다."}
+];
+
+// ================================================
+// ✏️ 문제 (매주 Claude로 업데이트)
+// ================================================
+const QUESTIONS = [
+  {text:"29~31절을 읽어보세요. 바울은 어떤 것들을 \"없는 것처럼 대하라\"고 합니까? 본문에서 찾아 적어보세요.", hint:"29~31절에 5가지 종류의 사람이 나옵니다.", answer:"① 아내 있는 자  ② 우는 자  ③ 기쁜 자  ④ 매매하는 자  ⑤ 세상 물건을 쓰는 자\n이 모든 것들을 마치 없는 것처럼 가볍게 쥐고 살라는 말씀입니다."},
+  {text:"31절의 마지막 문장을 찾아 읽어보세요. 바울은 \"이 세상의 외형\"이 어떻게 된다고 말합니까?", hint:"31절 맨 끝 부분을 그대로 적으면 됩니다.", answer:"\"이 세상의 외형은 지나감이니라\"\n지금 우리 눈에 보이는 세상의 모든 것은 영원하지 않고 결국 지나갑니다."},
+  {text:"32~33절을 읽어보세요. 바울이 비교하는 두 사람은 누구이며, 각각 무엇을 염려한다고 합니까?", hint:"\"장가 가지 않은 자\"와 \"장가 간 자\"가 각각 무엇을 걱정하는지 찾아보세요.", answer:"• 장가 가지 않은 자 → 주의 일을 염려함 (주를 기쁘시게 할까)\n• 장가 간 자 → 세상 일을 염려함 (아내를 기쁘게 할까)"},
+  {text:"34절에 \"마음이 갈라지며\"라는 표현이 나옵니다. 이 표현 바로 앞에 어떤 상황이 설명되어 있습니까?", hint:"무엇을 염려하다 보니 마음이 갈라진다고 합니까?", answer:"시집 간 자(결혼한 사람)가 세상 일을 염려하여 남편(또는 아내)을 기쁘게 하려다 보니, 마음이 이리저리 당겨지고 갈라진다는 뜻입니다."},
+  {text:"35절을 읽어보세요. 바울이 이 모든 말을 하는 목적은 무엇입니까? 35절에서 두 가지를 찾아보세요.", hint:"\"~을 위함이요\", \"~하려 함이라\"는 표현을 찾아보세요.", answer:"① 너희의 유익을 위함\n② 흐트러짐이 없이 주를 섬기게 하려 함\n바울은 규칙을 강요하려는 게 아닙니다."}
+];
+
+// ================================================
+// STATE
+// ================================================
+let DB = null;
+let ROLE = null;
+let SERMON = null;
+let msgType = '기도제목';
+let fontSize = 18;
+
+// ── Firebase init ──
+const fbReady = (() => {
+  try {
+    firebase.initializeApp(FIREBASE_CONFIG);
+    DB = firebase.firestore();
+    return true;
+  } catch(e) { console.warn('Firebase init error:', e); return false; }
+})();
+
+// ── Login ──
+function setRole(r) {
+  ROLE = r;
+  document.getElementById('rb-deacon').classList.toggle('active', r==='deacon');
+  document.getElementById('rb-pastor').classList.toggle('active', r==='pastor');
+  document.getElementById('login-hint').textContent = r==='deacon' ? '성도님 비밀번호를 입력해 주세요' : '문지기방 비밀번호를 입력해 주세요';
+  document.getElementById('login-err').textContent = '';
+}
+ROLE = 'deacon';
+
+function doLogin() {
+  const v = document.getElementById('pw').value;
+  if (v === PW[ROLE]) {
+    document.getElementById('pw').value = '';
+    document.getElementById('login-err').textContent = '';
+    showScreen(ROLE === 'deacon' ? 'screen-deacon' : 'screen-pastor');
+    document.getElementById('font-float').classList.add('show');
+    if (ROLE === 'deacon') {
+      loadAndRenderSermon();
+      loadReplies();
+    } else {
+      loadPastorInbox();
+      loadAdminForm();
+    }
+  } else {
+    document.getElementById('login-err').textContent = '⚠️ 비밀번호가 맞지 않습니다.';
+    document.getElementById('pw').value = '';
+    document.getElementById('pw').focus();
+  }
+}
+
+function logout() { location.reload(); }
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => { s.classList.remove('active'); s.classList.add('hidden'); });
+  const el = document.getElementById(id);
+  el.classList.remove('hidden');
+  el.classList.add('active');
+}
+
+// ── Panel navigation ──
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('#screen-deacon .tab').forEach(t => t.classList.remove('on'));
+  document.getElementById('panel-' + id).classList.add('on');
+  document.getElementById('tb-' + id).classList.add('on');
+  window.scrollTo(0, 0);
+  if (id === 'after') loadReplies();
+}
+
+function showPastorPanel(id) {
+  document.querySelectorAll('.pastor-inner').forEach(p => p.classList.add('hidden'));
+  document.querySelectorAll('#screen-pastor .tab').forEach(t => t.classList.remove('on'));
+  document.getElementById('ppanel-' + id).classList.remove('hidden');
+  document.getElementById('ptb-' + id).classList.add('on');
+  window.scrollTo(0, 0);
+  if (id === 'notes') loadNotes();
+  if (id === 'inbox') loadPastorInbox();
+}
+
+// ── Glossary toggle ──
+function tog(btn) { btn.closest('.glos-item').classList.toggle('open'); }
+
+// ── Answer reveal ──
+function reveal(btn) {
+  const box = btn.nextElementSibling;
+  const s = box.classList.toggle('show');
+  btn.textContent = s ? '🔒 답 숨기기' : '📋 정답 확인하기';
+}
+
+// ── Admin accordion ──
+function togAdmin(btn) { btn.closest('.admin-section').classList.toggle('open'); }
+
+// ── Font size ──
+function fz(d) {
+  fontSize = Math.max(14, Math.min(28, fontSize + d));
+  document.documentElement.style.setProperty('--fs', fontSize + 'px');
+}
+
+// ── Message type ──
+function setType(t, btn) {
+  msgType = t;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+// ================================================
+// SERMON LOADING & RENDERING
+// ================================================
+async function loadAndRenderSermon() {
+  SERMON = DEFAULT_SERMON;
+  if (fbReady) {
+    try {
+      const doc = await DB.collection('sermons').doc('current').get();
+      if (doc.exists) SERMON = { ...DEFAULT_SERMON, ...doc.data() };
+    } catch(e) { console.warn('Sermon load error:', e); }
+  }
+  renderSermon();
+}
+
+function renderSermon() {
+  const S = SERMON;
+  // Login info
+  document.getElementById('login-sermon-info').textContent = S.date || '말씀 동반자';
+  // Header
+  document.getElementById('deacon-header-sub').textContent = (S.scriptureRef||'') + ' | ' + (S.date||'');
+
+  // Scripture
+  document.getElementById('scripture-ref').textContent = S.scriptureRef || '';
+  const verses = (S.verses||'').trim().split('\n').filter(l=>l.includes('|'));
+  document.getElementById('scripture-text').innerHTML = verses.map(l => {
+    const [num,...rest] = l.split('|');
+    return `<div class="verse"><span class="vn">${num.trim()}</span>${rest.join('|').trim()}</div>`;
+  }).join('') || '<div class="loading-box">본문 내용을 설정에서 입력해 주세요.</div>';
+
+  // Glossary (static)
+  document.getElementById('glossary-list').innerHTML = GLOSSARY.map(g => `
+    <div class="glos-item">
+      <button class="glos-trigger" onclick="tog(this)">
+        <span><span class="gword">${g.word}</span><span class="gvref">(${g.verse})</span></span>
+        <span class="garrow">▼</span>
+      </button>
+      <div class="glos-body">${g.meaning}</div>
+    </div>`).join('');
+
+  // Questions (static)
+  document.getElementById('questions-list').innerHTML = QUESTIONS.map((q,i) => `
+    <div class="q-card">
+      <div class="q-badge">문제 ${i+1}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="q-hint">💡 ${q.hint}</div>
+      <textarea class="q-ta" placeholder="여기에 적어보세요..."></textarea>
+      <button class="reveal-btn" onclick="reveal(this)">📋 정답 확인하기</button>
+      <div class="ans-box"><div class="ans-label">✅ 정답</div>${q.answer.replace(/\n/g,'<br>')}</div>
+    </div>`).join('');
+
+  // Sermon outline
+  document.getElementById('sermon-outline').innerHTML = `
+    <strong style="color:var(--primary)">${S.outlineTitle||S.title||''}</strong><br>
+    <br>${S.o1||''}<br>${S.o2||''}<br>${S.o3||''}`;
+
+  // Cross-references
+  document.getElementById('crossrefs-list').innerHTML = [
+    {ref:S.r1ref,lbl:S.r1lbl,txt:S.r1txt},
+    {ref:S.r2ref,lbl:S.r2lbl,txt:S.r2txt},
+    {ref:S.r3ref,lbl:S.r3lbl,txt:S.r3txt}
+  ].filter(r=>r.ref).map(r=>`
+    <div class="ref-card">
+      <div class="ref-tag">${esc(r.ref)} — ${esc(r.lbl||'')}</div>
+      <div class="ref-txt">${esc(r.txt||'')}</div>
+    </div>`).join('');
+
+  // Person card
+  document.getElementById('person-card').innerHTML = `
+    <div class="person-card">
+      <div class="pname">${esc(S.pname||'')}</div>
+      <div class="pdates">${esc(S.pdates||'')}</div>
+      <div class="pbio">${esc(S.pbio||'')}</div>
+      <div class="quote">${esc(S.pquote||'')}<div class="qsource">— ${esc(S.psource||'')}</div></div>
+    </div>`;
+
+  // News
+  document.getElementById('news-list').innerHTML = [
+    {t:S.n1t,u:S.n1u,s:S.n1s},{t:S.n2t,u:S.n2u,s:S.n2s}
+  ].filter(n=>n.t).map(n=>`
+    <a class="news-a" href="${n.u||'#'}" target="_blank" rel="noopener">
+      <span class="news-ico">📰</span>
+      <div><div class="news-ttl">${esc(n.t)}</div><div class="news-src">${esc(n.s||'')}</div></div>
+    </a>`).join('');
+
+  // Summary
+  document.getElementById('sermon-summary').innerHTML = (S.summary||'').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+
+  // Prayer points
+  document.getElementById('prayer-list').innerHTML = [
+    {num:'①',t:S.p1t,c:S.p1c},{num:'②',t:S.p2t,c:S.p2c},{num:'③',t:S.p3t,c:S.p3c}
+  ].filter(p=>p.t).map(p=>`
+    <div class="prayer-item">
+      <div class="pnum">${p.num} ${esc(p.t)}</div>
+      <div class="ptxt">${esc(p.c||'')}</div>
+    </div>`).join('');
+}
+
+// ================================================
+// MESSAGING
+// ================================================
+async function sendMsg() {
+  const name    = document.getElementById('f-name').value.trim();
+  const content = document.getElementById('f-content').value.trim();
+  if (!name)    { alert('이름을 입력해 주세요.'); document.getElementById('f-name').focus(); return; }
+  if (!content) { alert('내용을 입력해 주세요.'); return; }
+  if (!fbReady) { alert('서버 연결을 확인해 주세요.'); return; }
+  try {
+    await DB.collection('messages').add({
+      senderName:name, type:msgType, content,
+      sermon: SERMON ? SERMON.title : '',
+      createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+      reply:null, repliedAt:null, isRead:false
+    });
+    document.getElementById('send-form').classList.add('hidden');
+    document.getElementById('send-ok').style.display = 'block';
+  } catch(e) { alert('전송 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.'); console.error(e); }
+}
+
+function resetForm() {
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-content').value = '';
+  document.getElementById('send-form').classList.remove('hidden');
+  document.getElementById('send-ok').style.display = 'none';
+}
+
+async function loadReplies() {
+  if (!fbReady) return;
+  const list = document.getElementById('replies-list');
+  list.innerHTML = '<div class="loading-box">불러오는 중...</div>';
+  try {
+    const snap = await DB.collection('messages').orderBy('createdAt','desc').get();
+    if (snap.empty) { list.innerHTML = '<div class="loading-box">아직 전송하신 내용이 없습니다.</div>'; return; }
+    list.innerHTML = '';
+    snap.forEach(doc => {
+      const d = doc.data();
+      const dt = d.createdAt ? new Date(d.createdAt.toDate()).toLocaleDateString('ko-KR') : '';
+      list.innerHTML += `
+        <div class="msg-item">
+          <div class="msg-row"><span class="msg-type">${d.type}</span><span class="msg-date">${dt}</span></div>
+          <div style="font-size:0.82rem;color:var(--muted);margin-bottom:0.3rem">${esc(d.senderName||'')}</div>
+          <div class="msg-content">${esc(d.content)}</div>
+          ${d.reply ? `<div class="reply-box"><div class="reply-lbl">📖 목사님 답변</div>${esc(d.reply)}</div>` : '<div class="no-reply">아직 답변이 없습니다. 조금만 기다려 주세요 🙏</div>'}
+        </div>`;
+    });
+  } catch(e) { list.innerHTML = '<div style="color:var(--danger);padding:1rem">불러오기 오류가 발생했습니다.</div>'; }
+}
+
+// ================================================
+// NOTES
+// ================================================
+async function saveNote() {
+  const verse = document.getElementById('n-verse').value.trim();
+  const apply = document.getElementById('n-apply').value.trim();
+  const memo  = document.getElementById('n-memo').value.trim();
+  if (!verse && !apply && !memo) { alert('노트에 내용을 입력해 주세요.'); return; }
+  const name = prompt('이름을 입력해 주세요 (목사님이 확인하실 수 있습니다):', sessionStorage.getItem('woori_name')||'');
+  if (!name) return;
+  sessionStorage.setItem('woori_name', name);
+  if (!fbReady) { alert('서버 연결을 확인해 주세요.'); return; }
+  try {
+    await DB.collection('notes').add({
+      name, verse, apply, memo,
+      sermon: SERMON ? SERMON.title : '',
+      sermonDate: SERMON ? SERMON.date : '',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('note-ok').style.display = 'block';
+    setTimeout(() => { document.getElementById('note-ok').style.display = 'none'; }, 3000);
+  } catch(e) { alert('저장 오류가 발생했습니다.'); console.error(e); }
+}
+
+// ================================================
+// PASTOR INBOX
+// ================================================
+async function loadPastorInbox() {
+  if (!fbReady) { document.getElementById('pastor-inbox').innerHTML = '<div class="empty-msg">⚠️ 파이어베이스 연결을 확인해 주세요.</div>'; return; }
+  const box = document.getElementById('pastor-inbox');
+  box.innerHTML = '<div class="empty-msg">불러오는 중...</div>';
+  try {
+    const snap = await DB.collection('messages').orderBy('createdAt','desc').get();
+    if (snap.empty) { box.innerHTML = '<div class="empty-msg">📭 아직 받은 메시지가 없습니다.</div>'; document.getElementById('pastor-status').textContent='받은 메시지 없음'; return; }
+    let unread = 0;
+    box.innerHTML = '';
+    snap.forEach(doc => {
+      const d = doc.data();
+      if (!d.isRead) unread++;
+      const dt = d.createdAt ? new Date(d.createdAt.toDate()).toLocaleString('ko-KR') : '—';
+      const tc = d.type==='기도제목' ? 'tp' : 'tq';
+      box.innerHTML += `
+        <div class="inbox-item ${!d.isRead?'unread':''}">
+          <div class="inbox-meta"><span class="inbox-sender">${esc(d.senderName||'익명')}</span><span class="inbox-type-p ${tc}">${d.type}</span></div>
+          <div class="inbox-date">${dt}</div>
+          <div class="inbox-content">${esc(d.content)}</div>
+          ${d.reply
+            ? `<div class="done-box"><div class="done-lbl">✅ 답변 완료</div>${esc(d.reply)}</div>`
+            : `<div><textarea class="reply-ta" id="rt-${doc.id}" placeholder="답변을 입력하세요..."></textarea><button class="reply-submit" onclick="submitReply('${doc.id}')">📨 답변 전송</button></div>`}
+        </div>`;
+    });
+    const badge = document.getElementById('new-badge');
+    if (unread > 0) { badge.textContent = `새 메시지 ${unread}개`; badge.classList.remove('hidden'); document.getElementById('pastor-status').textContent = `새 메시지 ${unread}개 도착`; }
+    else { badge.classList.add('hidden'); document.getElementById('pastor-status').textContent = '모두 확인됨'; }
+    snap.forEach(async doc => { if (!doc.data().isRead) await DB.collection('messages').doc(doc.id).update({isRead:true}).catch(()=>{}); });
+  } catch(e) { box.innerHTML = '<div style="color:var(--danger);padding:1rem">불러오기 오류가 발생했습니다.</div>'; console.error(e); }
+}
+
+async function submitReply(id) {
+  const ta = document.getElementById('rt-' + id);
+  const txt = ta ? ta.value.trim() : '';
+  if (!txt) { alert('답변 내용을 입력해 주세요.'); return; }
+  try {
+    await DB.collection('messages').doc(id).update({ reply:txt, repliedAt:firebase.firestore.FieldValue.serverTimestamp() });
+    alert('답변이 전송되었습니다! 😊');
+    loadPastorInbox();
+  } catch(e) { alert('오류가 발생했습니다.'); console.error(e); }
+}
+
+// ================================================
+// NOTES VIEW (PASTOR)
+// ================================================
+async function loadNotes() {
+  if (!fbReady) return;
+  const list = document.getElementById('notes-list');
+  list.innerHTML = '<div class="empty-msg">불러오는 중...</div>';
+  try {
+    const snap = await DB.collection('notes').orderBy('createdAt','desc').get();
+    if (snap.empty) { list.innerHTML = '<div class="empty-msg">📭 아직 저장된 노트가 없습니다.</div>'; return; }
+    list.innerHTML = '';
+    snap.forEach(doc => {
+      const d = doc.data();
+      const dt = d.createdAt ? new Date(d.createdAt.toDate()).toLocaleDateString('ko-KR') : '';
+      list.innerHTML += `
+        <div class="note-view-item">
+          <div class="nv-head"><span class="nv-name">${esc(d.name||'익명')}</span><span class="nv-date">${dt}</span></div>
+          <div style="font-size:0.78rem;color:var(--muted);margin-bottom:0.5rem">${esc(d.sermon||'')}</div>
+          ${d.verse  ? `<div class="nv-label">📌 마음에 남은 말씀</div><div class="nv-content">${esc(d.verse)}</div>` : ''}
+          ${d.apply  ? `<div class="nv-label">🌱 이번 주 적용</div><div class="nv-content">${esc(d.apply)}</div>` : ''}
+          ${d.memo   ? `<div class="nv-label">💬 더 묵상하고 싶은 것</div><div class="nv-content">${esc(d.memo)}</div>` : ''}
+        </div>`;
+    });
+  } catch(e) { list.innerHTML = '<div style="color:var(--danger);padding:1rem">불러오기 오류가 발생했습니다.</div>'; console.error(e); }
+}
+
+// ================================================
+// ADMIN — LOAD & SAVE SERMON CONFIG
+// ================================================
+async function loadAdminForm() {
+  let S = DEFAULT_SERMON;
+  if (fbReady) {
+    try {
+      const doc = await DB.collection('sermons').doc('current').get();
+      if (doc.exists) S = { ...DEFAULT_SERMON, ...doc.data() };
+    } catch(e) {}
+  }
+  const fields = ['title','date','scriptureRef','verses','outlineTitle','o1','o2','o3','summary',
+    'p1t','p1c','p2t','p2c','p3t','p3c',
+    'r1ref','r1lbl','r1txt','r2ref','r2lbl','r2txt','r3ref','r3lbl','r3txt',
+    'pname','pdates','pbio','pquote','psource',
+    'n1t','n1u','n1s','n2t','n2u','n2s'];
+  fields.forEach(f => {
+    const el = document.getElementById('cfg-' + f.replace(/([A-Z])/g, m => m.toLowerCase()));
+    const el2 = document.getElementById('cfg-' + f);
+    const target = el || el2;
+    if (target) target.value = S[f] || '';
+  });
+}
+
+async function saveSermon() {
+  const fields = ['title','date','scriptureRef','verses','outlineTitle','o1','o2','o3','summary',
+    'p1t','p1c','p2t','p2c','p3t','p3c',
+    'r1ref','r1lbl','r1txt','r2ref','r2lbl','r2txt','r3ref','r3lbl','r3txt',
+    'pname','pdates','pbio','pquote','psource',
+    'n1t','n1u','n1s','n2t','n2u','n2s'];
+  const data = {};
+  fields.forEach(f => {
+    const el = document.getElementById('cfg-' + f.replace(/([A-Z])/g, m => m.toLowerCase()));
+    const el2 = document.getElementById('cfg-' + f);
+    const target = el || el2;
+    if (target) data[f] = target.value || '';
+  });
+  if (!fbReady) { alert('서버 연결을 확인해 주세요.'); return; }
+  try {
+    await DB.collection('sermons').doc('current').set(data);
+    document.getElementById('save-ok').style.display = 'block';
+    setTimeout(() => { document.getElementById('save-ok').style.display = 'none'; }, 3000);
+    SERMON = data;
+  } catch(e) { alert('저장 오류가 발생했습니다.'); console.error(e); }
+}
+
+// ── HTML escape ──
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+</script>
+</body>
+</html>
