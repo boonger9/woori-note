@@ -41,7 +41,9 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','맑은 고딕',sans-serif
 .back-link a{color:rgba(255,255,255,0.85);text-decoration:none;}
 
 /* HEADER */
-.app-header{background:var(--primary);color:white;padding:0.9rem 1.2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.app-header{background:var(--primary);color:white;padding:0.9rem 1.2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,0.2);transition:transform 0.25s ease;}
+.app-header.hide{transform:translateY(-100%);}
+.tab-bar-wrap{position:sticky;top:0;z-index:190;transition:top 0.25s ease;}
 .h-title{font-size:1em;font-weight:700;}
 .h-sub{font-size:0.78em;opacity:0.75;}
 .h-badge{display:inline-block;background:rgba(255,255,255,0.2);border-radius:10px;padding:0.1rem 0.55rem;font-size:0.75em;margin-left:0.4rem;vertical-align:middle;}
@@ -50,7 +52,7 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','맑은 고딕',sans-serif
 .hbtn:hover{background:rgba(255,255,255,0.25);}
 
 /* TAB BAR */
-.tab-bar{display:flex;background:white;border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:190;}
+.tab-bar{display:flex;background:white;border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:190;transition:top 0.25s ease;}
 .tab{flex:1;padding:0.85rem 0.4rem;text-align:center;font-size:0.88em;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s;font-family:inherit;background:none;border-top:none;border-left:none;border-right:none;}
 .tab.on{color:var(--primary);border-bottom-color:var(--primary);font-weight:700;}
 
@@ -265,6 +267,27 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','맑은 고딕',sans-serif
 .pastor-memo-lbl{font-size:0.78em;color:var(--muted);font-weight:700;margin-bottom:0.4rem;}
 .pastor-memo-txt{font-size:0.93em;line-height:1.8;white-space:pre-wrap;}
 
+
+/* VISIT RECORD */
+.visit-item{background:white;border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;margin-bottom:0.7rem;position:relative;}
+.visit-name{font-weight:700;color:var(--primary);font-size:0.97em;margin-bottom:0.2rem;}
+.visit-date{font-size:0.75em;color:var(--muted);margin-bottom:0.4rem;}
+.visit-content{font-size:0.9em;line-height:1.75;color:#2A2A3A;white-space:pre-wrap;}
+.visit-del{position:absolute;top:0.6rem;right:0.7rem;background:none;border:none;color:var(--muted);font-size:0.85em;cursor:pointer;padding:0.2rem 0.4rem;border-radius:4px;}
+.visit-del:hover{color:var(--danger);background:#FEE;}
+
+/* NEXT WEEK CARD (성도용) */
+.next-week-card{background:linear-gradient(135deg,#1B3A7A 0%,#0F2150 100%);border-radius:16px;padding:1.3rem 1.4rem;color:white;margin-top:1rem;}
+.next-week-label{font-size:0.75em;opacity:0.7;margin-bottom:0.5rem;letter-spacing:0.05em;}
+.next-week-ref{font-size:0.88em;color:var(--gold-l);font-weight:700;margin-bottom:0.3rem;}
+.next-week-title{font-size:1.05em;font-weight:800;margin-bottom:0.5rem;}
+.next-week-preview{font-size:0.88em;opacity:0.85;line-height:1.7;}
+
+/* PASTORAL WORD (성도용) */
+.pastoral-word-card{background:var(--gold-p);border:1px solid #E8C84A;border-left:4px solid var(--gold);border-radius:0 14px 14px 0;padding:1.1rem 1.3rem;margin-bottom:1.2rem;}
+.pastoral-word-label{font-size:0.75em;color:var(--gold);font-weight:700;margin-bottom:0.4rem;letter-spacing:0.05em;}
+.pastoral-word-txt{font-size:0.97em;line-height:1.85;color:#3A2800;font-style:italic;}
+
 </style>
 
 <script>
@@ -380,6 +403,12 @@ window.INITIAL_SERMON_DATA = {"title": "이기는 게 이긴 건가?", "date": "
       오늘 말씀을 마음에 담아두세요.<br>
       집에서 다시 펼쳐보시며 기도하실 수 있습니다.
     </div>
+    <div id="pastoral-word-wrap" style="display:none">
+      <div class="pastoral-word-card">
+        <div class="pastoral-word-label">✍️ 목사님 한 마디</div>
+        <div class="pastoral-word-txt" id="pastoral-word-txt"></div>
+      </div>
+    </div>
     <div class="card">
       <div class="card-head">💡 오늘 설교 핵심 정리</div>
       <div class="summary-card" id="sermon-summary"><div style="opacity:0.7">불러오는 중...</div></div>
@@ -387,6 +416,14 @@ window.INITIAL_SERMON_DATA = {"title": "이기는 게 이긴 건가?", "date": "
     <div class="card">
       <div class="card-head">🙏 이번 주 기도제목</div>
       <div id="prayer-list"><div class="loading-box">불러오는 중...</div></div>
+    </div>
+    <div id="next-week-wrap" style="display:none">
+      <div class="next-week-card">
+        <div class="next-week-label">📅 다음 주 말씀 예고</div>
+        <div class="next-week-ref" id="next-week-ref"></div>
+        <div class="next-week-title" id="next-week-title"></div>
+        <div class="next-week-preview" id="next-week-preview"></div>
+      </div>
     </div>
     <div class="card">
       <div class="card-head">✏️ 나의 설교 노트</div>
@@ -489,92 +526,53 @@ window.INITIAL_SERMON_DATA = {"title": "이기는 게 이긴 건가?", "date": "
 
   <!-- 설교 설정 -->
   <div class="pastor-inner hidden" id="ppanel-config">
+
+    <!-- 📣 성도 공지 -->
     <div class="card">
-      <div class="card-head">⚙️ 이번 설교 설정</div>
-      <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1rem">각 항목을 수정하고 맨 아래 '저장하기'를 눌러주세요.</p>
-
-      <div class="admin-section open">
-        <button class="admin-trigger" onclick="togAdmin(this)">📋 기본 정보 <span class="admin-arrow">▼</span></button>
-        <div class="admin-body">
-          <label class="a-lbl">설교 제목</label>
-          <input class="a-input" id="cfg-title" placeholder="설교 제목">
-          <label class="a-lbl">날짜 / 예배명</label>
-          <input class="a-input" id="cfg-date" placeholder="예: 2026년 5월 31일 주일낮예배">
-          <label class="a-lbl">본문 성경 구절</label>
-          <input class="a-input" id="cfg-ref" placeholder="예: 마가복음 1:1~8">
-        </div>
-      </div>
-
-      <div class="admin-section">
-        <button class="admin-trigger" onclick="togAdmin(this)">📖 본문 성경 구절 <span class="admin-arrow">▼</span></button>
-        <div class="admin-body">
-          <div class="a-hint">형식: 절번호|내용 (한 줄에 한 절)<br>예: 1|하나님의 아들 예수 그리스도의 복음의 시작이라</div>
-          <textarea class="a-ta" id="cfg-verses" style="min-height:200px;" placeholder="1|내용&#10;2|내용"></textarea>
-        </div>
-      </div>
-
-
-
-      <div class="admin-section">
-        <button class="admin-trigger" onclick="togAdmin(this)">🙏 기도제목 (3가지) <span class="admin-arrow">▼</span></button>
-        <div class="admin-body">
-          <label class="a-lbl">① 제목</label><input class="a-input" id="cfg-p1t">
-          <label class="a-lbl">① 내용</label><textarea class="a-ta" style="min-height:80px;" id="cfg-p1c"></textarea>
-          <hr class="a-sep">
-          <label class="a-lbl">② 제목</label><input class="a-input" id="cfg-p2t">
-          <label class="a-lbl">② 내용</label><textarea class="a-ta" style="min-height:80px;" id="cfg-p2c"></textarea>
-          <hr class="a-sep">
-          <label class="a-lbl">③ 제목</label><input class="a-input" id="cfg-p3t">
-          <label class="a-lbl">③ 내용</label><textarea class="a-ta" style="min-height:80px;" id="cfg-p3c"></textarea>
-        </div>
-      </div>
-
-
-
-
-
-
-
-      <!-- 단어/문제 -->
-      <div class="admin-section">
-        <button class="admin-trigger" onclick="togAdmin(this)">📚 어려운 단어 (최대 5개) <span class="admin-arrow">▼</span></button>
-        <div class="admin-body">
-          <div class="a-hint">성도들이 어려워할 단어와 뜻을 입력해 주세요.</div>
-          <div id="glos-form-list"></div>
-          <button class="add-row-btn" onclick="addGlosRow()" id="add-glos-btn">＋ 단어 추가</button>
-          <input type="hidden" id="cfg-glossary">
-        </div>
-      </div>
-
-      <div class="admin-section">
-        <button class="admin-trigger" onclick="togAdmin(this)">✏️ 본문 이해 문제 (최대 5개) <span class="admin-arrow">▼</span></button>
-        <div class="admin-body">
-          <div class="a-hint">문제, 힌트(선택), 정답을 입력해 주세요.</div>
-          <div id="qst-form-list"></div>
-          <button class="add-row-btn" onclick="addQstRow()" id="add-qst-btn">＋ 문제 추가</button>
-          <input type="hidden" id="cfg-questions">
-        </div>
-      </div>
-
-      <div class="admin-section">
-        <button class="admin-trigger" onclick="togAdmin(this)">📣 성도 공지 메시지 <span class="admin-arrow">▼</span></button>
-        <div class="admin-body">
-          <div class="a-hint">성도용 첫 화면에 표시되는 공지입니다. 예배 안내, 특별 기도제목 등 자유롭게 사용하세요.</div>
-          <textarea class="a-ta" id="cfg-notice" style="min-height:80px;" placeholder="예: 오늘 예배 후 당회가 있습니다. 교우들의 기도를 부탁드립니다."></textarea>
-        </div>
-      </div>
-
-      <div class="admin-section">
-        <button class="admin-trigger" onclick="togAdmin(this)">🔒 목회자 메모 (비공개) <span class="admin-arrow">▼</span></button>
-        <div class="admin-body">
-          <div class="a-hint">성도에게는 보이지 않는 목회자 개인 메모입니다. 설교 준비, 심방 사항, 기억할 내용 등을 기록하세요.</div>
-          <textarea class="a-ta" id="cfg-pastormemo" style="min-height:100px;" placeholder="예: 김○○ 성도 병원 입원 중 — 기억하고 기도할 것&#10;다음 주 본문: 고전 11장 고려"></textarea>
-        </div>
-      </div>
-
-      <button class="admin-save-btn" onclick="saveSermon()">💾 저장하기</button>
-      <div id="save-ok" style="display:none;text-align:center;padding:1rem;color:var(--success);font-weight:700;">✅ 저장되었습니다!</div>
+      <div class="card-head">📣 성도 공지 메시지</div>
+      <div class="a-hint" style="margin-bottom:0.8rem">성도용 화면 상단에 노란 배너로 표시됩니다.</div>
+      <textarea class="a-ta" id="cfg-notice" style="min-height:80px;" placeholder="예: 오늘 예배 후 당회가 있습니다. 교우들의 기도 부탁드립니다."></textarea>
+      <button class="admin-save-btn" style="margin-top:0.8rem" onclick="savePastorField('notice','cfg-notice','공지가 저장되었습니다')">💾 공지 저장</button>
     </div>
+
+    <!-- ✍️ 이번 주 목사님 한 마디 -->
+    <div class="card">
+      <div class="card-head">✍️ 이번 주 목사님 한 마디</div>
+      <div class="a-hint" style="margin-bottom:0.8rem">성도용 예배 후 탭 상단에 표시됩니다. 격려, 도전, 짧은 권면 등.</div>
+      <textarea class="a-ta" id="cfg-pastoral-word" style="min-height:90px;" placeholder="예: 오늘 말씀처럼, 자유는 섬김으로 완성됩니다. 이번 한 주, 한 사람의 유익을 구해보세요."></textarea>
+      <button class="admin-save-btn" style="margin-top:0.8rem" onclick="savePastorField('pastoralWord','cfg-pastoral-word','한 마디가 저장되었습니다')">💾 저장</button>
+    </div>
+
+    <!-- 📅 다음 주 예고 -->
+    <div class="card">
+      <div class="card-head">📅 다음 주 예고</div>
+      <div class="a-hint" style="margin-bottom:0.8rem">성도용 예배 후 탭 하단에 표시됩니다.</div>
+      <input class="a-input" id="cfg-next-ref" placeholder="다음 주 본문 (예: 고린도전서 11:17~34)">
+      <input class="a-input" id="cfg-next-title" placeholder="설교 제목 (예: 주님의 식탁으로 오라)">
+      <textarea class="a-ta" id="cfg-next-preview" style="min-height:70px;" placeholder="한 줄 예고 (선택)"></textarea>
+      <button class="admin-save-btn" style="margin-top:0.8rem" onclick="saveNextWeek()">💾 저장</button>
+    </div>
+
+    <!-- 🏠 심방 기록 -->
+    <div class="card">
+      <div class="card-head">🏠 심방 기록 <span style="font-size:0.75em;font-weight:400;color:var(--muted)">(비공개)</span></div>
+      <div class="a-hint" style="margin-bottom:0.8rem">성도에게 보이지 않는 목회자 전용 기록입니다.</div>
+      <input class="a-input" id="v-name" placeholder="성도 이름">
+      <textarea class="a-ta" id="v-content" style="min-height:80px;" placeholder="심방 내용, 기도제목, 기억할 것..."></textarea>
+      <button class="admin-save-btn" style="margin-top:0.5rem" onclick="addVisit()">＋ 기록 추가</button>
+      <div id="visit-list" style="margin-top:1rem"></div>
+      <button class="reload-btn" style="margin-top:0.5rem" onclick="loadVisits()">🔄 기록 불러오기</button>
+    </div>
+
+    <!-- 🔒 목회자 메모 -->
+    <div class="card">
+      <div class="card-head">🔒 목회자 메모 <span style="font-size:0.75em;font-weight:400;color:var(--muted)">(비공개)</span></div>
+      <div class="a-hint" style="margin-bottom:0.8rem">설교 준비, 다음 주 계획, 기억할 내용 등.</div>
+      <textarea class="a-ta" id="cfg-pastormemo" style="min-height:120px;" placeholder="자유롭게 메모하세요."></textarea>
+      <button class="admin-save-btn" style="margin-top:0.8rem" onclick="savePastorField('pastormemo','cfg-pastormemo','메모가 저장되었습니다')">💾 저장</button>
+    </div>
+
+    <div id="save-ok" style="display:none;text-align:center;padding:1rem;color:var(--success);font-weight:700;"></div>
   </div>
 
   <!-- 노트 보기 -->
@@ -720,7 +718,7 @@ function showPastorPanel(id) {
   if (id === 'notes') loadNotes();
   if (id === 'inbox') loadPastorInbox();
   if (id === 'stats') loadStats();
-  if (id === 'config') loadAdminForm();
+  if (id === 'config') loadPastorConfig();
 }
 
 function tog(btn) { btn.closest('.glos-item').classList.toggle('open'); }
@@ -859,6 +857,8 @@ function renderSermon() {
       <div class="ptxt">${esc(p.c||'')}</div>
     </div>`).join('') || '<p style="color:var(--muted);font-size:0.9rem">등록된 기도제목이 없습니다.</p>';
   renderNoticeBanner();
+  renderPastoralWord();
+  renderNextWeek();
 }
 
 // ================================================
@@ -1201,6 +1201,159 @@ function renderNoticeBanner() {
       banner.classList.add('show');
     }
   }
+}
+
+
+// ================================================
+// SCROLL HIDE/SHOW HEADER
+// ================================================
+(function() {
+  let lastY = 0;
+  function onScroll() {
+    const headers = document.querySelectorAll('.app-header');
+    const tabbars = document.querySelectorAll('.tab-bar');
+    const y = window.scrollY;
+    const goingDown = y > lastY && y > 60;
+    headers.forEach(h => h.classList.toggle('hide', goingDown));
+    tabbars.forEach(t => { t.style.top = goingDown ? '0' : ''; });
+    lastY = y;
+  }
+  window.addEventListener('scroll', onScroll, {passive: true});
+})();
+
+// ================================================
+// PASTOR FIELD SAVE (개별 저장)
+// ================================================
+async function savePastorField(field, inputId, successMsg) {
+  if (!fbReady) { alert('서버 연결을 확인해 주세요.'); return; }
+  const val = document.getElementById(inputId).value;
+  const ok = document.getElementById('save-ok');
+  try {
+    await DB.collection('sermons').doc(SERMON_KEY).set({ [field]: val }, { merge: true });
+    if (SERMON) SERMON[field] = val;
+    ok.textContent = '✅ ' + successMsg;
+    ok.style.display = 'block';
+    setTimeout(() => { ok.style.display = 'none'; }, 2500);
+    if (field === 'notice') renderNoticeBanner();
+    if (field === 'pastoralWord') renderPastoralWord();
+  } catch(e) { alert('저장 오류가 발생했습니다.'); console.error(e); }
+}
+
+// ================================================
+// NEXT WEEK SAVE
+// ================================================
+async function saveNextWeek() {
+  if (!fbReady) { alert('서버 연결을 확인해 주세요.'); return; }
+  const data = {
+    nextRef:   document.getElementById('cfg-next-ref').value,
+    nextTitle: document.getElementById('cfg-next-title').value,
+    nextPreview: document.getElementById('cfg-next-preview').value
+  };
+  const ok = document.getElementById('save-ok');
+  try {
+    await DB.collection('sermons').doc(SERMON_KEY).set(data, { merge: true });
+    if (SERMON) Object.assign(SERMON, data);
+    ok.textContent = '✅ 다음 주 예고가 저장되었습니다';
+    ok.style.display = 'block';
+    setTimeout(() => { ok.style.display = 'none'; }, 2500);
+    renderNextWeek();
+  } catch(e) { alert('저장 오류가 발생했습니다.'); console.error(e); }
+}
+
+// ================================================
+// VISITS (심방 기록)
+// ================================================
+async function addVisit() {
+  const name    = document.getElementById('v-name').value.trim();
+  const content = document.getElementById('v-content').value.trim();
+  if (!name || !content) { alert('이름과 내용을 입력해 주세요.'); return; }
+  if (!fbReady) { alert('서버 연결을 확인해 주세요.'); return; }
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('ko-KR');
+  try {
+    await DB.collection('pastor-visits').add({
+      name, content, dateStr,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('v-name').value = '';
+    document.getElementById('v-content').value = '';
+    loadVisits();
+  } catch(e) { alert('저장 오류가 발생했습니다.'); console.error(e); }
+}
+
+async function loadVisits() {
+  if (!fbReady) return;
+  const list = document.getElementById('visit-list');
+  if (!list) return;
+  list.innerHTML = '<div class="empty-msg">불러오는 중...</div>';
+  try {
+    const snap = await DB.collection('pastor-visits')
+      .orderBy('createdAt','desc').limit(10).get();
+    if (snap.empty) { list.innerHTML = '<div class="empty-msg">기록된 심방이 없습니다.</div>'; return; }
+    list.innerHTML = '';
+    snap.forEach(doc => {
+      const d = doc.data();
+      const id = doc.id;
+      list.innerHTML += `
+        <div class="visit-item">
+          <button class="visit-del" onclick="delVisit('${id}')">✕</button>
+          <div class="visit-name">${esc(d.name)}</div>
+          <div class="visit-date">${esc(d.dateStr||'')}</div>
+          <div class="visit-content">${esc(d.content)}</div>
+        </div>`;
+    });
+  } catch(e) { list.innerHTML = '<div class="empty-msg">불러오기 오류.</div>'; }
+}
+
+async function delVisit(id) {
+  if (!confirm('이 기록을 삭제할까요?')) return;
+  try {
+    await DB.collection('pastor-visits').doc(id).delete();
+    loadVisits();
+  } catch(e) { alert('삭제 오류가 발생했습니다.'); }
+}
+
+// ================================================
+// RENDER: 목사님 한 마디 / 다음 주 예고
+// ================================================
+function renderPastoralWord() {
+  const S = SERMON;
+  if (!S || !S.pastoralWord) return;
+  const wrap = document.getElementById('pastoral-word-wrap');
+  const txt  = document.getElementById('pastoral-word-txt');
+  if (wrap && txt) { txt.textContent = S.pastoralWord; wrap.style.display = 'block'; }
+}
+
+function renderNextWeek() {
+  const S = SERMON;
+  if (!S || !S.nextRef) return;
+  const wrap = document.getElementById('next-week-wrap');
+  if (!wrap) return;
+  document.getElementById('next-week-ref').textContent   = S.nextRef   || '';
+  document.getElementById('next-week-title').textContent = S.nextTitle  || '';
+  document.getElementById('next-week-preview').textContent = S.nextPreview || '';
+  wrap.style.display = 'block';
+}
+
+// ================================================
+// LOAD PASTOR CONFIG FIELDS
+// ================================================
+async function loadPastorConfig() {
+  if (!fbReady || !SERMON) return;
+  const S = SERMON;
+  const fields = {
+    'cfg-notice': S.notice,
+    'cfg-pastoral-word': S.pastoralWord,
+    'cfg-next-ref': S.nextRef,
+    'cfg-next-title': S.nextTitle,
+    'cfg-next-preview': S.nextPreview,
+    'cfg-pastormemo': S.pastormemo
+  };
+  for (const [id, val] of Object.entries(fields)) {
+    const el = document.getElementById(id);
+    if (el && val) el.value = val;
+  }
+  loadVisits();
 }
 
 
