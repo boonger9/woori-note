@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대구우리교회 주일학교 | 꽹과리 소리와 사랑의 소리</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#2D4A7A;--gold:#C8A000;--cream:#faf7f2;--fs:17px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:#1a2340;font-size:var(--fs);line-height:1.8;}
+.wrap{max-width:680px;margin:0 auto;padding:0 16px 60px;}
+.hero{background:linear-gradient(160deg,#2D4A7A,#3a5a92);color:#fff;border-radius:0 0 20px 20px;padding:28px 24px 24px;margin:0 -16px 20px;text-align:center;}
+.hero .tag{display:inline-block;background:rgba(200,160,0,.25);color:#ffe9a8;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:10px;letter-spacing:.05em;}
+.hero h1{font-size:23px;font-weight:700;margin-bottom:8px;line-height:1.4;}
+.hero .verse{font-size:14px;color:#bcd0ec;}
+.hero .date{font-size:12px;color:#9fb8d8;margin-top:6px;}
+.sec{background:#fff;border-radius:16px;padding:20px 22px;margin-bottom:16px;box-shadow:0 1px 8px rgba(26,44,78,.06);}
+.sec h2{font-size:15px;color:var(--navy);font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.sec h2 .dot{width:24px;height:24px;background:var(--gold);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.verse-box{background:#f0f5fb;border-left:4px solid var(--navy);border-radius:0 10px 10px 0;padding:14px 16px;font-size:15px;line-height:1.9;color:#1a2d4a;margin-bottom:10px;}
+.verse-box .ref{display:block;font-size:12px;color:#5a7a9a;margin-top:6px;}
+p{margin-bottom:14px;}
+.hl{background:linear-gradient(transparent 60%,#ffe9a8 60%);font-weight:700;}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;}
+.ci{border-radius:12px;padding:14px;font-size:14px;line-height:1.7;}
+.ci.bad{background:#fef3e8;border:1.5px solid #e8c880;}
+.ci.good{background:#e8f4f0;border:1.5px solid #7fc4a8;}
+.ci .h{font-weight:700;margin-bottom:8px;font-size:14px;}
+.ci.bad .h{color:#8a5a00;}.ci.good .h{color:#1a6b4a;}
+.onesentence{background:var(--navy);color:#fff;border-radius:12px;padding:16px 18px;text-align:center;font-weight:500;line-height:1.7;}
+.onesentence .gold{color:#ffd966;font-weight:700;}
+.q{padding:12px 0;border-bottom:1px solid #f0f0f0;}
+.q:last-child{border-bottom:none;}
+.q .n{font-size:12px;font-weight:700;color:var(--gold);}
+.q .t{font-size:15px;color:#1a2340;margin-top:4px;}
+.memory{background:#fff8e8;border:2px solid var(--gold);border-radius:14px;padding:18px 20px;text-align:center;}
+.memory .lbl{font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.1em;margin-bottom:8px;}
+.memory .v{font-size:16px;font-weight:700;color:var(--navy);line-height:1.7;}
+.memory .ref{font-size:12px;color:#8a7a3a;margin-top:6px;}
+.toolbar{display:flex;gap:8px;justify-content:center;margin:20px 0;}
+.toolbar button{font-family:inherit;font-size:14px;border:1.5px solid var(--navy);background:#fff;color:var(--navy);border-radius:10px;padding:8px 16px;cursor:pointer;}
+.toolbar button:active{background:var(--navy);color:#fff;}
+.ftr{text-align:center;color:#9aa4b8;font-size:12px;margin-top:24px;}
+.note{font-size:13px;color:#8a7a5a;background:#fdf8ec;border-radius:10px;padding:12px 14px;margin-top:8px;}
+@media print{.toolbar{display:none;}body{background:#fff;}.sec{box-shadow:none;border:1px solid #ddd;}}
+@media(max-width:420px){.compare{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <span class="tag">초등부 · 주일학교</span>
+  <h1>꽹과리 소리와 사랑의 소리</h1>
+  <div class="verse">고린도전서 13:1–7</div>
+  <div class="date">2026년 6월 7일 주일</div>
+</div>
+
+<div class="toolbar">
+  <button onclick="fz(2)">글씨 크게</button>
+  <button onclick="fz(-2)">글씨 작게</button>
+  <button onclick="window.print()">인쇄하기</button>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">1</span>오늘의 말씀</h2>
+  <div class="verse-box">"내가 사람의 방언과 천사의 말을 할지라도 사랑이 없으면 소리 나는 구리와 울리는 꽹과리가 되고"<span class="ref">— 고린도전서 13:1</span></div>
+  <div class="verse-box">"사랑은 오래 참고 사랑은 온유하며 … 모든 것을 참으며 모든 것을 믿으며 모든 것을 바라며 모든 것을 견디느니라"<span class="ref">— 고린도전서 13:4, 7</span></div>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">2</span>이야기</h2>
+  <p>어떤 친구가 매일 엄마한테 "사랑해요"라고 말해요. 그런데 속으로는 '이러면 용돈 더 주시겠지' 생각했어요. 또 다른 친구는 말은 안 했지만, 엄마가 힘들어 보이면 조용히 손을 잡아드렸어요. 어느 쪽이 진짜 사랑일까요?</p>
+  <p>바울 아저씨는 말해요. 아무리 멋진 말(방언)을 해도, 아무리 대단한 일을 해도, <span class="hl">사랑이 없으면 시끄러운 꽹과리 소리</span>일 뿐이라고요. 꽹과리는 꽹! 꽹! 크게 울리지만 아무도 위로하지 못해요.</p>
+  <p>칭찬받으려고 청소하는 친구와, 아무도 안 볼 때 조용히 쓰레기를 줍는 친구. 행동은 비슷해 보여도 마음이 완전히 달라요. 꽹과리 소리는 사실 "나 좀 봐줘!" 하는 외로운 소리예요.</p>
+  <p>그럼 진짜 사랑은 누구일까요? 4절부터 7절에 나오는 사랑의 모습에 '사랑' 대신 <span class="hl">'예수님'</span>을 넣어 읽어보면 딱 맞아요. 예수님은 오래 참으시고, 자기 유익을 구하지 않으시고, 우리의 잘못을 기록하지 않으시고, 십자가에서 모든 것을 견디셨어요. 우리를 사랑하셨기 때문이에요.</p>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">3</span>복음 핵심</h2>
+  <div class="compare">
+    <div class="ci bad"><div class="h">🔔 꽹과리 소리</div>칭찬·인정받으려고, 불안해서 하는 것. 소리는 크지만 아무도 위로받지 못해요.</div>
+    <div class="ci good"><div class="h">💛 사랑의 소리</div>예수님이 먼저 사랑해 주셔서 감사해서 하는 것. 받았으니까 나눠주고 싶어져요.</div>
+  </div>
+  <div class="onesentence">예수님의 사랑이 <span class="gold">먼저</span> 왔어요.<br>그래서 우리가 사랑할 수 있어요.</div>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">4</span>생각해 봐요</h2>
+  <div class="q"><div class="n">Q1</div><div class="t">칭찬받으려고 뭔가 해본 적 있어요? 그때 마음이 어땠나요?</div></div>
+  <div class="q"><div class="n">Q2</div><div class="t">'사랑' 자리에 '예수님'을 넣어 읽으면 어떤 느낌이 드나요?</div></div>
+  <div class="q"><div class="n">Q3</div><div class="t">내가 하는 착한 일이 칭찬 때문인지, 감사 때문인지 어떻게 알 수 있을까요?</div></div>
+  <div class="q"><div class="n">Q4 ✦</div><div class="t">예수님이 우리를 위해 십자가에서 모든 것을 견디셨다는 걸 알 때, 예수님께 어떤 마음이 드나요?</div></div>
+</div>
+
+<div class="sec">
+  <div class="memory">
+    <div class="lbl">✦ 이번 주 암송 말씀</div>
+    <div class="v">"우리가 사랑함은 그가 먼저 우리를 사랑하셨음이라"</div>
+    <div class="ref">— 요한일서 4:19</div>
+  </div>
+  <div class="note">📄 손으로 직접 적는 활동지(빈칸 채우기·결단)는 선생님이 종이로 나눠드려요.</div>
+</div>
+
+<div class="ftr">대구우리교회 주일학교 · 바른신학 · 바른교회 · 바른생활</div>
+</div>
+
+<script>
+let fs = 17;
+function fz(d){ fs = Math.max(14, Math.min(26, fs+d)); document.documentElement.style.setProperty('--fs', fs+'px'); }
+</script>
+</body>
+</html>
