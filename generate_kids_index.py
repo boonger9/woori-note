@@ -218,15 +218,67 @@ def write_landing():
 </div></header>
 <main class="main">
   <a class="card" href="student/"><div class="card-icon">🧒</div><div class="card-body"><div class="card-date">학생용 방</div><div class="card-meta">노트 · 활동지 직접 쓰기 · 기도제목/질문</div></div><span class="card-arrow">›</span></a>
-  <a class="card" href="teacher/"><div class="card-icon" style="background:linear-gradient(135deg,var(--gold),var(--gold2))">🧑‍🏫</div><div class="card-body"><div class="card-date">교사용 방</div><div class="card-meta">가이드·정답 · 제출 활동지 · 소통 답장</div></div><span class="card-arrow">›</span></a>
+  <a class="card" href="parent/"><div class="card-icon" style="background:linear-gradient(135deg,#5566a0,#7788bb)">👨‍👩‍👧</div><div class="card-body"><div class="card-date">부모용 방</div><div class="card-meta">오늘 배운 것 · 가정 대화 · 자녀 활동지 · 선생님과 소통</div></div><span class="card-arrow">›</span></a>
+  <a class="card" href="teacher/"><div class="card-icon" style="background:linear-gradient(135deg,var(--gold),var(--gold2))">🧑‍🏫</div><div class="card-body"><div class="card-date">교사용 방</div><div class="card-meta">설교 원고 · 가이드 · 제출 활동지 · 소통 답장</div></div><span class="card-arrow">›</span></a>
   <div style="text-align:center;font-size:12px;color:var(--tl);margin-top:8px">🔒 각 방은 로그인/암호로 보호됩니다</div>
 </main>'''
     html = shell('대구우리교회 주일학교 | 입구', '', body)
     open(os.path.join(KIDS_DIR, 'index.html'), 'w', encoding='utf-8').write(html)
     print('  kids/index.html (입구)')
 
+def write_parent_room():
+    items = scan_room('parent')
+    body = f'''<header class="hdr"><div class="hdr-inner">
+  <span class="kid">👨‍👩‍👧</span><div class="name">부모용 방</div>
+  <div class="sub">대구우리교회 주일학교 · 초등부</div><div class="divx"></div>
+  <div class="desc">우리 아이가 배운 것을 함께 봐요</div>
+  <a class="back" href="../index.html">← 주일학교 입구로</a>
+</div></header>
+<main class="main">
+{note_list_html(items)}
+</main>'''
+    gate = '''<div id="gate"><div class="box">
+  <h3>👨‍👩‍👧 부모용 방</h3>
+  <div class="hint">자녀의 이름과 자녀의 4자리 번호로 들어오세요.<br>(자녀가 학생 방에서 쓰는 번호와 같습니다)</div>
+  <input id="g-name" type="text" placeholder="자녀 이름" autocomplete="off">
+  <input id="g-num" type="password" inputmode="numeric" maxlength="4" placeholder="자녀 번호 4자리" style="letter-spacing:8px">
+  <button onclick="doLogin()">들어가기</button>
+  <div class="err" id="g-err"></div>
+</div></div>'''
+    head = '''<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>'''
+    script = FIREBASE_JS + '''
+function rosterRef(num){return DB.collection('sermons').doc('kids-roster').collection('students').doc(num);}
+function gerr(t){document.getElementById('g-err').textContent=t||'';}
+async function doLogin(){
+  const name=document.getElementById('g-name').value.trim();
+  const num=document.getElementById('g-num').value.trim();
+  if(!name){gerr('자녀 이름을 적어 주세요.');return;}
+  if(!/^\\d{4}$/.test(num)){gerr('자녀 번호 4자리를 입력해 주세요.');return;}
+  if(!fbReady){gerr('서버 연결을 확인해 주세요.');return;}
+  gerr('확인 중...');
+  try{
+    const snap=await rosterRef(num).get();
+    if(!snap.exists){gerr('등록된 자녀 정보가 없어요. 자녀가 먼저 학생 방에 한 번 들어가야 해요.');return;}
+    if((snap.data().name||'').trim()!==name){gerr('이름과 번호가 일치하지 않아요. 다시 확인해 주세요.');return;}
+    sessionStorage.setItem('kids_role','parent');sessionStorage.setItem('kids_childnum',num);sessionStorage.setItem('kids_childname',name);
+    try{localStorage.setItem('kids_childnum',num);localStorage.setItem('kids_childname',name);}catch(e){}
+    document.getElementById('gate').style.display='none';
+  }catch(e){gerr('처리 중 오류가 발생했어요.');console.error(e);}
+}
+(function(){
+  if(sessionStorage.getItem('kids_role')==='parent'&&sessionStorage.getItem('kids_childnum')){document.getElementById('gate').style.display='none';return;}
+  const n=localStorage.getItem('kids_childname'),m=localStorage.getItem('kids_childnum');
+  if(n)document.getElementById('g-name').value=n; if(m)document.getElementById('g-num').value=m;
+})();
+document.getElementById('g-num').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});'''
+    html = shell('대구우리교회 주일학교 | 부모용 방', gate, body, head, script)
+    os.makedirs(os.path.join(KIDS_DIR, 'parent'), exist_ok=True)
+    open(os.path.join(KIDS_DIR, 'parent', 'index.html'), 'w', encoding='utf-8').write(html)
+    print(f'  kids/parent/index.html — {len(items)} note(s) [자녀 이름+번호]')
+
 def generate():
-    write_landing(); write_student_room(); write_teacher_room()
+    write_landing(); write_student_room(); write_parent_room(); write_teacher_room()
     print('OK: 주일학교 인덱스 생성 완료')
 
 if __name__ == '__main__':
