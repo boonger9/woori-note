@@ -385,11 +385,11 @@ window.INITIAL_SERMON_DATA = {"title": "", "date": "", "scriptureRef": "", "vers
       <div class="card-head">📖 참고 성경구절</div>
       <div id="crossrefs-list"><div class="loading-box">불러오는 중...</div></div>
     </div>
-    <div class="card">
+    <div class="card" id="card-person">
       <div class="card-head">👤 오늘 소개되는 인물</div>
       <div id="person-card"><div class="loading-box">불러오는 중...</div></div>
     </div>
-    <div class="card">
+    <div class="card" id="card-news">
       <div class="card-head">📰 설교 중 언급되는 기사</div>
       <p style="font-size:0.88rem;color:var(--muted);margin-bottom:0.9rem">제목을 누르시면 기사로 연결됩니다.</p>
       <div id="news-list"><div class="loading-box">불러오는 중...</div></div>
@@ -683,7 +683,12 @@ function doLogin() {
     document.getElementById('login-err').textContent = '';
     showScreen(ROLE === 'deacon' ? 'screen-deacon' : 'screen-pastor');
     document.getElementById('font-float').classList.add('show');
-    if (ROLE === 'deacon') { loadAndRenderSermon(); loadReplies(); }
+    if (ROLE === 'deacon') {
+      const saved = (sessionStorage.getItem('woori_name')||'').trim();
+      const nameInput = document.getElementById('f-name');
+      if (saved && nameInput && !nameInput.value) nameInput.value = saved;
+      loadAndRenderSermon(); loadReplies();
+    }
     else { loadPastorInbox(); }
   } else {
     document.getElementById('login-err').textContent = '⚠️ 비밀번호가 맞지 않습니다.';
@@ -827,23 +832,36 @@ function renderSermon() {
       <div class="ref-txt">${esc(r.txt||'')}</div>
     </div>`).join('') || '<p style="color:var(--muted);font-size:0.9rem">등록된 참고구절이 없습니다.</p>';
 
-  // 인물
-  document.getElementById('person-card').innerHTML = S.pname ? `
+  // 인물 — 설교에 소개된 인물이 없으면 섹션 전체를 숨긴다
+  const cardPerson = document.getElementById('card-person');
+  if (S.pname) {
+    cardPerson.style.display = '';
+    document.getElementById('person-card').innerHTML = `
     <div class="person-card">
       <div class="pname">${esc(S.pname)}</div>
       <div class="pdates">${esc(S.pdates||'')}</div>
       <div class="pbio">${esc(S.pbio||'')}</div>
       ${S.pquote ? `<div class="quote">${esc(S.pquote)}<div class="qsource">— ${esc(S.psource||'')}</div></div>` : ''}
-    </div>` : '<p style="color:var(--muted);font-size:0.9rem">등록된 인물이 없습니다.</p>';
+    </div>`;
+  } else {
+    cardPerson.style.display = 'none';
+  }
 
-  // 뉴스
-  document.getElementById('news-list').innerHTML = [
+  // 뉴스 — 설교에 언급된 기사가 없으면 섹션 전체를 숨긴다
+  const cardNews = document.getElementById('card-news');
+  const newsItems = [
     {t:S.n1t,u:S.n1u,s:S.n1s},{t:S.n2t,u:S.n2u,s:S.n2s}
-  ].filter(n=>n.t).map(n=>`
+  ].filter(n=>n.t);
+  if (newsItems.length) {
+    cardNews.style.display = '';
+    document.getElementById('news-list').innerHTML = newsItems.map(n=>`
     <a class="news-a" href="${n.u||'#'}" target="_blank" rel="noopener">
       <span class="news-ico">📰</span>
       <div><div class="news-ttl">${esc(n.t)}</div><div class="news-src">${esc(n.s||'')}</div></div>
-    </a>`).join('') || '<p style="color:var(--muted);font-size:0.9rem">등록된 기사가 없습니다.</p>';
+    </a>`).join('');
+  } else {
+    cardNews.style.display = 'none';
+  }
 
   // 핵심정리
   document.getElementById('sermon-summary').innerHTML = (S.summary||'').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>') || '<div style="opacity:0.7">내용을 불러올 수 없습니다.</div>';
@@ -871,6 +889,7 @@ async function sendMsg() {
   if (!content) { alert('내용을 입력해 주세요.'); return; }
   if (!fbReady) { alert('서버 연결을 확인해 주세요.'); return; }
   try {
+    sessionStorage.setItem('woori_name', name);
     await DB.collection('sermons').doc(SERMON_KEY).collection('messages').add({
       senderName:name, type:msgType, content,
       createdAt:firebase.firestore.FieldValue.serverTimestamp(),
@@ -891,14 +910,23 @@ function resetForm() {
 async function loadReplies() {
   if (!fbReady) return;
   const list = document.getElementById('replies-list');
+  const myName = (sessionStorage.getItem('woori_name')||'').trim();
+  // 본인 확인용 이름이 없으면(아직 글을 보내지 않았으면) 남의 글을 보여주지 않는다
+  if (!myName) {
+    list.innerHTML = '<div class="loading-box">위에서 이름을 적어 글을 보내시면, 이곳에서 <b>내가 보낸 글과 목사님 답변만</b> 볼 수 있어요.</div>';
+    return;
+  }
   list.innerHTML = '<div class="loading-box">불러오는 중...</div>';
   try {
+    // senderName 일치(본인) 문서만 서버에서 가져온다 — 다른 성도의 글은 불러오지 않음
     const snap = await DB.collection('sermons').doc(SERMON_KEY).collection('messages')
-      .orderBy('createdAt','desc').get();
+      .where('senderName','==',myName).get();
     if (snap.empty) { list.innerHTML = '<div class="loading-box">아직 전송하신 내용이 없습니다.</div>'; return; }
+    const items = [];
+    snap.forEach(doc => items.push(doc.data()));
+    items.sort((a,b)=>((b.createdAt&&b.createdAt.toMillis?b.createdAt.toMillis():0)-(a.createdAt&&a.createdAt.toMillis?a.createdAt.toMillis():0)));
     list.innerHTML = '';
-    snap.forEach(doc => {
-      const d = doc.data();
+    items.forEach(d => {
       const dt = d.createdAt ? new Date(d.createdAt.toDate()).toLocaleDateString('ko-KR') : '';
       list.innerHTML += `
         <div class="msg-item">
