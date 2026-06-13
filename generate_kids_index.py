@@ -6,7 +6,11 @@ generate_kids_index.py
 import os, re
 
 KIDS_DIR = "kids"
-FILE_PATTERN = re.compile(r'^(\d{4})-(\d{2})-(\d{2})-kids\.html$')
+# YYYY-MM-DD-kids.html(레거시) / -kids-student.html / -kids-teacher.html 모두 인식
+FILE_PATTERN = re.compile(r'^(\d{4})-(\d{2})-(\d{2})-kids(?:-(student|teacher))?\.html$')
+VARIANT_ORDER = {'student': 0, '': 0, 'teacher': 1}
+VARIANT_LABEL = {'student': '학생용', '': '학생용', 'teacher': '교사용'}
+VARIANT_ICON  = {'student': '🧒', '': '🧒', 'teacher': '🧑\u200d🏫'}
 
 def scan():
     items = []
@@ -16,7 +20,7 @@ def scan():
         m = FILE_PATTERN.match(fname)
         if not m:
             continue
-        y, mo, d = m.groups()
+        y, mo, d, variant = m.group(1), m.group(2), m.group(3), (m.group(4) or '')
         title = ''
         try:
             with open(os.path.join(KIDS_DIR, fname), encoding='utf-8') as f:
@@ -30,16 +34,18 @@ def scan():
             'file': fname, 'date': f'{y}-{mo}-{d}',
             'year': y, 'month': int(mo), 'day': int(d),
             'display': f'{y}년 {int(mo)}월 {int(d)}일',
-            'title': title,
+            'title': title, 'variant': variant,
+            'vlabel': VARIANT_LABEL[variant], 'vicon': VARIANT_ICON[variant],
         })
-    return sorted(items, key=lambda x: x['date'], reverse=True)
+    # 날짜 내림차순, 같은 날짜 안에서는 학생용 → 교사용 순
+    return sorted(items, key=lambda x: (x['date'], -VARIANT_ORDER[x['variant']]), reverse=True)
 
 def card(b, latest):
     lc = ' latest' if latest else ''
     badge = '<span class="latest-badge">최신</span>' if latest else ''
-    meta = ' · '.join(p for p in ['🧒 초등부', b['title']] if p)
+    meta = ' · '.join(p for p in [f"{b['vicon']} {b['vlabel']}", b['title']] if p)
     return f'''    <a href="{b['file']}" class="card{lc}">
-      <div class="card-icon">🧒</div>
+      <div class="card-icon">{b['vicon']}</div>
       <div class="card-body">
         <div class="card-date">{b['display']}</div>
         <div class="card-meta">{meta}</div>
