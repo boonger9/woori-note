@@ -18,8 +18,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--n
 .church-sub{font-size:13px;color:var(--gold2);letter-spacing:1px;margin-top:5px;position:relative;z-index:1;}
 .hdr-div{width:36px;height:1px;background:var(--gold);margin:14px auto;position:relative;z-index:1;}
 .hdr-desc{font-size:15px;color:rgba(255,255,255,.75);line-height:1.7;position:relative;z-index:1;}
-.kids-link{display:inline-flex;align-items:center;gap:7px;margin-top:16px;background:var(--gold);color:#fff;font-size:13px;font-weight:700;padding:9px 18px;border-radius:22px;text-decoration:none;position:relative;z-index:1;box-shadow:0 2px 8px rgba(184,149,42,.35);}
-.kids-link:active{filter:brightness(.94);}
+.f-btn.f-kids{border-color:var(--gold);color:#9a7b18;font-weight:700;}
+.f-btn.f-kids.on,.f-btn.f-kids:active{background:var(--gold);color:#fff;border-color:var(--gold);}
 /* 필터 탭 */
 .filter-bar{background:#fff;border-bottom:2px solid var(--border);padding:10px 16px;display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;position:sticky;top:0;z-index:100;}
 .filter-bar::-webkit-scrollbar{display:none;}
@@ -57,7 +57,6 @@ a.bulletin-card.latest .card-arrow{color:var(--gold2);}
     <div class="church-sub">대한예수교장로회 합신 · 경북노회</div>
     <div class="hdr-div"></div>
     <div class="hdr-desc">말씀 동반자 모아보기<br>원하는 날짜를 선택하세요</div>
-    <a class="kids-link" href="kids/">🧒 주일학교(초등부) 설교노트 보기 →</a>
   </div>
 </header>
 <!-- 필터 탭 -->
@@ -67,6 +66,7 @@ a.bulletin-card.latest .card-arrow{color:var(--gold2);}
   <button class="f-btn" onclick="filterCat('기도회',this)">🕯️ 기도회</button>
   <button class="f-btn" onclick="filterCat('교육',this)">📖 교육</button>
   <button class="f-btn" onclick="filterCat('특별/기타',this)">✨ 특별/기타</button>
+  <a class="f-btn f-kids" href="kids/">🧒 주일학교</a>
 </div>
 <main class="main" id="main-list">
   <div class="year-label">2026년</div>
