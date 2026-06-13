@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>대구우리교회 주일학교 | 교사용 방</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#2D4A7A;--navy2:#3a5a92;--gold:#C8A000;--gold2:#d4af50;--cream:#faf7f2;--border:#e8e0d0;--tl:#888;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;-webkit-text-size-adjust:100%;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;}
+.hdr{background:linear-gradient(160deg,var(--navy),var(--navy2));color:#fff;text-align:center;padding:env(safe-area-inset-top) 20px 0;}
+.hdr-inner{padding:30px 20px 26px;position:relative;overflow:hidden;}
+.kid{font-size:30px;margin-bottom:8px;display:block;}
+.name{font-family:'Noto Serif KR',serif;font-size:22px;font-weight:700;letter-spacing:1.5px;}
+.sub{font-size:13px;color:var(--gold2);letter-spacing:1px;margin-top:5px;}
+.divx{width:36px;height:1px;background:var(--gold);margin:13px auto;}
+.desc{font-size:14px;color:rgba(255,255,255,.78);line-height:1.7;}
+.main{padding:20px 16px calc(env(safe-area-inset-bottom) + 40px);max-width:520px;margin:0 auto;}
+.year-label{font-family:'Noto Serif KR',serif;font-size:14px;color:var(--tl);font-weight:600;margin:20px 0 8px 4px;display:flex;align-items:center;gap:8px;}
+.year-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.month-label{font-size:13px;color:var(--gold);font-weight:600;margin:14px 0 6px 4px;}
+a.card{display:flex;align-items:center;gap:14px;background:#fff;border-radius:14px;padding:16px 18px;margin-bottom:10px;text-decoration:none;color:inherit;box-shadow:0 1px 6px rgba(26,44,78,.07);border:1.5px solid transparent;}
+a.card:active{border-color:var(--gold);}
+a.card.latest{border-color:var(--gold);background:linear-gradient(135deg,#fffdf7,#fff);}
+.card-icon{width:46px;height:46px;background:var(--navy);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+a.card.latest .card-icon{background:linear-gradient(135deg,var(--gold),var(--gold2));}
+.card-body{flex:1;min-width:0;}
+.card-date{font-family:'Noto Serif KR',serif;font-size:16px;font-weight:600;margin-bottom:3px;}
+.card-meta{font-size:13px;color:var(--tl);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.latest-badge{background:var(--gold);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;flex-shrink:0;}
+.card-arrow{color:var(--border);font-size:18px;flex-shrink:0;}
+.empty{text-align:center;padding:50px 20px;color:var(--tl);font-size:15px;line-height:2;}
+.ftr{text-align:center;padding:26px 16px;border-top:1px solid var(--border);margin-top:20px;}
+.ftr-name{font-family:'Noto Serif KR',serif;font-size:15px;letter-spacing:1.5px;margin-bottom:4px;}
+.ftr-slogan{font-size:12px;color:var(--tl);font-style:italic;}
+.back{display:inline-block;margin-top:14px;font-size:13px;color:var(--gold2);text-decoration:none;}
+
+#gate{position:fixed;inset:0;background:linear-gradient(160deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:center;z-index:9999;padding:24px;}
+#gate .box{background:#fff;border-radius:18px;padding:30px 26px;max-width:340px;width:100%;text-align:center;}
+#gate h3{color:var(--navy);font-size:18px;margin-bottom:6px;}
+#gate p{font-size:13px;color:#888;margin-bottom:18px;}
+#gate input{width:100%;border:1.5px solid #d8e0ec;border-radius:10px;font-size:18px;text-align:center;letter-spacing:6px;padding:12px;margin-bottom:12px;font-family:inherit;}
+#gate button{width:100%;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:12px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;}
+#gate .err{color:#c0392b;font-size:13px;height:18px;margin-top:8px;}
+</style>
+</head>
+<body>
+<div id="gate"><div class="box">
+  <h3>🧑‍🏫 교사용 방</h3>
+  <p>암호를 입력해 주세요</p>
+  <input id="gate-pw" type="password" inputmode="numeric" maxlength="8" placeholder="••••">
+  <button onclick="tryGate()">들어가기</button>
+  <div class="err" id="gate-err"></div>
+</div></div>
+<header class="hdr"><div class="hdr-inner">
+  <span class="kid">🧑‍🏫</span>
+  <div class="name">교사용 방</div>
+  <div class="sub">대구우리교회 주일학교 · 초등부</div>
+  <div class="divx"></div>
+  <div class="desc">원하는 날짜를 선택하세요</div>
+  <a class="back" href="../index.html">← 주일학교 입구로</a>
+</div></header>
+<main class="main">
+  <div class="year-label">2026년</div>
+  <div class="month-label">6월</div>
+    <a href="2026-06-14.html" class="card latest">
+      <div class="card-icon">🧒</div>
+      <div class="card-body"><div class="card-date">2026년 6월 14일</div><div class="card-meta">일어나 빛을 비추는 우리</div></div>
+      <span class="latest-badge">최신</span><span class="card-arrow">›</span>
+    </a>
+
+</main>
+<footer class="ftr"><div class="ftr-name">대구우리교회 주일학교</div><div class="ftr-slogan">바른신학 · 바른교회 · 바른생활</div></footer>
+<script>
+const PW="4341", ROLE="teacher";
+function tryGate(){
+  if(document.getElementById('gate-pw').value.trim()===PW){ sessionStorage.setItem('kids_role',ROLE); document.getElementById('gate').style.display='none'; }
+  else { document.getElementById('gate-err').textContent='암호가 맞지 않습니다.'; }
+}
+document.getElementById('gate-pw').addEventListener('keydown',e=>{ if(e.key==='Enter') tryGate(); });
+if(sessionStorage.getItem('kids_role')===ROLE){ document.getElementById('gate').style.display='none'; }
+</script>
+</body>
+</html>
