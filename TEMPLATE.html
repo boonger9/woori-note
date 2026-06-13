@@ -24,34 +24,36 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','맑은 고딕',sans-serif
 /* LOGIN */
 #login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem 1.2rem;background:linear-gradient(160deg,#1B3A7A 0%,#0F2150 50%,#2C1810 100%);}
 .login-box{background:rgba(255,255,255,0.97);border-radius:24px;padding:2.5rem 2rem 2rem;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.35);text-align:center;}
-.cross-icon{font-size:2.8rem;margin-bottom:0.4rem;display:block;}
-.church-title{font-size:1.5rem;font-weight:800;color:var(--primary);letter-spacing:-0.02em;}
-.service-badge{display:inline-block;margin:0.4rem 0 0.2rem;padding:0.25rem 0.9rem;border-radius:20px;font-size:0.88rem;font-weight:700;background:var(--primary-p);color:var(--primary);}
-.sermon-info{font-size:0.88rem;color:var(--muted);margin:0.2rem 0 1.6rem;line-height:1.5;}
+.cross-icon{font-size:2.8em;margin-bottom:0.4rem;display:block;}
+.church-title{font-size:1.5em;font-weight:800;color:var(--primary);letter-spacing:-0.02em;}
+.service-badge{display:inline-block;margin:0.4rem 0 0.2rem;padding:0.25rem 0.9rem;border-radius:20px;font-size:0.88em;font-weight:700;background:var(--primary-p);color:var(--primary);}
+.sermon-info{font-size:0.88em;color:var(--muted);margin:0.2rem 0 1.6rem;line-height:1.5;}
 .role-row{display:flex;gap:0.8rem;margin-bottom:1.4rem;}
-.role-btn{flex:1;padding:0.85rem 0.5rem;border:2px solid var(--border);border-radius:12px;background:white;font-size:0.95rem;font-family:inherit;cursor:pointer;transition:all 0.2s;color:var(--text);}
+.role-btn{flex:1;padding:0.85rem 0.5rem;border:2px solid var(--border);border-radius:12px;background:white;font-size:0.95em;font-family:inherit;cursor:pointer;transition:all 0.2s;color:var(--text);}
 .role-btn.active{border-color:var(--primary);background:var(--primary);color:white;font-weight:700;}
-.pw-input{width:100%;padding:0.9rem 1.1rem;border:2px solid var(--border);border-radius:12px;font-size:1rem;font-family:inherit;outline:none;transition:border-color 0.2s;margin-bottom:0.8rem;}
+.pw-input{width:100%;padding:0.9rem 1.1rem;border:2px solid var(--border);border-radius:12px;font-size:1em;font-family:inherit;outline:none;transition:border-color 0.2s;margin-bottom:0.8rem;}
 .pw-input:focus{border-color:var(--primary);}
-.login-btn{width:100%;padding:0.95rem;background:var(--primary);color:white;border:none;border-radius:12px;font-size:1.05rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background 0.2s;}
+.login-btn{width:100%;padding:0.95rem;background:var(--primary);color:white;border:none;border-radius:12px;font-size:1.05em;font-weight:700;font-family:inherit;cursor:pointer;transition:background 0.2s;}
 .login-btn:hover{background:var(--primary-l);}
-.login-err{color:var(--danger);font-size:0.88rem;margin-top:0.5rem;min-height:1.2rem;}
-.login-hint{font-size:0.82rem;color:var(--muted);margin-top:0.8rem;}
-.back-link{margin-top:1.2rem;font-size:0.85rem;color:rgba(255,255,255,0.6);}
+.login-err{color:var(--danger);font-size:0.88em;margin-top:0.5rem;min-height:1.2rem;}
+.login-hint{font-size:0.82em;color:var(--muted);margin-top:0.8rem;}
+.back-link{margin-top:1.2rem;font-size:0.85em;color:rgba(255,255,255,0.6);}
 .back-link a{color:rgba(255,255,255,0.85);text-decoration:none;}
 
 /* HEADER */
-.app-header{background:var(--primary);color:white;padding:0.9rem 1.2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
-.h-title{font-size:1rem;font-weight:700;}
-.h-sub{font-size:0.78rem;opacity:0.75;}
-.h-badge{display:inline-block;background:rgba(255,255,255,0.2);border-radius:10px;padding:0.1rem 0.55rem;font-size:0.75rem;margin-left:0.4rem;vertical-align:middle;}
+.app-header{background:var(--primary);color:white;padding:0.9rem 1.2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,0.2);transition:transform 0.25s ease;}
+.app-header.hide{transform:translateY(-100%);}
+.tab-bar-wrap{position:sticky;top:0;z-index:190;transition:top 0.25s ease;}
+.h-title{font-size:1em;font-weight:700;}
+.h-sub{font-size:0.78em;opacity:0.75;}
+.h-badge{display:inline-block;background:rgba(255,255,255,0.2);border-radius:10px;padding:0.1rem 0.55rem;font-size:0.75em;margin-left:0.4rem;vertical-align:middle;}
 .h-right{display:flex;align-items:center;gap:0.5rem;}
-.hbtn{background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:0.3rem 0.65rem;font-size:0.85rem;font-family:inherit;cursor:pointer;}
+.hbtn{background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:0.3rem 0.65rem;font-size:0.85em;font-family:inherit;cursor:pointer;}
 .hbtn:hover{background:rgba(255,255,255,0.25);}
 
 /* TAB BAR */
-.tab-bar{display:flex;background:white;border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:190;}
-.tab{flex:1;padding:0.85rem 0.4rem;text-align:center;font-size:0.88rem;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s;font-family:inherit;background:none;border-top:none;border-left:none;border-right:none;}
+.tab-bar{display:flex;background:white;border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:190;transition:top 0.25s ease;}
+.tab{flex:1;padding:0.85rem 0.4rem;text-align:center;font-size:0.88em;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s;font-family:inherit;background:none;border-top:none;border-left:none;border-right:none;}
 .tab.on{color:var(--primary);border-bottom-color:var(--primary);font-weight:700;}
 
 /* PANELS */
@@ -60,161 +62,161 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','맑은 고딕',sans-serif
 
 /* CARDS */
 .card{background:var(--card);border-radius:18px;padding:1.4rem;margin-bottom:1.4rem;box-shadow:0 2px 14px rgba(0,0,0,0.07);border:1px solid var(--border);}
-.card-head{font-size:1.05rem;font-weight:700;color:var(--primary);margin-bottom:1rem;padding-bottom:0.65rem;border-bottom:2px solid #F0E8D0;display:flex;align-items:center;gap:0.5rem;}
+.card-head{font-size:1.05em;font-weight:700;color:var(--primary);margin-bottom:1rem;padding-bottom:0.65rem;border-bottom:2px solid #F0E8D0;display:flex;align-items:center;gap:0.5rem;}
 
 /* GUIDE */
-.guide-box{background:linear-gradient(135deg,#EEF4FF 0%,#F4EEFF 100%);border-left:4px solid var(--primary);border-radius:0 14px 14px 0;padding:1.1rem 1.3rem;margin-bottom:1.3rem;font-size:0.97rem;line-height:1.85;color:#1E3060;}
+.guide-box{background:linear-gradient(135deg,#EEF4FF 0%,#F4EEFF 100%);border-left:4px solid var(--primary);border-radius:0 14px 14px 0;padding:1.1rem 1.3rem;margin-bottom:1.3rem;font-size:0.97em;line-height:1.85;color:#1E3060;}
 .steps{list-style:none;}
 .step{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.75rem;}
-.sn{background:var(--primary);color:white;border-radius:50%;min-width:28px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:0.82rem;font-weight:700;flex-shrink:0;margin-top:0.15rem;}
+.sn{background:var(--primary);color:white;border-radius:50%;min-width:28px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:0.82em;font-weight:700;flex-shrink:0;margin-top:0.15rem;}
 
 /* SCRIPTURE */
-.bible-box{background:var(--gold-p);border:1px solid #DDD0B8;border-radius:14px;padding:1.4rem;margin-bottom:1rem;font-size:0.98rem;line-height:2;}
-.vn{color:var(--gold);font-weight:700;margin-right:0.25rem;font-size:0.85rem;}
+.bible-box{background:var(--gold-p);border:1px solid #DDD0B8;border-radius:14px;padding:1.4rem;margin-bottom:1rem;font-size:0.98em;line-height:2;}
+.vn{color:var(--gold);font-weight:700;margin-right:0.25rem;font-size:0.85em;}
 .verse{margin-bottom:0.6rem;}
 
 /* GLOSSARY */
 .glos-item{border:1px solid var(--border);border-radius:11px;margin-bottom:0.7rem;overflow:hidden;}
-.glos-trigger{width:100%;padding:0.95rem 1.1rem;background:white;border:none;text-align:left;font-family:inherit;font-size:0.97rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background 0.15s;}
+.glos-trigger{width:100%;padding:0.95rem 1.1rem;background:white;border:none;text-align:left;font-family:inherit;font-size:0.97em;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background 0.15s;}
 .glos-trigger:hover{background:#F5F5FF;}
 .gword{color:var(--primary);font-weight:700;}
-.gvref{font-size:0.82rem;color:var(--muted);margin-left:0.4rem;}
+.gvref{font-size:0.82em;color:var(--muted);margin-left:0.4rem;}
 .garrow{transition:transform 0.2s;color:var(--muted);flex-shrink:0;}
 .glos-item.open .garrow{transform:rotate(180deg);}
-.glos-body{display:none;padding:0.9rem 1.1rem;background:var(--primary-p);border-top:1px solid var(--border);font-size:0.93rem;line-height:1.8;color:#1E3060;}
+.glos-body{display:none;padding:0.9rem 1.1rem;background:var(--primary-p);border-top:1px solid var(--border);font-size:0.93em;line-height:1.8;color:#1E3060;}
 .glos-item.open .glos-body{display:block;}
 
 /* QUESTIONS */
 .q-card{border:1px solid var(--border);border-radius:14px;padding:1.3rem;margin-bottom:1.1rem;background:white;}
-.q-badge{display:inline-block;background:var(--primary);color:white;border-radius:8px;padding:0.18rem 0.65rem;font-size:0.82rem;font-weight:700;margin-bottom:0.7rem;}
-.q-text{font-size:1rem;line-height:1.85;margin-bottom:0.8rem;}
-.q-hint{background:#F5F5F5;border-radius:8px;padding:0.45rem 0.8rem;font-size:0.87rem;color:var(--muted);margin-bottom:0.8rem;}
-.q-ta{width:100%;min-height:80px;padding:0.75rem 0.9rem;border:2px solid var(--border);border-radius:10px;font-size:0.97rem;font-family:inherit;resize:vertical;outline:none;line-height:1.7;transition:border-color 0.2s;}
+.q-badge{display:inline-block;background:var(--primary);color:white;border-radius:8px;padding:0.18rem 0.65rem;font-size:0.82em;font-weight:700;margin-bottom:0.7rem;}
+.q-text{font-size:1em;line-height:1.85;margin-bottom:0.8rem;}
+.q-hint{background:#F5F5F5;border-radius:8px;padding:0.45rem 0.8rem;font-size:0.87em;color:var(--muted);margin-bottom:0.8rem;}
+.q-ta{width:100%;min-height:80px;padding:0.75rem 0.9rem;border:2px solid var(--border);border-radius:10px;font-size:0.97em;font-family:inherit;resize:vertical;outline:none;line-height:1.7;transition:border-color 0.2s;}
 .q-ta:focus{border-color:var(--primary);}
-.reveal-btn{margin-top:0.7rem;padding:0.55rem 1.1rem;background:var(--primary-p);color:var(--primary);border:1px solid #B8CAEE;border-radius:9px;font-size:0.9rem;font-family:inherit;cursor:pointer;transition:all 0.2s;}
+.reveal-btn{margin-top:0.7rem;padding:0.55rem 1.1rem;background:var(--primary-p);color:var(--primary);border:1px solid #B8CAEE;border-radius:9px;font-size:0.9em;font-family:inherit;cursor:pointer;transition:all 0.2s;}
 .reveal-btn:hover{background:var(--primary);color:white;border-color:var(--primary);}
-.ans-box{display:none;margin-top:0.7rem;padding:0.9rem 1.1rem;background:var(--primary-p);border-left:3px solid var(--primary);border-radius:0 11px 11px 0;font-size:0.93rem;line-height:1.8;}
+.ans-box{display:none;margin-top:0.7rem;padding:0.9rem 1.1rem;background:var(--primary-p);border-left:3px solid var(--primary);border-radius:0 11px 11px 0;font-size:0.93em;line-height:1.8;}
 .ans-box.show{display:block;}
-.ans-label{font-weight:700;color:var(--primary);margin-bottom:0.3rem;font-size:0.88rem;}
+.ans-label{font-weight:700;color:var(--primary);margin-bottom:0.3rem;font-size:0.88em;}
 
 /* DURING */
 .ref-card{background:var(--gold-p);border:1px solid #DDD0B8;border-radius:14px;padding:1.2rem 1.3rem;margin-bottom:0.9rem;}
-.ref-tag{font-size:0.82rem;color:var(--gold);font-weight:700;margin-bottom:0.35rem;}
-.ref-txt{font-size:0.97rem;line-height:1.85;color:#2A2A3A;}
+.ref-tag{font-size:0.82em;color:var(--gold);font-weight:700;margin-bottom:0.35rem;}
+.ref-txt{font-size:0.97em;line-height:1.85;color:#2A2A3A;}
 .person-card{background:linear-gradient(135deg,#EEF4FF,#E8F4F0);border:1px solid #C0D4EE;border-radius:14px;padding:1.4rem;margin-bottom:1rem;}
-.pname{font-size:1.1rem;font-weight:800;color:var(--primary);}
-.pdates{font-size:0.82rem;color:var(--muted);margin-bottom:0.5rem;}
-.pbio{font-size:0.93rem;line-height:1.8;margin-bottom:0.9rem;}
-.quote{background:white;border-left:4px solid var(--gold-l);border-radius:0 11px 11px 0;padding:0.8rem 1.1rem;font-style:italic;font-size:0.97rem;line-height:1.8;color:#2A2A2A;}
-.qsource{font-style:normal;font-size:0.82rem;color:var(--muted);margin-top:0.4rem;}
+.pname{font-size:1.1em;font-weight:800;color:var(--primary);}
+.pdates{font-size:0.82em;color:var(--muted);margin-bottom:0.5rem;}
+.pbio{font-size:0.93em;line-height:1.8;margin-bottom:0.9rem;}
+.quote{background:white;border-left:4px solid var(--gold-l);border-radius:0 11px 11px 0;padding:0.8rem 1.1rem;font-style:italic;font-size:0.97em;line-height:1.8;color:#2A2A2A;}
+.qsource{font-style:normal;font-size:0.82em;color:var(--muted);margin-top:0.4rem;}
 .news-a{display:flex;align-items:flex-start;gap:0.8rem;padding:1rem 1.1rem;background:white;border:1px solid var(--border);border-radius:13px;margin-bottom:0.8rem;text-decoration:none;color:var(--text);transition:all 0.2s;}
 .news-a:hover{background:var(--primary-p);border-color:var(--primary);}
-.news-ico{font-size:1.4rem;flex-shrink:0;margin-top:0.1rem;}
-.news-ttl{font-size:0.93rem;font-weight:600;color:var(--primary);line-height:1.55;}
-.news-src{font-size:0.78rem;color:var(--muted);margin-top:0.2rem;}
-.flow-box{background:#F5F8FF;border:1px solid #C5D4EE;border-radius:12px;padding:1.1rem 1.3rem;font-size:0.95rem;line-height:2;}
+.news-ico{font-size:1.4em;flex-shrink:0;margin-top:0.1rem;}
+.news-ttl{font-size:0.93em;font-weight:600;color:var(--primary);line-height:1.55;}
+.news-src{font-size:0.78em;color:var(--muted);margin-top:0.2rem;}
+.flow-box{background:#F5F8FF;border:1px solid #C5D4EE;border-radius:12px;padding:1.1rem 1.3rem;font-size:0.95em;line-height:2;}
 
 /* AFTER */
 .prayer-item{background:var(--gold-p);border-radius:12px;padding:1rem 1.2rem;margin-bottom:0.8rem;}
-.pnum{font-size:0.82rem;color:var(--gold);font-weight:700;margin-bottom:0.3rem;}
-.ptxt{font-size:0.95rem;color:#2A2A3A;line-height:1.8;}
-.note-lbl{font-weight:700;color:var(--primary);margin-bottom:0.45rem;font-size:0.97rem;}
-.note-ta{width:100%;min-height:100px;padding:0.75rem 0.9rem;border:2px solid var(--border);border-radius:11px;font-size:0.97rem;font-family:inherit;resize:vertical;outline:none;line-height:1.7;margin-bottom:1.1rem;transition:border-color 0.2s;}
+.pnum{font-size:0.82em;color:var(--gold);font-weight:700;margin-bottom:0.3rem;}
+.ptxt{font-size:0.95em;color:#2A2A3A;line-height:1.8;}
+.note-lbl{font-weight:700;color:var(--primary);margin-bottom:0.45rem;font-size:0.97em;}
+.note-ta{width:100%;min-height:100px;padding:0.75rem 0.9rem;border:2px solid var(--border);border-radius:11px;font-size:0.97em;font-family:inherit;resize:vertical;outline:none;line-height:1.7;margin-bottom:1.1rem;transition:border-color 0.2s;}
 .note-ta:focus{border-color:var(--primary);}
-.summary-card{background:linear-gradient(135deg,#1B3A7A,#2E5CB8);border-radius:14px;padding:1.3rem 1.4rem;color:white;margin-bottom:1rem;font-size:0.95rem;line-height:1.9;}
+.summary-card{background:linear-gradient(135deg,#1B3A7A,#2E5CB8);border-radius:14px;padding:1.3rem 1.4rem;color:white;margin-bottom:1rem;font-size:0.95em;line-height:1.9;}
 .summary-card strong{color:var(--gold-l);}
-.print-btn{width:100%;padding:0.95rem;background:var(--success);color:white;border:none;border-radius:12px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;margin-top:0.5rem;transition:background 0.2s;}
+.print-btn{width:100%;padding:0.95rem;background:var(--success);color:white;border:none;border-radius:12px;font-size:1em;font-weight:700;font-family:inherit;cursor:pointer;margin-top:0.5rem;transition:background 0.2s;}
 .print-btn:hover{background:#1A5C30;}
 
 /* SEND */
 .send-card{background:white;border:2px solid var(--primary);border-radius:18px;padding:1.4rem;margin-top:1.4rem;}
-.send-ttl{font-size:1.05rem;font-weight:700;color:var(--primary);margin-bottom:1rem;}
-.f-lbl{display:block;font-size:0.87rem;font-weight:600;color:var(--muted);margin-bottom:0.4rem;}
-.f-input{width:100%;padding:0.75rem 0.9rem;border:2px solid var(--border);border-radius:10px;font-size:0.97rem;font-family:inherit;outline:none;margin-bottom:0.9rem;transition:border-color 0.2s;}
+.send-ttl{font-size:1.05em;font-weight:700;color:var(--primary);margin-bottom:1rem;}
+.f-lbl{display:block;font-size:0.87em;font-weight:600;color:var(--muted);margin-bottom:0.4rem;}
+.f-input{width:100%;padding:0.75rem 0.9rem;border:2px solid var(--border);border-radius:10px;font-size:0.97em;font-family:inherit;outline:none;margin-bottom:0.9rem;transition:border-color 0.2s;}
 .f-input:focus{border-color:var(--primary);}
 .type-row{display:flex;gap:0.7rem;margin-bottom:0.9rem;}
-.type-btn{flex:1;padding:0.7rem 0.5rem;border:2px solid var(--border);border-radius:10px;background:white;font-size:0.93rem;font-family:inherit;cursor:pointer;text-align:center;transition:all 0.2s;}
+.type-btn{flex:1;padding:0.7rem 0.5rem;border:2px solid var(--border);border-radius:10px;background:white;font-size:0.93em;font-family:inherit;cursor:pointer;text-align:center;transition:all 0.2s;}
 .type-btn.on{border-color:var(--primary);background:var(--primary);color:white;font-weight:700;}
-.send-btn{width:100%;padding:0.95rem;background:var(--gold);color:white;border:none;border-radius:12px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background 0.2s;}
+.send-btn{width:100%;padding:0.95rem;background:var(--gold);color:white;border:none;border-radius:12px;font-size:1em;font-weight:700;font-family:inherit;cursor:pointer;transition:background 0.2s;}
 .send-btn:hover{background:#6B4E0F;}
-.save-btn{width:100%;padding:0.95rem;background:var(--primary);color:white;border:none;border-radius:12px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background 0.2s;margin-bottom:0.8rem;}
+.save-btn{width:100%;padding:0.95rem;background:var(--primary);color:white;border:none;border-radius:12px;font-size:1em;font-weight:700;font-family:inherit;cursor:pointer;transition:background 0.2s;margin-bottom:0.8rem;}
 .save-btn:hover{background:var(--primary-l);}
 .send-ok{display:none;text-align:center;padding:1.5rem 1rem;}
-.send-ok-icon{font-size:2.5rem;}
-.send-ok-msg{font-size:1.05rem;font-weight:700;color:var(--success);margin:0.5rem 0;}
-.send-ok-sub{font-size:0.9rem;color:var(--muted);}
-.retry-btn{margin-top:1rem;padding:0.6rem 1.3rem;background:var(--primary);color:white;border:none;border-radius:9px;font-size:0.93rem;font-family:inherit;cursor:pointer;}
+.send-ok-icon{font-size:2.5em;}
+.send-ok-msg{font-size:1.05em;font-weight:700;color:var(--success);margin:0.5rem 0;}
+.send-ok-sub{font-size:0.9em;color:var(--muted);}
+.retry-btn{margin-top:1rem;padding:0.6rem 1.3rem;background:var(--primary);color:white;border:none;border-radius:9px;font-size:0.93em;font-family:inherit;cursor:pointer;}
 
 /* REPLIES */
 .msg-item{background:white;border:1px solid var(--border);border-radius:13px;padding:1.1rem 1.2rem;margin-bottom:0.8rem;}
 .msg-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;}
-.msg-type{font-size:0.78rem;background:var(--primary-p);color:var(--primary);border-radius:6px;padding:0.15rem 0.55rem;font-weight:700;}
-.msg-date{font-size:0.78rem;color:var(--muted);}
-.msg-content{font-size:0.95rem;line-height:1.75;margin-bottom:0.6rem;}
-.reply-box{background:var(--primary-p);border-left:3px solid var(--primary);border-radius:0 9px 9px 0;padding:0.7rem 0.9rem;font-size:0.9rem;line-height:1.75;}
-.reply-lbl{font-size:0.78rem;color:var(--primary);font-weight:700;margin-bottom:0.2rem;}
-.no-reply{font-size:0.85rem;color:var(--muted);font-style:italic;}
-.reload-btn{width:100%;padding:0.7rem;background:#F0F0F0;border:1px solid var(--border);border-radius:10px;font-size:0.9rem;font-family:inherit;cursor:pointer;margin-top:0.7rem;}
+.msg-type{font-size:0.78em;background:var(--primary-p);color:var(--primary);border-radius:6px;padding:0.15rem 0.55rem;font-weight:700;}
+.msg-date{font-size:0.78em;color:var(--muted);}
+.msg-content{font-size:0.95em;line-height:1.75;margin-bottom:0.6rem;}
+.reply-box{background:var(--primary-p);border-left:3px solid var(--primary);border-radius:0 9px 9px 0;padding:0.7rem 0.9rem;font-size:0.9em;line-height:1.75;}
+.reply-lbl{font-size:0.78em;color:var(--primary);font-weight:700;margin-bottom:0.2rem;}
+.no-reply{font-size:0.85em;color:var(--muted);font-style:italic;}
+.reload-btn{width:100%;padding:0.7rem;background:#F0F0F0;border:1px solid var(--border);border-radius:10px;font-size:0.9em;font-family:inherit;cursor:pointer;margin-top:0.7rem;}
 .reload-btn:hover{background:#E0E0E0;}
 
 /* PASTOR ROOM */
 .pastor-inner{max-width:700px;margin:0 auto;padding:1.4rem 1.2rem 7rem;}
-.inbox-head{font-size:1.1rem;font-weight:700;color:var(--primary);margin-bottom:1.1rem;padding-bottom:0.65rem;border-bottom:2px solid #F0E8D0;display:flex;align-items:center;justify-content:space-between;}
-.badge-new{background:var(--danger);color:white;font-size:0.75rem;border-radius:10px;padding:0.1rem 0.5rem;font-weight:700;}
+.inbox-head{font-size:1.1em;font-weight:700;color:var(--primary);margin-bottom:1.1rem;padding-bottom:0.65rem;border-bottom:2px solid #F0E8D0;display:flex;align-items:center;justify-content:space-between;}
+.badge-new{background:var(--danger);color:white;font-size:0.75em;border-radius:10px;padding:0.1rem 0.5rem;font-weight:700;}
 .inbox-item{background:white;border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.3rem;margin-bottom:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
 .inbox-item.unread{border-left:4px solid var(--primary);}
 .inbox-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;}
-.inbox-sender{font-weight:700;font-size:0.95rem;}
-.inbox-type-p{font-size:0.78rem;padding:0.15rem 0.55rem;border-radius:7px;font-weight:600;}
+.inbox-sender{font-weight:700;font-size:0.95em;}
+.inbox-type-p{font-size:0.78em;padding:0.15rem 0.55rem;border-radius:7px;font-weight:600;}
 .tp{background:#FFF0E8;color:#9A4010;}
 .tq{background:#E8F0FF;color:#102880;}
-.inbox-date{font-size:0.78rem;color:var(--muted);}
-.inbox-content{font-size:0.97rem;line-height:1.8;margin:0.6rem 0;}
-.reply-ta{width:100%;min-height:80px;padding:0.7rem 0.9rem;border:2px solid var(--border);border-radius:10px;font-size:0.95rem;font-family:inherit;resize:vertical;outline:none;transition:border-color 0.2s;}
+.inbox-date{font-size:0.78em;color:var(--muted);}
+.inbox-content{font-size:0.97em;line-height:1.8;margin:0.6rem 0;}
+.reply-ta{width:100%;min-height:80px;padding:0.7rem 0.9rem;border:2px solid var(--border);border-radius:10px;font-size:0.95em;font-family:inherit;resize:vertical;outline:none;transition:border-color 0.2s;}
 .reply-ta:focus{border-color:var(--primary);}
-.reply-submit{margin-top:0.6rem;padding:0.6rem 1.3rem;background:var(--primary);color:white;border:none;border-radius:9px;font-size:0.93rem;font-family:inherit;cursor:pointer;}
-.done-box{background:var(--primary-p);border-left:3px solid var(--primary);border-radius:0 9px 9px 0;padding:0.7rem 0.9rem;margin-top:0.6rem;font-size:0.9rem;line-height:1.75;}
-.done-lbl{font-size:0.78rem;color:var(--success);font-weight:700;margin-bottom:0.2rem;}
-.empty-msg{text-align:center;padding:3.5rem 1rem;color:var(--muted);font-size:0.97rem;}
+.reply-submit{margin-top:0.6rem;padding:0.6rem 1.3rem;background:var(--primary);color:white;border:none;border-radius:9px;font-size:0.93em;font-family:inherit;cursor:pointer;}
+.done-box{background:var(--primary-p);border-left:3px solid var(--primary);border-radius:0 9px 9px 0;padding:0.7rem 0.9rem;margin-top:0.6rem;font-size:0.9em;line-height:1.75;}
+.done-lbl{font-size:0.78em;color:var(--success);font-weight:700;margin-bottom:0.2rem;}
+.empty-msg{text-align:center;padding:3.5rem 1rem;color:var(--muted);font-size:0.97em;}
 
 /* ADMIN */
 .admin-section{border:1px solid var(--border);border-radius:12px;margin-bottom:1rem;overflow:hidden;}
-.admin-trigger{width:100%;padding:1rem 1.2rem;background:#F8F5EE;border:none;text-align:left;font-family:inherit;font-size:1rem;font-weight:700;color:var(--primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
+.admin-trigger{width:100%;padding:1rem 1.2rem;background:#F8F5EE;border:none;text-align:left;font-family:inherit;font-size:1em;font-weight:700;color:var(--primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
 .admin-trigger:hover{background:#F0E8D0;}
 .admin-body{display:none;padding:1.2rem;background:white;}
 .admin-section.open .admin-body{display:block;}
 .admin-section.open .admin-arrow{transform:rotate(180deg);}
 .admin-arrow{transition:transform 0.2s;color:var(--muted);}
-.a-lbl{display:block;font-size:0.87rem;font-weight:600;color:var(--muted);margin-bottom:0.4rem;margin-top:0.8rem;}
+.a-lbl{display:block;font-size:0.87em;font-weight:600;color:var(--muted);margin-bottom:0.4rem;margin-top:0.8rem;}
 .a-lbl:first-child{margin-top:0;}
-.a-input{width:100%;padding:0.7rem 0.9rem;border:2px solid var(--border);border-radius:10px;font-size:0.95rem;font-family:inherit;outline:none;transition:border-color 0.2s;}
+.a-input{width:100%;padding:0.7rem 0.9rem;border:2px solid var(--border);border-radius:10px;font-size:0.95em;font-family:inherit;outline:none;transition:border-color 0.2s;}
 .a-input:focus{border-color:var(--primary);}
-.a-ta{width:100%;min-height:120px;padding:0.7rem 0.9rem;border:2px solid var(--border);border-radius:10px;font-size:0.93rem;font-family:inherit;resize:vertical;outline:none;line-height:1.7;transition:border-color 0.2s;}
+.a-ta{width:100%;min-height:120px;padding:0.7rem 0.9rem;border:2px solid var(--border);border-radius:10px;font-size:0.93em;font-family:inherit;resize:vertical;outline:none;line-height:1.7;transition:border-color 0.2s;}
 .a-ta:focus{border-color:var(--primary);}
 .a-hint{font-size:0.8rem;color:var(--muted);margin-top:0.3rem;margin-bottom:0.5rem;}
 .a-sep{border:none;border-top:1px dashed var(--border);margin:1rem 0;}
-.admin-save-btn{width:100%;padding:1rem;background:var(--success);color:white;border:none;border-radius:12px;font-size:1.05rem;font-weight:700;font-family:inherit;cursor:pointer;margin-top:1rem;transition:background 0.2s;}
+.admin-save-btn{width:100%;padding:1rem;background:var(--success);color:white;border:none;border-radius:12px;font-size:1.05em;font-weight:700;font-family:inherit;cursor:pointer;margin-top:1rem;transition:background 0.2s;}
 .admin-save-btn:hover{background:#1A5C30;}
 
 /* NOTES VIEW */
 .note-view-item{background:white;border:1px solid var(--border);border-radius:13px;padding:1.2rem;margin-bottom:0.9rem;}
 .nv-head{display:flex;justify-content:space-between;margin-bottom:0.6rem;}
-.nv-name{font-weight:700;font-size:0.95rem;color:var(--primary);}
-.nv-date{font-size:0.78rem;color:var(--muted);}
+.nv-name{font-weight:700;font-size:0.95em;color:var(--primary);}
+.nv-date{font-size:0.78em;color:var(--muted);}
 .nv-label{font-size:0.8rem;color:var(--gold);font-weight:700;margin-top:0.6rem;margin-bottom:0.2rem;}
-.nv-content{font-size:0.93rem;line-height:1.75;color:#2A2A3A;}
+.nv-content{font-size:0.93em;line-height:1.75;color:#2A2A3A;}
 
 /* FLOATING FONT */
 #font-float{position:fixed;bottom:1.5rem;right:1rem;z-index:500;flex-direction:column;gap:0.4rem;display:none;}
 #font-float.show{display:flex;}
-.ff-btn{width:46px;height:46px;border-radius:50%;background:var(--primary);color:white;border:none;font-family:inherit;font-size:0.9rem;cursor:pointer;box-shadow:0 3px 14px rgba(27,58,122,0.35);display:flex;align-items:center;justify-content:center;}
+.ff-btn{width:46px;height:46px;border-radius:50%;background:var(--primary);color:white;border:none;font-family:inherit;font-size:0.9em;cursor:pointer;box-shadow:0 3px 14px rgba(27,58,122,0.35);display:flex;align-items:center;justify-content:center;}
 .ff-btn:hover{background:var(--primary-l);}
 
 /* INDEX LINK */
-.index-link{display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:10px;color:white;text-decoration:none;font-size:0.88rem;margin-top:1.2rem;}
+.index-link{display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:10px;color:white;text-decoration:none;font-size:0.88em;margin-top:1.2rem;}
 .index-link:hover{background:rgba(255,255,255,0.2);}
 
-.loading-box{text-align:center;padding:2rem;color:var(--muted);font-size:0.95rem;}
+.loading-box{text-align:center;padding:2rem;color:var(--muted);font-size:0.95em;}
 .hidden{display:none!important;}
 .mt1{margin-top:1rem;}
 
@@ -232,7 +234,66 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','맑은 고딕',sans-serif
   #panel-after{display:block!important;}
   .card{box-shadow:none!important;border:1px solid #ccc!important;}
 }
+
+/* GLOS/QST FORM ROWS */
+.glos-row{border:1px solid var(--border);border-radius:10px;padding:0.8rem;margin-bottom:0.7rem;position:relative;}
+.qst-row{border:1px solid var(--border);border-radius:10px;padding:0.9rem;margin-bottom:0.7rem;}
+.add-row-btn{width:100%;padding:0.6rem;background:var(--primary-p);color:var(--primary);border:1px dashed var(--primary);border-radius:9px;font-size:0.9em;font-family:inherit;cursor:pointer;margin-top:0.3rem;font-weight:700;}
+.add-row-btn:hover{background:var(--primary);color:white;}
+.del-row-btn{position:absolute;top:0.5rem;right:0.6rem;background:none;border:none;color:var(--muted);font-size:1em;cursor:pointer;padding:0.1rem 0.3rem;border-radius:4px;}
+.del-row-btn:hover{color:var(--danger);background:#FEE;}
+
+/* PASTOR STATS */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:1.2rem;}
+.stat-box{background:var(--primary-p);border-radius:13px;padding:1rem;text-align:center;border:1px solid #C5D4EE;}
+.stat-num{font-size:2em;font-weight:800;color:var(--primary);}
+.stat-lbl{font-size:0.78em;color:var(--muted);margin-top:0.2rem;}
+.stat-box.gold{background:var(--gold-p);border-color:#DDD0B8;}
+.stat-box.gold .stat-num{color:var(--gold);}
+
+/* QUICK REPLY */
+.quick-reply-bar{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;}
+.qr-btn{padding:0.45rem 0.85rem;background:white;border:1px solid var(--border);border-radius:20px;font-size:0.82em;font-family:inherit;cursor:pointer;transition:all 0.15s;color:var(--text);}
+.qr-btn:hover{background:var(--primary);color:white;border-color:var(--primary);}
+
+/* NOTICE BANNER (성도용) */
+.notice-banner{background:linear-gradient(90deg,#FDF8ED,#FFF9F0);border:1px solid #E8C84A;border-radius:12px;padding:0.9rem 1.1rem;margin-bottom:1.2rem;display:none;}
+.notice-banner.show{display:flex;gap:0.7rem;align-items:flex-start;}
+.notice-icon{font-size:1.2em;flex-shrink:0;}
+.notice-txt{font-size:0.93em;line-height:1.7;color:#5A4000;}
+
+/* PASTOR MEMO DISPLAY */
+.pastor-memo-card{background:#F5F5F5;border-left:4px solid var(--muted);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin-bottom:1.2rem;}
+.pastor-memo-lbl{font-size:0.78em;color:var(--muted);font-weight:700;margin-bottom:0.4rem;}
+.pastor-memo-txt{font-size:0.93em;line-height:1.8;white-space:pre-wrap;}
+
+
+/* VISIT RECORD */
+.visit-item{background:white;border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;margin-bottom:0.7rem;position:relative;}
+.visit-name{font-weight:700;color:var(--primary);font-size:0.97em;margin-bottom:0.2rem;}
+.visit-date{font-size:0.75em;color:var(--muted);margin-bottom:0.4rem;}
+.visit-content{font-size:0.9em;line-height:1.75;color:#2A2A3A;white-space:pre-wrap;}
+.visit-del{position:absolute;top:0.6rem;right:0.7rem;background:none;border:none;color:var(--muted);font-size:0.85em;cursor:pointer;padding:0.2rem 0.4rem;border-radius:4px;}
+.visit-del:hover{color:var(--danger);background:#FEE;}
+
+/* NEXT WEEK CARD (성도용) */
+.next-week-card{background:linear-gradient(135deg,#1B3A7A 0%,#0F2150 100%);border-radius:16px;padding:1.3rem 1.4rem;color:white;margin-top:1rem;}
+.next-week-label{font-size:0.75em;opacity:0.7;margin-bottom:0.5rem;letter-spacing:0.05em;}
+.next-week-ref{font-size:0.88em;color:var(--gold-l);font-weight:700;margin-bottom:0.3rem;}
+.next-week-title{font-size:1.05em;font-weight:800;margin-bottom:0.5rem;}
+.next-week-preview{font-size:0.88em;opacity:0.85;line-height:1.7;}
+
+/* PASTORAL WORD (성도용) */
+.pastoral-word-card{background:var(--gold-p);border:1px solid #E8C84A;border-left:4px solid var(--gold);border-radius:0 14px 14px 0;padding:1.1rem 1.3rem;margin-bottom:1.2rem;}
+.pastoral-word-label{font-size:0.75em;color:var(--gold);font-weight:700;margin-bottom:0.4rem;letter-spacing:0.05em;}
+.pastoral-word-txt{font-size:0.97em;line-height:1.85;color:#3A2800;font-style:italic;}
+
 </style>
+
+<script>
+// 초기 설교 데이터 (Firebase fallback)
+window.INITIAL_SERMON_DATA = {"title": "", "date": "", "scriptureRef": "", "verses": "", "outlineTitle": "", "o1": "", "o2": "", "o3": "", "summary": "", "p1t": "", "p1c": "", "p2t": "", "p2c": "", "p3t": "", "p3c": "", "r1ref": "", "r1lbl": "", "r1txt": "", "r2ref": "", "r2lbl": "", "r2txt": "", "r3ref": "", "r3lbl": "", "r3txt": "", "pname": "", "pdates": "", "pbio": "", "pquote": "", "psource": "", "n1t": "", "n1u": "", "n1s": "", "n2t": "", "n2u": "", "n2s": "", "glossary": "[]", "questions": "[]"};
+</script>
 </head>
 <body>
 
@@ -242,7 +303,7 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','맑은 고딕',sans-serif
     <span class="cross-icon">✝</span>
     <div class="church-title">대구우리교회</div>
     <div class="service-badge" id="login-service-badge">☀️ 주일낮예배</div>
-    <div class="sermon-info" id="login-sermon-info">말씀 동반자</div>
+    <div class="sermon-info" id="login-sermon-info">2026년 5월 31일 주일낮예배 — 이기는 게 이긴 건가?</div>
     <div class="role-row">
       <button class="role-btn active" onclick="setRole('deacon')" id="rb-deacon">🙏 성도 입장</button>
       <button class="role-btn"        onclick="setRole('pastor')" id="rb-pastor">🗝 문지기방</button>
@@ -275,6 +336,10 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','맑은 고딕',sans-serif
 
   <!-- 예배 전 -->
   <div class="panel on" id="panel-before">
+    <div class="notice-banner" id="notice-banner">
+      <span class="notice-icon">📣</span>
+      <div class="notice-txt" id="notice-txt"></div>
+    </div>
     <div class="guide-box">
       안녕하세요, 성도님 😊<br>
       오늘 말씀을 함께 준비해 보겠습니다.<br>
@@ -338,6 +403,12 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','맑은 고딕',sans-serif
       오늘 말씀을 마음에 담아두세요.<br>
       집에서 다시 펼쳐보시며 기도하실 수 있습니다.
     </div>
+    <div id="pastoral-word-wrap" style="display:none">
+      <div class="pastoral-word-card">
+        <div class="pastoral-word-label">✍️ 목사님 한 마디</div>
+        <div class="pastoral-word-txt" id="pastoral-word-txt"></div>
+      </div>
+    </div>
     <div class="card">
       <div class="card-head">💡 오늘 설교 핵심 정리</div>
       <div class="summary-card" id="sermon-summary"><div style="opacity:0.7">불러오는 중...</div></div>
@@ -345,6 +416,14 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','맑은 고딕',sans-serif
     <div class="card">
       <div class="card-head">🙏 이번 주 기도제목</div>
       <div id="prayer-list"><div class="loading-box">불러오는 중...</div></div>
+    </div>
+    <div id="next-week-wrap" style="display:none">
+      <div class="next-week-card">
+        <div class="next-week-label">📅 다음 주 말씀 예고</div>
+        <div class="next-week-ref" id="next-week-ref"></div>
+        <div class="next-week-title" id="next-week-title"></div>
+        <div class="next-week-preview" id="next-week-preview"></div>
+      </div>
     </div>
     <div class="card">
       <div class="card-head">✏️ 나의 설교 노트</div>
@@ -407,8 +486,9 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','맑은 고딕',sans-serif
   </div>
   <div class="tab-bar">
     <button class="tab on" onclick="showPastorPanel('inbox')"  id="ptb-inbox">📥 메시지</button>
-    <button class="tab"    onclick="showPastorPanel('config')" id="ptb-config">⚙️ 설교설정</button>
-    <button class="tab"    onclick="showPastorPanel('notes')"  id="ptb-notes">📖 노트보기</button>
+    <button class="tab"    onclick="showPastorPanel('stats')"  id="ptb-stats">📊 현황</button>
+    <button class="tab"    onclick="showPastorPanel('config')" id="ptb-config">⚙️ 설정</button>
+    <button class="tab"    onclick="showPastorPanel('notes')"  id="ptb-notes">📖 노트</button>
   </div>
 
   <!-- 받은 메시지 -->
@@ -417,126 +497,82 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','맑은 고딕',sans-serif
       📥 성도들의 기도제목 &amp; 질문
       <span class="badge-new hidden" id="new-badge">새 메시지</span>
     </div>
+    <div class="quick-reply-bar">
+      <span style="font-size:0.78em;color:var(--muted);align-self:center;flex-shrink:0;">빠른 답변:</span>
+      <button class="qr-btn" onclick="copyReply('기도하며 함께하겠습니다 🙏')">🙏 기도하겠습니다</button>
+      <button class="qr-btn" onclick="copyReply('좋은 질문입니다. 다음에 더 자세히 나눠요 😊')">💬 자세히 나눠요</button>
+      <button class="qr-btn" onclick="copyReply('말씀 나눠주셔서 감사합니다. 함께 기도드립니다.')">✉️ 감사합니다</button>
+    </div>
     <div id="pastor-inbox"><div class="empty-msg">불러오는 중...</div></div>
+  </div>
+
+  <!-- 현황 패널 -->
+  <div class="pastor-inner hidden" id="ppanel-stats">
+    <div class="inbox-head">📊 이번 예배 현황</div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-num" id="stat-msg-count">-</div><div class="stat-lbl">받은 메시지</div></div>
+      <div class="stat-box gold"><div class="stat-num" id="stat-prayer-count">-</div><div class="stat-lbl">기도제목</div></div>
+      <div class="stat-box gold"><div class="stat-num" id="stat-question-count">-</div><div class="stat-lbl">질문</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-note-count">-</div><div class="stat-lbl">설교 노트</div></div>
+    </div>
+    <button class="reload-btn" onclick="loadStats()">🔄 새로고침</button>
+    <div id="pastor-memo-display" style="margin-top:1.2rem;display:none;">
+      <div class="pastor-memo-card">
+        <div class="pastor-memo-lbl">🔒 오늘의 목회자 메모</div>
+        <div class="pastor-memo-txt" id="memo-txt-display"></div>
+      </div>
+    </div>
   </div>
 
   <!-- 설교 설정 -->
   <div class="pastor-inner hidden" id="ppanel-config">
+
+    <!-- 📣 성도 공지 -->
     <div class="card">
-      <div class="card-head">⚙️ 이번 설교 설정</div>
-      <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1rem">각 항목을 수정하고 맨 아래 '저장하기'를 눌러주세요.</p>
-
-      <div class="admin-section open">
-        <button class="admin-trigger" onclick="togAdmin(this)">📋 기본 정보 <span class="admin-arrow">▼</span></button>
-        <div class="admin-body">
-          <label class="a-lbl">설교 제목</label>
-          <input class="a-input" id="cfg-title" placeholder="설교 제목">
-          <label class="a-lbl">날짜 / 예배명</label>
-          <input class="a-input" id="cfg-date" placeholder="예: 2026년 5월 31일 주일낮예배">
-          <label class="a-lbl">본문 성경 구절</label>
-          <input class="a-input" id="cfg-ref" placeholder="예: 마가복음 1:1~8">
-        </div>
-      </div>
-
-      <div class="admin-section">
-        <button class="admin-trigger" onclick="togAdmin(this)">📖 본문 성경 구절 <span class="admin-arrow">▼</span></button>
-        <div class="admin-body">
-          <div class="a-hint">형식: 절번호|내용 (한 줄에 한 절)<br>예: 1|하나님의 아들 예수 그리스도의 복음의 시작이라</div>
-          <textarea class="a-ta" id="cfg-verses" style="min-height:200px;" placeholder="1|내용&#10;2|내용"></textarea>
-        </div>
-      </div>
-
-      <div class="admin-section">
-        <button class="admin-trigger" onclick="togAdmin(this)">📝 설교 흐름 &amp; 핵심 정리 <span class="admin-arrow">▼</span></button>
-        <div class="admin-body">
-          <label class="a-lbl">흐름 제목</label>
-          <input class="a-input" id="cfg-otitle">
-          <label class="a-lbl">1번째 포인트</label>
-          <input class="a-input" id="cfg-o1">
-          <label class="a-lbl">2번째 포인트</label>
-          <input class="a-input" id="cfg-o2">
-          <label class="a-lbl">3번째 포인트</label>
-          <input class="a-input" id="cfg-o3">
-          <label class="a-lbl">핵심 정리</label>
-          <textarea class="a-ta" id="cfg-summary"></textarea>
-        </div>
-      </div>
-
-      <div class="admin-section">
-        <button class="admin-trigger" onclick="togAdmin(this)">🙏 기도제목 (3가지) <span class="admin-arrow">▼</span></button>
-        <div class="admin-body">
-          <label class="a-lbl">① 제목</label><input class="a-input" id="cfg-p1t">
-          <label class="a-lbl">① 내용</label><textarea class="a-ta" style="min-height:80px;" id="cfg-p1c"></textarea>
-          <hr class="a-sep">
-          <label class="a-lbl">② 제목</label><input class="a-input" id="cfg-p2t">
-          <label class="a-lbl">② 내용</label><textarea class="a-ta" style="min-height:80px;" id="cfg-p2c"></textarea>
-          <hr class="a-sep">
-          <label class="a-lbl">③ 제목</label><input class="a-input" id="cfg-p3t">
-          <label class="a-lbl">③ 내용</label><textarea class="a-ta" style="min-height:80px;" id="cfg-p3c"></textarea>
-        </div>
-      </div>
-
-      <div class="admin-section">
-        <button class="admin-trigger" onclick="togAdmin(this)">📖 참고 성경구절 (3개) <span class="admin-arrow">▼</span></button>
-        <div class="admin-body">
-          <label class="a-lbl">① 구절</label><input class="a-input" id="cfg-r1ref">
-          <label class="a-lbl">① 레이블</label><input class="a-input" id="cfg-r1lbl">
-          <label class="a-lbl">① 본문</label><textarea class="a-ta" style="min-height:70px;" id="cfg-r1txt"></textarea>
-          <hr class="a-sep">
-          <label class="a-lbl">② 구절</label><input class="a-input" id="cfg-r2ref">
-          <label class="a-lbl">② 레이블</label><input class="a-input" id="cfg-r2lbl">
-          <label class="a-lbl">② 본문</label><textarea class="a-ta" style="min-height:70px;" id="cfg-r2txt"></textarea>
-          <hr class="a-sep">
-          <label class="a-lbl">③ 구절</label><input class="a-input" id="cfg-r3ref">
-          <label class="a-lbl">③ 레이블</label><input class="a-input" id="cfg-r3lbl">
-          <label class="a-lbl">③ 본문</label><textarea class="a-ta" style="min-height:70px;" id="cfg-r3txt"></textarea>
-        </div>
-      </div>
-
-      <div class="admin-section">
-        <button class="admin-trigger" onclick="togAdmin(this)">👤 인물 카드 <span class="admin-arrow">▼</span></button>
-        <div class="admin-body">
-          <label class="a-lbl">이름</label><input class="a-input" id="cfg-pname">
-          <label class="a-lbl">생몰년 / 소개</label><input class="a-input" id="cfg-pdates">
-          <label class="a-lbl">인물 설명</label><textarea class="a-ta" style="min-height:80px;" id="cfg-pbio"></textarea>
-          <label class="a-lbl">명언</label><textarea class="a-ta" style="min-height:70px;" id="cfg-pquote"></textarea>
-          <label class="a-lbl">명언 출처</label><input class="a-input" id="cfg-psource">
-        </div>
-      </div>
-
-      <div class="admin-section">
-        <button class="admin-trigger" onclick="togAdmin(this)">📰 뉴스 기사 (2개) <span class="admin-arrow">▼</span></button>
-        <div class="admin-body">
-          <label class="a-lbl">① 제목</label><input class="a-input" id="cfg-n1t">
-          <label class="a-lbl">① URL</label><input class="a-input" id="cfg-n1u" placeholder="https://...">
-          <label class="a-lbl">① 출처</label><input class="a-input" id="cfg-n1s">
-          <hr class="a-sep">
-          <label class="a-lbl">② 제목</label><input class="a-input" id="cfg-n2t">
-          <label class="a-lbl">② URL</label><input class="a-input" id="cfg-n2u" placeholder="https://...">
-          <label class="a-lbl">② 출처</label><input class="a-input" id="cfg-n2s">
-        </div>
-      </div>
-
-      <!-- 단어/문제 -->
-      <div class="admin-section">
-        <button class="admin-trigger" onclick="togAdmin(this)">📚 어려운 단어 (JSON) <span class="admin-arrow">▼</span></button>
-        <div class="admin-body">
-          <div class="a-hint">JSON 배열 형식. word / verse / meaning 키 사용<br>예: [{"word":"외형","verse":"31절","meaning":"설명..."}]</div>
-          <textarea class="a-ta" id="cfg-glossary" style="min-height:160px;font-size:0.82rem;font-family:monospace;" placeholder='[{"word":"단어","verse":"절","meaning":"설명"}]'></textarea>
-        </div>
-      </div>
-
-      <div class="admin-section">
-        <button class="admin-trigger" onclick="togAdmin(this)">✏️ 본문 이해 문제 (JSON) <span class="admin-arrow">▼</span></button>
-        <div class="admin-body">
-          <div class="a-hint">JSON 배열 형식. text / hint / answer 키 사용</div>
-          <textarea class="a-ta" id="cfg-questions" style="min-height:160px;font-size:0.82rem;font-family:monospace;" placeholder='[{"text":"문제","hint":"힌트","answer":"정답"}]'></textarea>
-        </div>
-      </div>
-
-      <button class="admin-save-btn" onclick="saveSermon()">💾 저장하기</button>
-      <div id="save-ok" style="display:none;text-align:center;padding:1rem;color:var(--success);font-weight:700;">✅ 저장되었습니다!</div>
+      <div class="card-head">📣 성도 공지 메시지</div>
+      <div class="a-hint" style="margin-bottom:0.8rem">성도용 화면 상단에 노란 배너로 표시됩니다.</div>
+      <textarea class="a-ta" id="cfg-notice" style="min-height:80px;" placeholder="예: 오늘 예배 후 당회가 있습니다. 교우들의 기도 부탁드립니다."></textarea>
+      <button class="admin-save-btn" style="margin-top:0.8rem" onclick="savePastorField('notice','cfg-notice','공지가 저장되었습니다')">💾 공지 저장</button>
     </div>
+
+    <!-- ✍️ 이번 주 목사님 한 마디 -->
+    <div class="card">
+      <div class="card-head">✍️ 이번 주 목사님 한 마디</div>
+      <div class="a-hint" style="margin-bottom:0.8rem">성도용 예배 후 탭 상단에 표시됩니다. 격려, 도전, 짧은 권면 등.</div>
+      <textarea class="a-ta" id="cfg-pastoral-word" style="min-height:90px;" placeholder="예: 오늘 말씀처럼, 자유는 섬김으로 완성됩니다. 이번 한 주, 한 사람의 유익을 구해보세요."></textarea>
+      <button class="admin-save-btn" style="margin-top:0.8rem" onclick="savePastorField('pastoralWord','cfg-pastoral-word','한 마디가 저장되었습니다')">💾 저장</button>
+    </div>
+
+    <!-- 📅 다음 주 예고 -->
+    <div class="card">
+      <div class="card-head">📅 다음 주 예고</div>
+      <div class="a-hint" style="margin-bottom:0.8rem">성도용 예배 후 탭 하단에 표시됩니다.</div>
+      <input class="a-input" id="cfg-next-ref" placeholder="다음 주 본문 (예: 고린도전서 11:17~34)">
+      <input class="a-input" id="cfg-next-title" placeholder="설교 제목 (예: 주님의 식탁으로 오라)">
+      <textarea class="a-ta" id="cfg-next-preview" style="min-height:70px;" placeholder="한 줄 예고 (선택)"></textarea>
+      <button class="admin-save-btn" style="margin-top:0.8rem" onclick="saveNextWeek()">💾 저장</button>
+    </div>
+
+    <!-- 🏠 심방 기록 -->
+    <div class="card">
+      <div class="card-head">🏠 심방 기록 <span style="font-size:0.75em;font-weight:400;color:var(--muted)">(비공개)</span></div>
+      <div class="a-hint" style="margin-bottom:0.8rem">성도에게 보이지 않는 목회자 전용 기록입니다.</div>
+      <input class="a-input" id="v-name" placeholder="성도 이름">
+      <textarea class="a-ta" id="v-content" style="min-height:80px;" placeholder="심방 내용, 기도제목, 기억할 것..."></textarea>
+      <button class="admin-save-btn" style="margin-top:0.5rem" onclick="addVisit()">＋ 기록 추가</button>
+      <div id="visit-list" style="margin-top:1rem"></div>
+      <button class="reload-btn" style="margin-top:0.5rem" onclick="loadVisits()">🔄 기록 불러오기</button>
+    </div>
+
+    <!-- 🔒 목회자 메모 -->
+    <div class="card">
+      <div class="card-head">🔒 목회자 메모 <span style="font-size:0.75em;font-weight:400;color:var(--muted)">(비공개)</span></div>
+      <div class="a-hint" style="margin-bottom:0.8rem">설교 준비, 다음 주 계획, 기억할 내용 등.</div>
+      <textarea class="a-ta" id="cfg-pastormemo" style="min-height:120px;" placeholder="자유롭게 메모하세요."></textarea>
+      <button class="admin-save-btn" style="margin-top:0.8rem" onclick="savePastorField('pastormemo','cfg-pastormemo','메모가 저장되었습니다')">💾 저장</button>
+    </div>
+
+    <div id="save-ok" style="display:none;text-align:center;padding:1rem;color:var(--success);font-weight:700;"></div>
   </div>
 
   <!-- 노트 보기 -->
@@ -558,7 +594,7 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','맑은 고딕',sans-serif
 // ================================================
 // 🔑 파일별 고유 키 — 파일 생성 시 이 두 줄만 수정
 // ================================================
-const SERMON_KEY  = "2026-05-31-sun";   // Firebase 문서 ID
+const SERMON_KEY  = "TEMPLATE";   // Firebase 문서 ID
 const SERVICE_TYPE = "sun";             // sun / sun-eve / wed / dawn / sat / special / new / bible / baptism / catechism / disciple / etc
 
 // ================================================
@@ -605,10 +641,19 @@ let SERMON = null;
 let msgType = '기도제목';
 let fontSize = 18;
 
-const fbReady = (() => {
-  try { firebase.initializeApp(FIREBASE_CONFIG); DB = firebase.firestore(); return true; }
-  catch(e) { console.warn('Firebase init error:', e); return false; }
-})();
+let fbReady = false;
+function initFirebase() {
+  try {
+    if (typeof firebase === 'undefined') { console.warn('Firebase SDK 미로드 — 오프라인 또는 미리보기 환경'); return; }
+    firebase.initializeApp(FIREBASE_CONFIG);
+    DB = firebase.firestore();
+    fbReady = true;
+  } catch(e) {
+    if (e.code === 'app/duplicate-app') { DB = firebase.app().firestore(); fbReady = true; }
+    else console.warn('Firebase init error:', e);
+  }
+}
+initFirebase();
 
 // ── 예배 배지 초기화 ──
 (function initBadge() {
@@ -639,7 +684,7 @@ function doLogin() {
     showScreen(ROLE === 'deacon' ? 'screen-deacon' : 'screen-pastor');
     document.getElementById('font-float').classList.add('show');
     if (ROLE === 'deacon') { loadAndRenderSermon(); loadReplies(); }
-    else { loadPastorInbox(); loadAdminForm(); }
+    else { loadPastorInbox(); }
   } else {
     document.getElementById('login-err').textContent = '⚠️ 비밀번호가 맞지 않습니다.';
     document.getElementById('pw').value = '';
@@ -672,6 +717,8 @@ function showPastorPanel(id) {
   window.scrollTo(0,0);
   if (id === 'notes') loadNotes();
   if (id === 'inbox') loadPastorInbox();
+  if (id === 'stats') loadStats();
+  if (id === 'config') loadPastorConfig();
 }
 
 function tog(btn) { btn.closest('.glos-item').classList.toggle('open'); }
@@ -681,7 +728,11 @@ function reveal(btn) {
   btn.textContent = s ? '🔒 답 숨기기' : '📋 정답 확인하기';
 }
 function togAdmin(btn) { btn.closest('.admin-section').classList.toggle('open'); }
-function fz(d) { fontSize = Math.max(14, Math.min(28, fontSize+d)); document.documentElement.style.setProperty('--fs', fontSize+'px'); }
+function fz(d) {
+  fontSize = Math.max(14, Math.min(28, fontSize+d));
+  document.documentElement.style.setProperty('--fs', fontSize+'px');
+  document.body.style.fontSize = fontSize+'px';
+}
 function setType(t, btn) { msgType=t; document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); }
 
 // ================================================
@@ -694,6 +745,14 @@ async function loadAndRenderSermon() {
       const doc = await DB.collection('sermons').doc(SERMON_KEY).get();
       if (doc.exists) SERMON = doc.data();
     } catch(e) { console.warn('Sermon load error:', e); }
+  }
+  // Firebase에 데이터 없으면 초기 데이터 사용
+  if (!SERMON && window.INITIAL_SERMON_DATA) {
+    SERMON = window.INITIAL_SERMON_DATA;
+    // Firebase에 자동 저장 시도
+    if (fbReady) {
+      try { await DB.collection('sermons').doc(SERMON_KEY).set(SERMON); } catch(e) {}
+    }
   }
   if (!SERMON) {
     document.getElementById('scripture-ref').textContent = '설교 내용이 아직 등록되지 않았습니다.';
@@ -797,6 +856,9 @@ function renderSermon() {
       <div class="pnum">${p.num} ${esc(p.t)}</div>
       <div class="ptxt">${esc(p.c||'')}</div>
     </div>`).join('') || '<p style="color:var(--muted);font-size:0.9rem">등록된 기도제목이 없습니다.</p>';
+  renderNoticeBanner();
+  renderPastoralWord();
+  renderNextWeek();
 }
 
 // ================================================
@@ -951,12 +1013,9 @@ async function loadNotes() {
 // ================================================
 // ADMIN — LOAD & SAVE
 // ================================================
-const SERMON_FIELDS = ['title','date','scriptureRef','verses','outlineTitle','o1','o2','o3','summary',
+const SERMON_FIELDS = ['title','date','scriptureRef','verses',
   'p1t','p1c','p2t','p2c','p3t','p3c',
-  'r1ref','r1lbl','r1txt','r2ref','r2lbl','r2txt','r3ref','r3lbl','r3txt',
-  'pname','pdates','pbio','pquote','psource',
-  'n1t','n1u','n1s','n2t','n2u','n2s',
-  'glossary','questions'];
+  'glossary','questions','notice','pastormemo'];
 
 async function loadAdminForm() {
   if (!fbReady) return;
@@ -964,26 +1023,59 @@ async function loadAdminForm() {
     const doc = await DB.collection('sermons').doc(SERMON_KEY).get();
     if (!doc.exists) return;
     const S = doc.data();
-    SERMON_FIELDS.forEach(f => {
-      const el = document.getElementById('cfg-' + f.toLowerCase()) || document.getElementById('cfg-' + f);
+    // 일반 필드
+    ['title','date','scriptureRef','verses','p1t','p1c','p2t','p2c','p3t','p3c','notice','pastormemo'].forEach(f => {
+      const el = document.getElementById('cfg-' + f);
       if (el) el.value = S[f] || '';
     });
+    // 단어 폼 불러오기
+    let gArr = [];
+    try { gArr = JSON.parse(S.glossary||'[]'); } catch(e) {}
+    const gContainer = document.getElementById('glos-form-list');
+    gContainer.innerHTML = '';
+    if (gArr.length === 0) gArr = [{}];
+    gArr.forEach((g, i) => buildGlosRow(i, g));
+    updateAddBtn('glos', gArr.length);
+    // 문제 폼 불러오기
+    let qArr = [];
+    try { qArr = JSON.parse(S.questions||'[]'); } catch(e) {}
+    const qContainer = document.getElementById('qst-form-list');
+    qContainer.innerHTML = '';
+    if (qArr.length === 0) qArr = [{}];
+    qArr.forEach((q, i) => buildQstRow(i, q));
+    updateAddBtn('qst', qArr.length);
   } catch(e) {}
 }
 
 async function saveSermon() {
   const data = {};
-  SERMON_FIELDS.forEach(f => {
-    const el = document.getElementById('cfg-' + f.toLowerCase()) || document.getElementById('cfg-' + f);
+  // 일반 필드
+  ['title','date','scriptureRef','verses','p1t','p1c','p2t','p2c','p3t','p3c','notice','pastormemo'].forEach(f => {
+    const el = document.getElementById('cfg-' + f);
     if (el) data[f] = el.value || '';
   });
-  // JSON 유효성 검사
-  for (const key of ['glossary','questions']) {
-    if (data[key]) {
-      try { JSON.parse(data[key]); }
-      catch(e) { alert(`⚠️ ${key} 항목의 JSON 형식이 올바르지 않습니다.\n오류: ${e.message}`); return; }
-    }
-  }
+  // 단어 폼에서 JSON 생성
+  const glosRows = document.querySelectorAll('#glos-form-list .glos-row');
+  const glossArr = [];
+  glosRows.forEach(row => {
+    const word = row.querySelector('[data-field="word"]').value.trim();
+    const verse = row.querySelector('[data-field="verse"]').value.trim();
+    const meaning = row.querySelector('[data-field="meaning"]').value.trim();
+    if (word) glossArr.push({word, verse, meaning});
+  });
+  data['glossary'] = JSON.stringify(glossArr);
+  document.getElementById('cfg-glossary').value = data['glossary'];
+  // 문제 폼에서 JSON 생성
+  const qstRows = document.querySelectorAll('#qst-form-list .qst-row');
+  const qstArr = [];
+  qstRows.forEach(row => {
+    const text = row.querySelector('[data-field="text"]').value.trim();
+    const hint = row.querySelector('[data-field="hint"]').value.trim();
+    const answer = row.querySelector('[data-field="answer"]').value.trim();
+    if (text) qstArr.push({text, hint, answer});
+  });
+  data['questions'] = JSON.stringify(qstArr);
+  document.getElementById('cfg-questions').value = data['questions'];
   if (!fbReady) { alert('서버 연결을 확인해 주세요.'); return; }
   try {
     await DB.collection('sermons').doc(SERMON_KEY).set(data);
@@ -992,6 +1084,278 @@ async function saveSermon() {
     setTimeout(() => { document.getElementById('save-ok').style.display = 'none'; }, 3000);
   } catch(e) { alert('저장 오류가 발생했습니다.'); console.error(e); }
 }
+
+// ================================================
+// GLOS / QST FORM BUILDERS
+// ================================================
+function buildGlosRow(i, g) {
+  const div = document.createElement('div');
+  div.className = 'glos-row';
+  div.dataset.idx = i;
+  div.innerHTML = `
+    <button class="del-row-btn" onclick="delRow(this,'glos')">✕</button>
+    <div style="display:flex;gap:0.5rem;margin-bottom:0.4rem;">
+      <input class="a-input" style="flex:2;margin:0" placeholder="단어" data-field="word" value="${g.word||''}">
+      <input class="a-input" style="flex:1;margin:0" placeholder="절 (예: 23절)" data-field="verse" value="${g.verse||''}">
+    </div>
+    <input class="a-input" placeholder="뜻 설명" data-field="meaning" value="${g.meaning||''}">`;
+  document.getElementById('glos-form-list').appendChild(div);
+}
+
+function buildQstRow(i, q) {
+  const div = document.createElement('div');
+  div.className = 'qst-row';
+  div.dataset.idx = i;
+  div.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+      <span style="font-size:0.82em;font-weight:700;color:var(--primary);">문제 ${i+1}</span>
+      <button class="del-row-btn" style="position:static;" onclick="delRow(this,'qst')">✕</button>
+    </div>
+    <input class="a-input" placeholder="문제 내용" data-field="text" value="${q.text||''}">
+    <input class="a-input" placeholder="💡 힌트 (선택)" data-field="hint" value="${q.hint||''}">
+    <input class="a-input" placeholder="정답" data-field="answer" value="${q.answer||''}">`;
+  document.getElementById('qst-form-list').appendChild(div);
+}
+
+function addGlosRow() {
+  const rows = document.querySelectorAll('#glos-form-list .glos-row');
+  if (rows.length >= 5) return;
+  buildGlosRow(rows.length, {});
+  updateAddBtn('glos', rows.length + 1);
+}
+
+function addQstRow() {
+  const rows = document.querySelectorAll('#qst-form-list .qst-row');
+  if (rows.length >= 5) return;
+  buildQstRow(rows.length, {});
+  updateAddBtn('qst', rows.length + 1);
+  renumberQst();
+}
+
+function delRow(btn, type) {
+  btn.closest(type==='glos'?'.glos-row':'.qst-row').remove();
+  const remaining = document.querySelectorAll('#' + (type==='glos'?'glos':'qst') + '-form-list .' + type + '-row').length;
+  updateAddBtn(type, remaining);
+  if (type === 'qst') renumberQst();
+}
+
+function renumberQst() {
+  document.querySelectorAll('#qst-form-list .qst-row').forEach((row, i) => {
+    const lbl = row.querySelector('span');
+    if (lbl) lbl.textContent = '문제 ' + (i+1);
+  });
+}
+
+function updateAddBtn(type, count) {
+  const btn = document.getElementById('add-' + type + '-btn');
+  if (!btn) return;
+  btn.style.display = count >= 5 ? 'none' : 'block';
+}
+
+// ================================================
+// 빠른 답변 복사
+// ================================================
+function copyReply(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    alert('복사 완료! ' + text);
+  }).catch(() => {
+    prompt('아래 텍스트를 복사하세요:', text);
+  });
+}
+
+// ================================================
+// 현황 통계
+// ================================================
+async function loadStats() {
+  if (!fbReady) return;
+  try {
+    const msgSnap = await DB.collection('sermons').doc(SERMON_KEY).collection('messages').get();
+    let prayerCount = 0, questionCount = 0;
+    msgSnap.forEach(doc => {
+      const t = doc.data().type || '';
+      if (t.includes('기도')) prayerCount++;
+      else questionCount++;
+    });
+    document.getElementById('stat-msg-count').textContent = msgSnap.size;
+    document.getElementById('stat-prayer-count').textContent = prayerCount;
+    document.getElementById('stat-question-count').textContent = questionCount;
+    const noteSnap = await DB.collection('sermons').doc(SERMON_KEY).collection('notes').get();
+    document.getElementById('stat-note-count').textContent = noteSnap.size;
+    // 목회자 메모 표시
+    if (SERMON && SERMON.pastormemo) {
+      document.getElementById('memo-txt-display').textContent = SERMON.pastormemo;
+      document.getElementById('pastor-memo-display').style.display = 'block';
+    }
+  } catch(e) { console.warn(e); }
+}
+
+// ================================================
+// 공지 배너 (성도용)
+// ================================================
+function renderNoticeBanner() {
+  if (SERMON && SERMON.notice) {
+    const banner = document.getElementById('notice-banner');
+    const txt = document.getElementById('notice-txt');
+    if (banner && txt) {
+      txt.textContent = SERMON.notice;
+      banner.classList.add('show');
+    }
+  }
+}
+
+
+// ================================================
+// SCROLL HIDE/SHOW HEADER
+// ================================================
+(function() {
+  let lastY = 0;
+  function onScroll() {
+    const headers = document.querySelectorAll('.app-header');
+    const tabbars = document.querySelectorAll('.tab-bar');
+    const y = window.scrollY;
+    const goingDown = y > lastY && y > 60;
+    headers.forEach(h => h.classList.toggle('hide', goingDown));
+    tabbars.forEach(t => { t.style.top = goingDown ? '0' : ''; });
+    lastY = y;
+  }
+  window.addEventListener('scroll', onScroll, {passive: true});
+})();
+
+// ================================================
+// PASTOR FIELD SAVE (개별 저장)
+// ================================================
+async function savePastorField(field, inputId, successMsg) {
+  if (!fbReady) { alert('서버 연결을 확인해 주세요.'); return; }
+  const val = document.getElementById(inputId).value;
+  const ok = document.getElementById('save-ok');
+  try {
+    await DB.collection('sermons').doc(SERMON_KEY).set({ [field]: val }, { merge: true });
+    if (SERMON) SERMON[field] = val;
+    ok.textContent = '✅ ' + successMsg;
+    ok.style.display = 'block';
+    setTimeout(() => { ok.style.display = 'none'; }, 2500);
+    if (field === 'notice') renderNoticeBanner();
+    if (field === 'pastoralWord') renderPastoralWord();
+  } catch(e) { alert('저장 오류가 발생했습니다.'); console.error(e); }
+}
+
+// ================================================
+// NEXT WEEK SAVE
+// ================================================
+async function saveNextWeek() {
+  if (!fbReady) { alert('서버 연결을 확인해 주세요.'); return; }
+  const data = {
+    nextRef:   document.getElementById('cfg-next-ref').value,
+    nextTitle: document.getElementById('cfg-next-title').value,
+    nextPreview: document.getElementById('cfg-next-preview').value
+  };
+  const ok = document.getElementById('save-ok');
+  try {
+    await DB.collection('sermons').doc(SERMON_KEY).set(data, { merge: true });
+    if (SERMON) Object.assign(SERMON, data);
+    ok.textContent = '✅ 다음 주 예고가 저장되었습니다';
+    ok.style.display = 'block';
+    setTimeout(() => { ok.style.display = 'none'; }, 2500);
+    renderNextWeek();
+  } catch(e) { alert('저장 오류가 발생했습니다.'); console.error(e); }
+}
+
+// ================================================
+// VISITS (심방 기록)
+// ================================================
+async function addVisit() {
+  const name    = document.getElementById('v-name').value.trim();
+  const content = document.getElementById('v-content').value.trim();
+  if (!name || !content) { alert('이름과 내용을 입력해 주세요.'); return; }
+  if (!fbReady) { alert('서버 연결을 확인해 주세요.'); return; }
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('ko-KR');
+  try {
+    await DB.collection('pastor-visits').add({
+      name, content, dateStr,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('v-name').value = '';
+    document.getElementById('v-content').value = '';
+    loadVisits();
+  } catch(e) { alert('저장 오류가 발생했습니다.'); console.error(e); }
+}
+
+async function loadVisits() {
+  if (!fbReady) return;
+  const list = document.getElementById('visit-list');
+  if (!list) return;
+  list.innerHTML = '<div class="empty-msg">불러오는 중...</div>';
+  try {
+    const snap = await DB.collection('pastor-visits')
+      .orderBy('createdAt','desc').limit(10).get();
+    if (snap.empty) { list.innerHTML = '<div class="empty-msg">기록된 심방이 없습니다.</div>'; return; }
+    list.innerHTML = '';
+    snap.forEach(doc => {
+      const d = doc.data();
+      const id = doc.id;
+      list.innerHTML += `
+        <div class="visit-item">
+          <button class="visit-del" onclick="delVisit('${id}')">✕</button>
+          <div class="visit-name">${esc(d.name)}</div>
+          <div class="visit-date">${esc(d.dateStr||'')}</div>
+          <div class="visit-content">${esc(d.content)}</div>
+        </div>`;
+    });
+  } catch(e) { list.innerHTML = '<div class="empty-msg">불러오기 오류.</div>'; }
+}
+
+async function delVisit(id) {
+  if (!confirm('이 기록을 삭제할까요?')) return;
+  try {
+    await DB.collection('pastor-visits').doc(id).delete();
+    loadVisits();
+  } catch(e) { alert('삭제 오류가 발생했습니다.'); }
+}
+
+// ================================================
+// RENDER: 목사님 한 마디 / 다음 주 예고
+// ================================================
+function renderPastoralWord() {
+  const S = SERMON;
+  if (!S || !S.pastoralWord) return;
+  const wrap = document.getElementById('pastoral-word-wrap');
+  const txt  = document.getElementById('pastoral-word-txt');
+  if (wrap && txt) { txt.textContent = S.pastoralWord; wrap.style.display = 'block'; }
+}
+
+function renderNextWeek() {
+  const S = SERMON;
+  if (!S || !S.nextRef) return;
+  const wrap = document.getElementById('next-week-wrap');
+  if (!wrap) return;
+  document.getElementById('next-week-ref').textContent   = S.nextRef   || '';
+  document.getElementById('next-week-title').textContent = S.nextTitle  || '';
+  document.getElementById('next-week-preview').textContent = S.nextPreview || '';
+  wrap.style.display = 'block';
+}
+
+// ================================================
+// LOAD PASTOR CONFIG FIELDS
+// ================================================
+async function loadPastorConfig() {
+  if (!fbReady || !SERMON) return;
+  const S = SERMON;
+  const fields = {
+    'cfg-notice': S.notice,
+    'cfg-pastoral-word': S.pastoralWord,
+    'cfg-next-ref': S.nextRef,
+    'cfg-next-title': S.nextTitle,
+    'cfg-next-preview': S.nextPreview,
+    'cfg-pastormemo': S.pastormemo
+  };
+  for (const [id, val] of Object.entries(fields)) {
+    const el = document.getElementById(id);
+    if (el && val) el.value = val;
+  }
+  loadVisits();
+}
+
 
 function esc(s) {
   if (!s) return '';
