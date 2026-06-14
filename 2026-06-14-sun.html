@@ -125,8 +125,8 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','맑은 고딕',sans-serif
 .note-ta:focus{border-color:var(--primary);}
 .summary-card{background:linear-gradient(135deg,#1B3A7A,#2E5CB8);border-radius:14px;padding:1.3rem 1.4rem;color:white;margin-bottom:1rem;font-size:0.95em;line-height:1.9;}
 .summary-card strong{color:var(--gold-l);}
-.print-btn{width:100%;padding:0.95rem;background:var(--success);color:white;border:none;border-radius:12px;font-size:1em;font-weight:700;font-family:inherit;cursor:pointer;margin-top:0.5rem;transition:background 0.2s;}
-.print-btn:hover{background:#1A5C30;}
+
+
 
 /* SEND */
 .send-card{background:white;border:2px solid var(--primary);border-radius:18px;padding:1.4rem;margin-top:1.4rem;}
@@ -433,8 +433,10 @@ window.INITIAL_SERMON_DATA = {"title": "일어나 빛을 비치는 교회", "dat
       <textarea class="note-ta" id="n-apply" placeholder="구체적으로 한 가지만 적어보세요..."></textarea>
       <div class="note-lbl">💬 더 묵상하고 싶은 것 / 궁금한 것</div>
       <textarea class="note-ta" id="n-memo" placeholder="더 생각해 보고 싶은 내용을 적어보세요..."></textarea>
+      <div class="note-lbl">🔑 본인 확인 (나중에 답변 확인에 필요)</div>
+      <input type="text" class="f-input" id="n-name" placeholder="이름" style="margin-bottom:0.5rem">
+      <input type="password" inputmode="numeric" maxlength="4" class="f-input" id="n-pin" placeholder="개인 확인 비밀번호 4자리">
       <button class="save-btn" onclick="saveNote()">☁️ 목사님께 노트 저장하기</button>
-      <button class="print-btn" onclick="window.print()">🖨️ 인쇄하기</button>
       <div class="send-ok" id="note-ok">
         <div class="send-ok-icon">✅</div>
         <div class="send-ok-msg">노트가 저장되었습니다!</div>
@@ -447,6 +449,8 @@ window.INITIAL_SERMON_DATA = {"title": "일어나 빛을 비치는 교회", "dat
       <div id="send-form">
         <label class="f-lbl">이름</label>
         <input type="text" class="f-input" id="f-name" placeholder="이름을 입력해 주세요">
+        <label class="f-lbl">개인 확인 비밀번호 4자리</label>
+        <input type="password" inputmode="numeric" maxlength="4" class="f-input" id="f-pin" placeholder="숫자 4자리 (답변 확인에 필요)">
         <label class="f-lbl">종류를 선택해 주세요</label>
         <div class="type-row">
           <button class="type-btn on" onclick="setType('기도제목',this)">🙏 기도제목</button>
@@ -463,10 +467,34 @@ window.INITIAL_SERMON_DATA = {"title": "일어나 빛을 비치는 교회", "dat
         <button class="retry-btn" onclick="resetForm()">또 보내기</button>
       </div>
     </div>
+    <div class="send-card" id="prayer-card">
+      <div class="send-ttl">🙏 기도제목 게시판</div>
+      <p style="font-size:0.92rem;color:var(--muted);margin-bottom:1.1rem">개인 기도제목을 남겨주세요. 작성하신 글은 <b>목사님만</b> 확인하실 수 있습니다.<br>나중에 확인하려면 이름과 개인 확인 비밀번호 4자리가 필요합니다.</p>
+      <div id="prayer-form">
+        <label class="f-lbl">이름</label>
+        <input type="text" class="f-input" id="p-name" placeholder="이름을 입력해 주세요">
+        <label class="f-lbl">개인 확인 비밀번호 4자리</label>
+        <input type="password" inputmode="numeric" maxlength="4" class="f-input" id="p-pin" placeholder="숫자 4자리">
+        <label class="f-lbl">기도제목 제목</label>
+        <input type="text" class="f-input" id="p-title" placeholder="제목을 적어주세요">
+        <label class="f-lbl">기도제목 내용</label>
+        <textarea class="f-input" id="p-content" style="min-height:110px;resize:vertical;" placeholder="기도제목 내용을 적어주세요..."></textarea>
+        <button class="send-btn" onclick="sendPrayer()">🙏 목사님께 보내기</button>
+      </div>
+      <div class="send-ok" id="prayer-ok">
+        <div class="send-ok-icon">✅</div>
+        <div class="send-ok-msg">기도제목이 전달되었습니다!</div>
+        <div class="send-ok-sub">목사님만 보시고 함께 기도해 주십니다.</div>
+        <button class="retry-btn" onclick="resetPrayer()">또 보내기</button>
+      </div>
+    </div>
     <div class="card mt1" id="replies-section">
-      <div class="card-head">📬 목사님의 답변 확인</div>
-      <div id="replies-list"><div class="loading-box">불러오는 중...</div></div>
-      <button class="reload-btn" onclick="loadReplies()">🔄 새로고침</button>
+      <div class="card-head">📬 목사님의 답변 확인 · 내 글 보기</div>
+      <p style="font-size:0.9rem;color:var(--muted);margin-bottom:0.9rem">이름과 개인 확인 비밀번호 4자리를 입력하시면 <b>내가 쓴 글과 목사님 답변만</b> 보입니다. 다른 성도의 글은 볼 수 없습니다.</p>
+      <input type="text" class="f-input" id="r-name" placeholder="이름" style="margin-bottom:0.5rem">
+      <input type="password" inputmode="numeric" maxlength="4" class="f-input" id="r-pin" placeholder="개인 확인 비밀번호 4자리">
+      <button class="send-btn" onclick="loadMyEntries()" style="margin-top:0.6rem">🔎 내 글 확인하기</button>
+      <div id="replies-list" style="margin-top:1rem"></div>
     </div>
   </div>
 </div>
@@ -489,6 +517,7 @@ window.INITIAL_SERMON_DATA = {"title": "일어나 빛을 비치는 교회", "dat
     <button class="tab"    onclick="showPastorPanel('stats')"  id="ptb-stats">📊 현황</button>
     <button class="tab"    onclick="showPastorPanel('config')" id="ptb-config">⚙️ 설정</button>
     <button class="tab"    onclick="showPastorPanel('notes')"  id="ptb-notes">📖 노트</button>
+    <button class="tab"    onclick="showPastorPanel('prayer')" id="ptb-prayer">🙏 기도</button>
   </div>
 
   <!-- 받은 메시지 -->
@@ -580,6 +609,11 @@ window.INITIAL_SERMON_DATA = {"title": "일어나 빛을 비치는 교회", "dat
     <div class="inbox-head">📖 성도들의 설교 노트</div>
     <button class="reload-btn" style="margin-bottom:1rem;" onclick="loadNotes()">🔄 새로고침</button>
     <div id="notes-list"><div class="empty-msg">불러오는 중...</div></div>
+  </div>
+  <div class="pastor-inner hidden" id="ppanel-prayer">
+    <div class="inbox-head">🙏 기도제목 게시판 (전체)</div>
+    <button class="reload-btn" style="margin-bottom:1rem;" onclick="loadPrayerBoard()">🔄 새로고침</button>
+    <div id="prayer-list-pastor"><div class="empty-msg">불러오는 중...</div></div>
   </div>
 </div>
 
@@ -721,6 +755,7 @@ function showPastorPanel(id) {
   document.getElementById('ptb-' + id).classList.add('on');
   window.scrollTo(0,0);
   if (id === 'notes') loadNotes();
+  if (id === 'prayer') loadPrayerBoard();
   if (id === 'inbox') loadPastorInbox();
   if (id === 'stats') loadStats();
   if (id === 'config') loadPastorConfig();
@@ -884,14 +919,16 @@ function renderSermon() {
 // ================================================
 async function sendMsg() {
   const name    = document.getElementById('f-name').value.trim();
+  const pin = (document.getElementById('f-pin').value||'').trim();
   const content = document.getElementById('f-content').value.trim();
   if (!name)    { alert('이름을 입력해 주세요.'); document.getElementById('f-name').focus(); return; }
+  if (!/^[0-9]{4}$/.test(pin)) { alert('개인 확인 비밀번호 4자리를 입력해 주세요.'); return; }
   if (!content) { alert('내용을 입력해 주세요.'); return; }
   if (!fbReady) { alert('서버 연결을 확인해 주세요.'); return; }
   try {
-    sessionStorage.setItem('woori_name', name);
+    const pinHash = await hashPin(name, pin);
     await DB.collection('sermons').doc(SERMON_KEY).collection('messages').add({
-      senderName:name, type:msgType, content,
+      name, pinHash, type:msgType, content,
       createdAt:firebase.firestore.FieldValue.serverTimestamp(),
       reply:null, repliedAt:null, isRead:false
     });
@@ -907,7 +944,94 @@ function resetForm() {
   document.getElementById('send-ok').style.display = 'none';
 }
 
+// ===== 개인 비번(해시) 기반 본인확인 — 추가 =====
+async function hashPin(name, pin){
+  const enc = new TextEncoder().encode(SERMON_KEY + '|' + (name||'').trim() + '|' + (pin||''));
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function vpin(p){ return /^[0-9]{4}$/.test(p||''); }
+
+async function loadMyEntries(){
+  const name=(document.getElementById('r-name').value||'').trim();
+  const pin=(document.getElementById('r-pin').value||'').trim();
+  const list=document.getElementById('replies-list');
+  if(!name){ alert('이름을 입력해 주세요.'); return; }
+  if(!vpin(pin)){ alert('개인 확인 비밀번호 4자리를 입력해 주세요.'); return; }
+  if(!fbReady){ alert('서버 연결을 확인해 주세요.'); return; }
+  list.innerHTML='<div class="loading-box">불러오는 중...</div>';
+  try{
+    const ph=await hashPin(name,pin);
+    const base=DB.collection('sermons').doc(SERMON_KEY);
+    const [ns,ms,ps]=await Promise.all([
+      base.collection('notes').where('name','==',name).where('pinHash','==',ph).get(),
+      base.collection('messages').where('name','==',name).where('pinHash','==',ph).get(),
+      base.collection('prayerBoard').where('name','==',name).where('pinHash','==',ph).get()
+    ]);
+    const items=[];
+    ns.forEach(d=>{const x=d.data();const body=[x.verse?'📌 '+esc(x.verse):'',x.apply?'🌱 '+esc(x.apply):'',x.memo?'💬 '+esc(x.memo):''].filter(Boolean).join('<br>');items.push({kind:'설교노트',t:x.createdAt,body:body,reply:x.reply,expect:false});});
+    ms.forEach(d=>{const x=d.data();items.push({kind:x.type||'질문',t:x.createdAt,body:esc(x.content),reply:x.reply,expect:true});});
+    ps.forEach(d=>{const x=d.data();items.push({kind:'기도제목',t:x.createdAt,body:(x.title?'<b>'+esc(x.title)+'</b><br>':'')+esc(x.content),reply:x.reply,expect:true});});
+    if(!items.length){ list.innerHTML='<div class="loading-box">이름 또는 비밀번호가 일치하는 글이 없습니다. 다시 확인해 주세요.</div>'; return; }
+    items.sort((a,b)=>((b.t&&b.t.toMillis?b.t.toMillis():0)-(a.t&&a.t.toMillis?a.t.toMillis():0)));
+    list.innerHTML='';
+    items.forEach(d=>{
+      const dt=d.t&&d.t.toDate?new Date(d.t.toDate()).toLocaleDateString('ko-KR'):'';
+      const rep=d.reply?'<div class="done-box"><div class="done-lbl">✅ 목사님 답변</div>'+esc(d.reply)+'</div>':(d.expect?'<div style="font-size:0.85rem;color:var(--muted);margin-top:0.4rem">아직 답변이 없습니다.</div>':'');
+      list.innerHTML+='<div class="msg-item"><div class="msg-row"><span class="msg-type">'+d.kind+'</span><span class="msg-date">'+dt+'</span></div><div class="inbox-content" style="margin:0.4rem 0">'+d.body+'</div>'+rep+'</div>';
+    });
+  }catch(e){ list.innerHTML='<div style="color:var(--danger);padding:1rem">불러오기 오류가 발생했습니다.</div>'; console.error(e); }
+}
+
+async function sendPrayer(){
+  const name=(document.getElementById('p-name').value||'').trim();
+  const pin=(document.getElementById('p-pin').value||'').trim();
+  const title=(document.getElementById('p-title').value||'').trim();
+  const content=(document.getElementById('p-content').value||'').trim();
+  if(!name){ alert('이름을 입력해 주세요.'); return; }
+  if(!vpin(pin)){ alert('개인 확인 비밀번호 4자리를 입력해 주세요.'); return; }
+  if(!content){ alert('기도제목 내용을 입력해 주세요.'); return; }
+  if(!fbReady){ alert('서버 연결을 확인해 주세요.'); return; }
+  try{
+    const ph=await hashPin(name,pin);
+    await DB.collection('sermons').doc(SERMON_KEY).collection('prayerBoard').add({name:name,pinHash:ph,title:title,content:content,reply:null,repliedAt:null,isRead:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    document.getElementById('prayer-form').classList.add('hidden');
+    document.getElementById('prayer-ok').style.display='block';
+  }catch(e){ alert('전송 오류가 발생했습니다.'); console.error(e); }
+}
+function resetPrayer(){
+  document.getElementById('p-title').value='';
+  document.getElementById('p-content').value='';
+  document.getElementById('prayer-form').classList.remove('hidden');
+  document.getElementById('prayer-ok').style.display='none';
+}
+
+async function loadPrayerBoard(){
+  if(!fbReady) return;
+  const list=document.getElementById('prayer-list-pastor');
+  list.innerHTML='<div class="empty-msg">불러오는 중...</div>';
+  try{
+    const snap=await DB.collection('sermons').doc(SERMON_KEY).collection('prayerBoard').orderBy('createdAt','desc').get();
+    if(snap.empty){ list.innerHTML='<div class="empty-msg">📭 아직 기도제목이 없습니다.</div>'; return; }
+    list.innerHTML='';
+    snap.forEach(d=>{
+      const x=d.data();
+      const dt=x.createdAt?new Date(x.createdAt.toDate()).toLocaleString('ko-KR'):'—';
+      const rep=x.reply?'<div class="done-box"><div class="done-lbl">✅ 답변 완료</div>'+esc(x.reply)+'</div>':'<textarea class="reply-ta" id="prt-'+d.id+'" placeholder="답변을 입력하세요..."></textarea><button class="send-btn" onclick="submitPrayerReply(\''+d.id+'\')">답변 보내기</button>';
+      list.innerHTML+='<div class="inbox-item '+(!x.isRead?'unread':'')+'"><div class="inbox-meta"><span class="inbox-sender">'+esc(x.name||'익명')+'</span><span class="inbox-type-p tp">🙏 기도제목</span></div><div class="inbox-date">'+dt+'</div>'+(x.title?'<div style="font-weight:700;margin:0.2rem 0">'+esc(x.title)+'</div>':'')+'<div class="inbox-content">'+esc(x.content)+'</div>'+rep+'</div>';
+    });
+    snap.forEach(d=>{ if(!d.data().isRead) DB.collection('sermons').doc(SERMON_KEY).collection('prayerBoard').doc(d.id).update({isRead:true}).catch(()=>{}); });
+  }catch(e){ list.innerHTML='<div style="color:var(--danger);padding:1rem">불러오기 오류가 발생했습니다.</div>'; }
+}
+async function submitPrayerReply(id){
+  const ta=document.getElementById('prt-'+id); const txt=ta?ta.value.trim():'';
+  if(!txt){ alert('답변 내용을 입력해 주세요.'); return; }
+  try{ await DB.collection('sermons').doc(SERMON_KEY).collection('prayerBoard').doc(id).update({reply:txt,repliedAt:firebase.firestore.FieldValue.serverTimestamp()}); alert('답변이 전송되었습니다! 😊'); loadPrayerBoard(); }catch(e){ alert('오류가 발생했습니다.'); }
+}
+
+
 async function loadReplies() {
+  return; // 비활성화 — 이름+PIN 방식 loadMyEntries() 사용
   if (!fbReady) return;
   const list = document.getElementById('replies-list');
   const myName = (sessionStorage.getItem('woori_name')||'').trim();
@@ -947,13 +1071,15 @@ async function saveNote() {
   const apply = document.getElementById('n-apply').value.trim();
   const memo  = document.getElementById('n-memo').value.trim();
   if (!verse && !apply && !memo) { alert('노트에 내용을 입력해 주세요.'); return; }
-  const name = prompt('이름을 입력해 주세요:', sessionStorage.getItem('woori_name')||'');
-  if (!name) return;
-  sessionStorage.setItem('woori_name', name);
+  const name = (document.getElementById('n-name').value||'').trim();
+  const pin = (document.getElementById('n-pin').value||'').trim();
+  if (!name) { alert('이름을 입력해 주세요.'); return; }
+  if (!/^[0-9]{4}$/.test(pin)) { alert('개인 확인 비밀번호 4자리를 입력해 주세요.'); return; }
   if (!fbReady) { alert('서버 연결을 확인해 주세요.'); return; }
   try {
+    const pinHash = await hashPin(name, pin);
     await DB.collection('sermons').doc(SERMON_KEY).collection('notes').add({
-      name, verse, apply, memo,
+      name, pinHash, verse, apply, memo, reply:null,
       sermonKey: SERMON_KEY,
       sermon: SERMON ? SERMON.title : '',
       sermonDate: SERMON ? SERMON.date : '',
@@ -984,7 +1110,7 @@ async function loadPastorInbox() {
       const tc = d.type==='기도제목' ? 'tp' : 'tq';
       box.innerHTML += `
         <div class="inbox-item ${!d.isRead?'unread':''}">
-          <div class="inbox-meta"><span class="inbox-sender">${esc(d.senderName||'익명')}</span><span class="inbox-type-p ${tc}">${d.type}</span></div>
+          <div class="inbox-meta"><span class="inbox-sender">${esc(d.name||'익명')}</span><span class="inbox-type-p ${tc}">${d.type}</span></div>
           <div class="inbox-date">${dt}</div>
           <div class="inbox-content">${esc(d.content)}</div>
           ${d.reply
