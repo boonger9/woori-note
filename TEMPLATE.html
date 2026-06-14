@@ -431,8 +431,6 @@ window.INITIAL_SERMON_DATA = {"title": "", "date": "", "scriptureRef": "", "vers
       <textarea class="note-ta" id="n-verse" placeholder="마음에 와닿은 말씀을 적어보세요..."></textarea>
       <div class="note-lbl">🌱 이번 주 내 삶에 적용할 한 가지</div>
       <textarea class="note-ta" id="n-apply" placeholder="구체적으로 한 가지만 적어보세요..."></textarea>
-      <div class="note-lbl">💬 더 묵상하고 싶은 것 / 궁금한 것</div>
-      <textarea class="note-ta" id="n-memo" placeholder="더 생각해 보고 싶은 내용을 적어보세요..."></textarea>
       <div class="note-lbl">🔑 본인 확인 (나중에 답변 확인에 필요)</div>
       <input type="text" class="f-input" id="n-name" placeholder="이름" style="margin-bottom:0.5rem">
       <input type="password" inputmode="numeric" maxlength="4" class="f-input" id="n-pin" placeholder="개인 확인 비밀번호 4자리">
@@ -1069,8 +1067,7 @@ async function loadReplies() {
 async function saveNote() {
   const verse = document.getElementById('n-verse').value.trim();
   const apply = document.getElementById('n-apply').value.trim();
-  const memo  = document.getElementById('n-memo').value.trim();
-  if (!verse && !apply && !memo) { alert('노트에 내용을 입력해 주세요.'); return; }
+  if (!verse && !apply) { alert('노트에 내용을 입력해 주세요.'); return; }
   const name = (document.getElementById('n-name').value||'').trim();
   const pin = (document.getElementById('n-pin').value||'').trim();
   if (!name) { alert('이름을 입력해 주세요.'); return; }
@@ -1079,7 +1076,7 @@ async function saveNote() {
   try {
     const pinHash = await hashPin(name, pin);
     await DB.collection('sermons').doc(SERMON_KEY).collection('notes').add({
-      name, pinHash, verse, apply, memo, reply:null,
+      name, pinHash, verse, apply, reply:null,
       sermonKey: SERMON_KEY,
       sermon: SERMON ? SERMON.title : '',
       sermonDate: SERMON ? SERMON.date : '',
@@ -1158,7 +1155,6 @@ async function loadNotes() {
           <div style="font-size:0.78rem;color:var(--muted);margin-bottom:0.5rem">${esc(d.sermon||'')}</div>
           ${d.verse  ? `<div class="nv-label">📌 마음에 남은 말씀</div><div class="nv-content">${esc(d.verse)}</div>` : ''}
           ${d.apply  ? `<div class="nv-label">🌱 이번 주 적용</div><div class="nv-content">${esc(d.apply)}</div>` : ''}
-          ${d.memo   ? `<div class="nv-label">💬 더 묵상하고 싶은 것</div><div class="nv-content">${esc(d.memo)}</div>` : ''}
         </div>`;
     });
   } catch(e) { list.innerHTML = '<div style="color:var(--danger);padding:1rem">불러오기 오류가 발생했습니다.</div>'; }
