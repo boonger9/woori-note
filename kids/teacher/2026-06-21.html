@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대구우리교회 주일학교(교사) | 흙 속에 숨은 진짜 이야기</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#2D4A7A;--gold:#C8A000;--cream:#faf7f2;--fs:17px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:#1a2340;font-size:var(--fs);line-height:1.8;}
+.wrap{max-width:680px;margin:0 auto;padding:0 16px 60px;}
+.hero{background:linear-gradient(160deg,#243a5e,#2f4a76);color:#fff;border-radius:0 0 20px 20px;padding:28px 24px 24px;margin:0 -16px 20px;text-align:center;}
+.hero .tag{display:inline-block;background:rgba(200,160,0,.3);color:#ffe9a8;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:10px;}
+.hero h1{font-size:23px;font-weight:700;margin-bottom:8px;}.hero .verse{font-size:14px;color:#bcd0ec;}.hero .date{font-size:12px;color:#9fb8d8;margin-top:6px;}
+.sec{background:#fff;border-radius:16px;padding:20px 22px;margin-bottom:16px;box-shadow:0 1px 8px rgba(26,44,78,.06);}
+.sec.gold{border:2px solid var(--gold);}.sec.script{border-left:5px solid var(--gold);}
+.sec h2{font-size:15px;color:var(--navy);font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.sec h2 .dot{width:24px;height:24px;background:var(--navy);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+p{margin-bottom:12px;}.lbl{font-weight:700;color:var(--navy);margin:12px 0 5px;}.warn{color:#a33;}
+.verse-box{background:#f0f5fb;border-left:4px solid var(--navy);border-radius:0 10px 10px 0;padding:12px 15px;font-size:14px;line-height:1.85;margin-bottom:8px;}
+.verse-box .ref{display:block;font-size:11px;color:#5a7a9a;margin-top:5px;}
+.script p{font-size:15px;line-height:1.95;}.script .hl{background:linear-gradient(transparent 60%,#ffe9a8 60%);font-weight:700;}
+.timeline{list-style:none;}
+.timeline li{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed #eee;font-size:14px;}
+.timeline li:last-child{border-bottom:none;}
+.timeline .tm{font-weight:700;color:var(--gold);flex-shrink:0;width:54px;}
+.chk{list-style:none;}.chk li{font-size:14px;padding:4px 0;}.chk li::before{content:'☐ ';color:var(--gold);font-weight:700;}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;}
+.ci{border-radius:10px;padding:12px;font-size:13px;line-height:1.6;}.ci.bad{background:#fef3e8;border:1.5px solid #e8c880;}.ci.good{background:#e8f4f0;border:1.5px solid #7fc4a8;}.ci .h{font-weight:700;margin-bottom:6px;}.ci.bad .h{color:#8a5a00;}.ci.good .h{color:#1a6b4a;}
+.answers{background:#f0f5fb;border-radius:12px;padding:14px 16px;}.answers .v{font-size:15px;font-weight:700;color:var(--navy);line-height:2;}
+.ws-ref{font-size:14px;line-height:2;}.ws-ref .b{color:var(--gold);font-weight:700;border-bottom:1px solid var(--gold);padding:0 4px;}
+.pray-box{background:#fff8e8;border:1.5px solid var(--gold);border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.9;color:#5a4a10;}
+.parent-line{background:#eef4fb;border-radius:10px;padding:12px 14px;font-size:14px;color:var(--navy);}
+.stat{display:flex;gap:10px;text-align:center;margin-bottom:12px;}
+.stat .s{flex:1;background:#f0f5fb;border-radius:12px;padding:12px;}
+.stat .s .n{font-size:24px;font-weight:700;color:var(--navy);}.stat .s .l{font-size:12px;color:#888;}
+.ws-item,.inbox-item{border:1px solid #e6e6e6;border-radius:12px;padding:13px 15px;margin-bottom:11px;}
+.inbox-item.unread{border-color:var(--gold);background:#fffdf5;}
+.who{font-weight:700;color:var(--navy);}.when{font-size:11px;color:#999;float:right;font-weight:400;}
+.row{font-size:14px;margin:3px 0;}.k{color:var(--gold);font-weight:700;}
+.tp{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;background:#e8f0fb;color:var(--navy);margin-left:6px;}
+.ct{font-size:14px;margin:6px 0;}
+.done{background:#e8f4f0;border-radius:10px;padding:9px 12px;font-size:14px;color:#1a6b4a;}.done .dl{font-size:12px;font-weight:700;margin-bottom:3px;}
+.from-teacher{background:#fff8e8;border-radius:10px;padding:9px 12px;font-size:14px;color:#5a4a10;}
+.reply-ta,.inp,.ta{width:100%;border:1.5px solid #d8e0ec;border-radius:10px;font-family:inherit;font-size:14px;padding:9px 11px;resize:vertical;}
+.reply-ta:focus,.inp:focus,.ta:focus{outline:none;border-color:var(--navy);}
+select.inp{appearance:auto;}
+.btn{font-family:inherit;font-size:14px;font-weight:700;border-radius:10px;padding:9px 15px;cursor:pointer;border:1.5px solid var(--navy);background:var(--navy);color:#fff;margin-top:7px;}.btn.ghost{background:#fff;color:var(--navy);}
+.badge{background:var(--gold);color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:12px;margin-left:6px;}
+.roster{display:flex;flex-wrap:wrap;gap:8px;}.roster .r{background:#f0f5fb;border-radius:10px;padding:7px 12px;font-size:13px;}.roster .r b{color:var(--navy);}.roster .r .n{color:var(--gold);font-weight:700;margin-left:6px;}
+.toolbar{display:flex;gap:8px;justify-content:center;margin:20px 0;}.toolbar button{font-family:inherit;font-size:14px;border:1.5px solid var(--navy);background:#fff;color:var(--navy);border-radius:10px;padding:8px 16px;cursor:pointer;}
+.ftr{text-align:center;color:#9aa4b8;font-size:12px;margin-top:24px;}.back{display:block;text-align:center;color:var(--navy);font-size:13px;margin:10px 0 0;text-decoration:none;}
+#gate{position:fixed;inset:0;background:linear-gradient(160deg,#243a5e,#2f4a76);display:flex;align-items:center;justify-content:center;z-index:9999;padding:24px;}
+#gate .box{background:#fff;border-radius:18px;padding:30px 26px;max-width:340px;width:100%;text-align:center;}
+#gate h3{color:var(--navy);font-size:18px;margin-bottom:6px;}#gate p{font-size:13px;color:#888;margin-bottom:18px;}
+#gate input{width:100%;border:1.5px solid #d8e0ec;border-radius:10px;font-size:18px;text-align:center;letter-spacing:6px;padding:12px;margin-bottom:12px;font-family:inherit;}
+#gate button{width:100%;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:12px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;}#gate .err{color:#c0392b;font-size:13px;height:18px;margin-top:8px;}
+@media print{.toolbar,#gate{display:none!important;}body{background:#fff;}.sec{box-shadow:none;border:1px solid #ddd;}}
+@media(max-width:420px){.compare{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div id="gate"><div class="box">
+  <h3>🧑‍🏫 교사용 방</h3><p>주일학교 교사 암호를 입력해 주세요</p>
+  <input id="gate-pw" type="password" inputmode="numeric" maxlength="8" placeholder="••••">
+  <button onclick="tryGate()">들어가기</button><div class="err" id="gate-err"></div>
+</div></div>
+
+<div class="wrap">
+<div class="hero">
+  <span class="tag">초등부 · 교사용 방</span><h1>흙 속에 숨은 진짜 이야기</h1>
+  <div class="verse">고린도전서 15:35–58</div><div class="date">2026년 6월 21일 주일</div>
+</div>
+<div class="toolbar"><button onclick="fz(2)">글씨 크게</button><button onclick="fz(-2)">글씨 작게</button><button onclick="window.print()">인쇄하기</button></div>
+
+<div class="sec">
+  <h2><span class="dot">📋</span>수업 진행 순서 (약 40분)</h2>
+  <ul class="timeline">
+    <li><span class="tm">5분</span>인사 · 찬양으로 마음 열기</li>
+    <li><span class="tm">5분</span>도입 활동(아래 "씨앗 심기" 체험)</li>
+    <li><span class="tm">12분</span>오늘의 이야기 들려주기 (설교 원고)</li>
+    <li><span class="tm">5분</span>복음 핵심 짚기 — "순서가 중요해요"</li>
+    <li><span class="tm">8분</span>활동지 작성 (빈칸·질문)</li>
+    <li><span class="tm">5분</span>나눔 · 마무리 기도</li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">🧰</span>준비물 체크리스트</h2>
+  <ul class="chk">
+    <li>학생용 활동지 인쇄 (학생 수만큼)</li><li>연필 · 색연필/사인펜</li><li>성경(고린도전서 15장)</li>
+    <li>도입용: 씨앗(콩·해바라기씨 등) 몇 알, 작은 화분이나 흙(선택)</li><li>(선택) 찬양 음원/가사 PPT</li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">🎈</span>도입 활동 — 주의 집중 열기</h2>
+  <p>씨앗 한 알을 아이들에게 보여 주며 물어보세요. <b>"이 작은 씨앗을 손바닥에만 두면 어떻게 될까요? 땅에 심으면요?"</b> 대답을 들은 뒤 말합니다. <b>"땅에 묻히면 사라진 것 같지만, 사실은 다시 살아날 준비를 하는 거예요. 오늘은 '씨앗'과 '다시 사는 것'에 대한 이야기예요."</b> → 자연스럽게 본문으로 연결.</p>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">📖</span>오늘의 말씀</h2>
+  <div class="verse-box">"그러므로 내 사랑하는 형제들아 견실하며 흔들리지 말고 항상 주의 일에 더욱 힘쓰는 자들이 되라 이는 너희 수고가 주 안에서 헛되지 않은 줄 앎이라"<span class="ref">— 고린도전서 15:58</span></div>
+  <div class="verse-box">"죽은 자의 부활도 그와 같으니 썩을 것으로 심고 썩지 아니할 것으로 다시 살아나며"<span class="ref">— 고린도전서 15:42</span></div>
+</div>
+
+<div class="sec script">
+  <h2><span class="dot">📝</span>설교 원고 (이야기 전문 — 교사가 들려줄 내용)</h2>
+  <p>얘들아, 열심히 했는데 아무 일도 안 일어나서 속상했던 적 있어요? 시험공부를 진짜 열심히 했는데 점수가 안 오를 때, 동생한테 양보했는데 엄마가 몰라줄 때요. 그럴 때 마음속에서 "에이, 해 봤자 소용없네" 하는 소리가 들려요. 그런데 오늘 성경은 깜짝 놀랄 이야기를 들려줘요. <span class="hl">"네가 한 수고는 절대로 헛되지 않아!"</span></p>
+  <p>바울 선생님이 우리를 밭으로 데려가 작고 딱딱한 씨앗 한 알을 보여 줘요. 이 씨앗을 손바닥 위에만 두면 10년이 지나도 그냥 씨앗 한 알이에요. 그래서 농부 아저씨는 씨앗을 땅속에 넣고 흙으로 덮어요. 그 순간엔 사라진 것 같죠? 그런데 며칠 지나면 흙을 뚫고 초록색 싹이 쏙 올라와요! 씨앗은 없어진 게 아니라 <span class="hl">심긴</span> 거였어요.</p>
+  <p>바울 선생님이 말해요. "사람이 죽는 것도 똑같아." 우리 눈에는 끝난 것 같지만, 하나님을 믿는 사람한테는 끝이 아니에요. 씨앗이 심긴 것처럼, 하나님이 나중에 반짝반짝 빛나는 멋진 몸으로 다시 살리실 거예요!</p>
+  <p>그런데 우리 힘으로는 다시 살아날 수 없어요. 우리한테는 죄가 있었거든요. 그래서 <span class="hl">예수님이 먼저</span> 한 알의 밀알처럼 땅에 떨어지셨어요. 먼저 십자가에서 돌아가시고, 먼저 무덤에 들어가셨어요. 우리 <span class="hl">대신</span> 우리 죄를 다 짊어지시려고요.</p>
+  <p>사람들은 "예수님도 끝났구나" 생각했어요. 무덤 앞에 커다란 돌까지 막아 놨어요. 그런데! 사흘째 되는 날 새벽, 무덤 문이 활짝 열렸어요. <span class="hl">예수님이 다시 살아나셨어요!</span> 죽음이 예수님을 삼켰다고 생각했는데, 오히려 예수님이 죽음을 이기고 일어나신 거예요.</p>
+  <p>그러니까 여러분이 지금 하는 작은 일들 — 엄마 아빠를 위해 기도한 거, 짜증 참고 동생한테 양보한 거, 친구를 도와준 거 — 그게 다 땅에 심긴 씨앗이에요. 하나님이 다 기억하세요. 하나도 헛되지 않아요. 여기서 꼭 기억할 게 있어요. 우리가 착해지려고 억지로 애쓰는 게 아니에요. <span class="hl">예수님이 먼저 우리를 위해 다 해 주셨으니까, 너무 고마워서 기쁘게 씨앗을 심는 거예요.</span> 오늘도 예수님 안에서 사랑의 씨앗을 심는 여러분이 되기를 바랍니다.</p>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">✨</span>복음 핵심 — 순서가 중요해요</h2>
+  <div class="compare">
+    <div class="ci bad"><div class="h">✗ 세상은 말해요</div>"열심히 해 봐도 다 헛수고야. 죽으면 그냥 끝이야."</div>
+    <div class="ci good"><div class="h">✓ 예수님은 말씀해요</div>"네 수고는 심긴 씨앗이야. 나는 죽음을 이기고 다시 살아났단다!"</div>
+  </div>
+  <p style="text-align:center;font-weight:700;color:var(--navy)">예수님이 먼저 죽음을 이기셨기에, 우리의 수고는 헛되지 않습니다.</p>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">🎵</span>찬양 · 율동 추천</h2>
+  <p>주제(씨앗·부활·헛되지 않은 수고)에 맞는 곡으로 마음을 열어 주세요.</p>
+  <p>· <b>「예수 사랑하심은」</b> — 먼저 받은 사랑을 떠올리며 차분하게.<br>
+  · <b>「주님 말씀하시면」</b> — 순종하며 심는 마음을 담아.<br>
+  <span style="font-size:13px;color:#888">※ 부서에서 늘 부르던 찬양으로 대체하셔도 좋습니다.</span></p>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">🖊</span>활동지 내용 + 정답</h2>
+  <p class="ws-ref"><b>오늘의 말씀</b><br>"너희 <span class="b">수고</span>가 주 안에서 <span class="b">헛되지</span> 않은 줄 앎이라"</p>
+  <p class="ws-ref"><b>이야기 따라가기</b><br>
+  1단계 씨앗을 땅에 넣으면 사라진 것 같지만, 사실은 <span class="b">심긴</span> 거예요. 며칠 뒤 <span class="b">싹</span>이 올라와요.<br>
+  2단계 우리 <span class="b">힘</span>으로는 다시 살아날 수 없어요.<br>
+  3단계 예수님이 먼저 한 알의 <span class="b">밀알</span>처럼 떨어지셨어요.<br>
+  4단계 예수님이 우리 <span class="b">대신</span> 십자가에서 죄를 지셨어요.<br>
+  5단계 사흘 만에 예수님이 다시 <span class="b">살아나셨어요</span>.</p>
+</div>
+
+<div class="sec gold">
+  <h2><span class="dot">T</span>교사 가이드</h2>
+  <div class="lbl">📍 핵심 신학 포인트</div>
+  <p>① 죽음은 매장(끝)이 아니라 <b>파종(심김)</b>입니다 — 부활 소망의 핵심입니다.<br>
+  ② 부활의 근거는 우리의 노력이 아니라, <b>먼저 죽고 먼저 사신 예수 그리스도</b>(마지막 아담, 한 알의 밀알)이십니다.<br>
+  ③ "그러므로"의 순서 — 승리를 <b>받았기에</b> 수고가 헛되지 않습니다(은혜→감사→순종). 그 반대가 아닙니다(반도덕주의).</p>
+  <div class="lbl">🎯 교육 목표</div>
+  <p>아이들이 ① "열심히 해도 소용없다"는 무력감을 인정하고, ② 부활하신 예수님을 바라보며, ③ 내 수고가 주 안에서 '심긴 씨앗'임을 확신하게 합니다.</p>
+  <div class="lbl warn">⚠️ 주의사항</div>
+  <p>· 결론을 "그러니 착하게 살자"로 닫지 마세요. 반드시 <b>"예수님이 먼저 다 해 주셨기에"</b> 순서를 강조합니다.<br>· 죽음·무덤 이야기에 슬퍼하는 아이가 있으면 "예수님이 먼저 그 길을 가셨으니 우리는 혼자가 아니다"로 위로해 주세요.</p>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">A</span>질문 도움말 · 빈칸 정답</h2>
+  <p><b>Q1</b> 농부는 씨앗을 땅에 심어요. 그러면 죽은 듯 보이던 씨앗에서 싹이 나요(심긴 것).<br><b>Q2</b> 자유 응답 — 아이의 속상함을 충분히 들어 주세요.<br><b>Q3</b> 자유 응답 — 구체적 행동(기도·양보·도움)을 끌어내 주세요.<br><b>Q4</b> 예수님이 우리 대신 십자가에서 죄를 지시고 다시 살아나심 → 감사로 연결.</p>
+  <div class="answers" style="margin-top:8px"><div style="font-size:12px;font-weight:700;color:var(--gold);margin-bottom:6px">✏️ 빈칸 정답</div><div class="v">② 수고 / 헛되지<br>③ 1단계: 심긴 · 싹 | 2단계: 힘 | 3단계: 밀알 | 4단계: 대신 | 5단계: 살아나셨어요</div></div>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">🙏</span>마무리 기도문 (함께 드려요)</h2>
+  <div class="pray-box">"사랑의 하나님, 예수님이 우리를 위해 먼저 죽으시고 다시 살아나셔서 감사합니다. 우리가 하는 작은 수고도 주님 안에서 헛되지 않음을 믿게 해 주세요. 보이지 않아도 흔들리지 않고, 기쁘게 사랑의 씨앗을 심게 도와주세요. 예수님 이름으로 기도합니다. 아멘."</div>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">💌</span>부모 전달용 한 줄 요약</h2>
+  <div class="parent-line">"오늘 우리 아이는 고린도전서 15장으로 '씨앗과 부활'을 배웠어요 — 예수님이 먼저 죽으시고 다시 사셨기에 우리의 수고가 헛되지 않다는 이야기였습니다. 집에서 '요즘 열심히 했는데 안 돼서 속상한 일 있었어?'라고 물어봐 주세요."</div>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">📊</span>제출 현황 · 학생 활동지<span class="badge" id="ws-count" style="display:none"></span></h2>
+  <div class="stat">
+    <div class="s"><div class="n" id="stat-roster">–</div><div class="l">등록 학생</div></div>
+    <div class="s"><div class="n" id="stat-submit">–</div><div class="l">활동지 제출</div></div>
+    <div class="s"><div class="n" id="stat-msg">–</div><div class="l">새 소통글</div></div>
+  </div>
+  <div id="worksheets"><div style="color:#999;font-size:14px">불러오는 중...</div></div>
+  <button class="btn ghost" onclick="loadWorksheets()">🔄 새로고침</button>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">📬</span>학생 소통함 (기도제목·질문)<span class="badge" id="msg-count" style="display:none"></span></h2>
+  <div id="inbox"><div style="color:#999;font-size:14px">불러오는 중...</div></div>
+  <button class="btn ghost" onclick="loadInbox()">🔄 새로고침</button>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">👨‍👩‍👧</span>부모 소통함<span class="badge" id="pmsg-count" style="display:none"></span></h2>
+  <div id="parent-inbox"><div style="color:#999;font-size:14px">불러오는 중...</div></div>
+  <button class="btn ghost" onclick="loadParentInbox()">🔄 새로고침</button>
+  <div style="margin-top:16px;border-top:1px dashed #ddd;padding-top:14px">
+    <div class="lbl">🌟 가정에 칭찬·격려 보내기</div>
+    <select class="inp" id="praise-child" style="margin-bottom:8px"><option value="">학생을 선택하세요</option></select>
+    <textarea class="ta" id="praise-text" rows="2" placeholder="예) 오늘 ○○이가 친구를 잘 도왔어요. 가정에서도 칭찬해 주세요!"></textarea>
+    <button class="btn" onclick="sendPraise()">부모님께 보내기</button>
+  </div>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">👥</span>학생 명단 (이름 ↔ 번호)</h2>
+  <p style="font-size:13px;color:#888">번호를 잊은 학생/부모에게 알려줄 때 쓰세요.</p>
+  <div id="roster" class="roster"><div style="color:#999;font-size:14px">불러오는 중...</div></div>
+  <button class="btn ghost" onclick="loadRoster()">🔄 새로고침</button>
+</div>
+
+<a class="back" href="index.html">← 교사용 노트 목록으로</a>
+<div class="ftr">대구우리교회 주일학교 · 바른신학 · 바른교회 · 바른생활</div>
+</div>
+
+<script>
+const KIDS_KEY="2026-06-21";const PW="4341";
+const FIREBASE_CONFIG={apiKey:"AIzaSyCFIs7e7z8t2nzsgHSwcX72COjzBNTJz_s",authDomain:"daegu-woorinote.firebaseapp.com",projectId:"daegu-woorinote",storageBucket:"daegu-woorinote.firebasestorage.app",messagingSenderId:"1047053636423",appId:"1:1047053636423:web:9dfcad4b55678879403262"};
+let DB=null,fbReady=false,ROSTER=[];
+try{firebase.initializeApp(FIREBASE_CONFIG);DB=firebase.firestore();fbReady=true;}catch(e){console.warn(e);}
+let fs=17;function fz(d){fs=Math.max(14,Math.min(26,fs+d));document.documentElement.style.setProperty('--fs',fs+'px');}
+function esc(s){return (s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function sermonDoc(){return DB.collection('sermons').doc('kids-'+KIDS_KEY);}
+function ms(t){return t&&t.toMillis?t.toMillis():0;}
+function tryGate(){if(document.getElementById('gate-pw').value.trim()===PW){sessionStorage.setItem('kids_role','teacher');openRoom();}else{document.getElementById('gate-err').textContent='암호가 맞지 않습니다.';}}
+function openRoom(){document.getElementById('gate').style.display='none';loadRoster();loadWorksheets();loadInbox();loadParentInbox();}
+document.getElementById('gate-pw').addEventListener('keydown',e=>{if(e.key==='Enter')tryGate();});
+if(sessionStorage.getItem('kids_role')==='teacher'){openRoom();}
+
+const WS_LABELS=[['v1','말씀-수고'],['v2','말씀-헛되지'],['s1a','1-심긴'],['s1b','1-싹'],['s2','2(힘)'],['s3','3(밀알)'],['s4','4(대신)'],['s5','5(살아남)'],['q1','Q1'],['q2','Q2'],['q3','Q3'],['q4','Q4'],['decision','결단']];
+async function loadRoster(){
+  if(!fbReady)return;const box=document.getElementById('roster');
+  try{
+    const snap=await DB.collection('sermons').doc('kids-roster').collection('students').get();
+    ROSTER=[];snap.forEach(d=>ROSTER.push(Object.assign({num:d.id},d.data())));
+    ROSTER.sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko'));
+    document.getElementById('stat-roster').textContent=ROSTER.length;
+    box.innerHTML=ROSTER.length?'':'<div style="color:#999;font-size:14px">아직 등록된 학생이 없습니다.</div>';
+    const sel=document.getElementById('praise-child');sel.innerHTML='<option value="">학생을 선택하세요</option>';
+    ROSTER.forEach(d=>{
+      box.innerHTML+=`<div class="r"><b>${esc(d.name||'')}</b><span class="n">${esc(d.num)}</span></div>`;
+      sel.innerHTML+=`<option value="${esc(d.num)}|${esc(d.name||'')}">${esc(d.name||'')} (${esc(d.num)})</option>`;
+    });
+  }catch(e){box.innerHTML='<div style="color:#c0392b;font-size:14px">불러오기 오류</div>';}
+}
+async function loadWorksheets(){
+  if(!fbReady)return;const box=document.getElementById('worksheets');box.innerHTML='<div style="color:#999;font-size:14px">불러오는 중...</div>';
+  try{
+    const snap=await sermonDoc().collection('worksheets').get();
+    document.getElementById('stat-submit').textContent=snap.size;
+    if(snap.empty){box.innerHTML='<div style="color:#999;font-size:14px">아직 제출된 활동지가 없습니다.</div>';document.getElementById('ws-count').style.display='none';return;}
+    const items=[];snap.forEach(d=>items.push(d.data()));items.sort((a,b)=>ms(b.updatedAt)-ms(a.updatedAt));
+    const c=document.getElementById('ws-count');c.textContent=items.length+'명';c.style.display='inline-block';box.innerHTML='';
+    items.forEach(d=>{
+      const dt=d.updatedAt?new Date(d.updatedAt.toDate()).toLocaleString('ko-KR'):'';const w=d.ws||{};
+      const rows=WS_LABELS.filter(([k])=>(w[k]||'').trim()).map(([k,lb])=>`<div class="row"><span class="k">${lb}</span> · ${esc(w[k])}</div>`).join('')||'<div class="row" style="color:#999">(빈칸 없음)</div>';
+      box.innerHTML+=`<div class="ws-item"><span class="when">${dt}</span><div class="who">🧒 ${esc(d.studentName||'익명')} <span style="color:#bbb;font-weight:400">(${esc(d.studentNumber||'')})</span></div>${rows}</div>`;
+    });
+  }catch(e){box.innerHTML='<div style="color:#c0392b;font-size:14px">불러오기 오류</div>';}
+}
+async function loadInbox(){
+  if(!fbReady)return;const box=document.getElementById('inbox');box.innerHTML='<div style="color:#999;font-size:14px">불러오는 중...</div>';
+  try{
+    const snap=await sermonDoc().collection('messages').get();
+    if(snap.empty){box.innerHTML='<div style="color:#999;font-size:14px">아직 받은 글이 없습니다.</div>';document.getElementById('msg-count').style.display='none';document.getElementById('stat-msg').textContent='0';return;}
+    const items=[];snap.forEach(doc=>items.push(Object.assign({id:doc.id},doc.data())));items.sort((a,b)=>ms(b.createdAt)-ms(a.createdAt));
+    let unread=0;box.innerHTML='';
+    items.forEach(d=>{if(!d.isRead)unread++;const dt=d.createdAt?new Date(d.createdAt.toDate()).toLocaleString('ko-KR'):'';
+      box.innerHTML+=`<div class="inbox-item ${!d.isRead?'unread':''}"><div><span class="who">🧒 ${esc(d.studentName||'익명')} <span style="color:#bbb;font-weight:400">(${esc(d.studentNumber||'')})</span></span><span class="tp">${d.type}</span></div><div class="when" style="float:none">${dt}</div><div class="ct">${esc(d.content)}</div>${d.reply?`<div class="done"><div class="dl">✅ 답변 완료</div>${esc(d.reply)}</div>`:`<textarea class="reply-ta" id="rt-${d.id}" rows="2" placeholder="답을 입력하세요..."></textarea><button class="btn" onclick="reply('${d.id}')">📨 답 보내기</button>`}</div>`;});
+    document.getElementById('stat-msg').textContent=unread;
+    const c=document.getElementById('msg-count');if(unread>0){c.textContent='새 '+unread;c.style.display='inline-block';}else c.style.display='none';
+    items.forEach(async d=>{if(!d.isRead)await sermonDoc().collection('messages').doc(d.id).update({isRead:true}).catch(()=>{});});
+  }catch(e){box.innerHTML='<div style="color:#c0392b;font-size:14px">불러오기 오류</div>';}
+}
+async function reply(id){const ta=document.getElementById('rt-'+id);const txt=ta?ta.value.trim():'';if(!txt){alert('답 내용을 입력해 주세요.');return;}
+  try{await sermonDoc().collection('messages').doc(id).update({reply:txt,repliedAt:firebase.firestore.FieldValue.serverTimestamp()});alert('답이 전송되었습니다 😊');loadInbox();}catch(e){alert('오류가 발생했습니다.');}}
+
+async function loadParentInbox(){
+  if(!fbReady)return;const box=document.getElementById('parent-inbox');box.innerHTML='<div style="color:#999;font-size:14px">불러오는 중...</div>';
+  try{
+    const snap=await sermonDoc().collection('parentMessages').get();
+    if(snap.empty){box.innerHTML='<div style="color:#999;font-size:14px">아직 부모 글이 없습니다.</div>';document.getElementById('pmsg-count').style.display='none';return;}
+    const items=[];snap.forEach(doc=>items.push(Object.assign({id:doc.id},doc.data())));items.sort((a,b)=>ms(b.createdAt)-ms(a.createdAt));
+    let unread=0;box.innerHTML='';
+    items.forEach(d=>{
+      const dt=d.createdAt?new Date(d.createdAt.toDate()).toLocaleString('ko-KR'):'';
+      if(d.from==='teacher'){
+        box.innerHTML+=`<div class="inbox-item"><div><span class="who">🌟 ${esc(d.childName||'')} 가정에 보냄</span><span class="tp">칭찬·격려</span></div><div class="when" style="float:none">${dt}</div><div class="from-teacher">${esc(d.content)}</div></div>`;
+      }else{
+        if(!d.isRead)unread++;
+        box.innerHTML+=`<div class="inbox-item ${!d.isRead?'unread':''}"><div><span class="who">👨‍👩‍👧 ${esc(d.childName||'')} 학부모 <span style="color:#bbb;font-weight:400">(${esc(d.childNumber||'')})</span></span><span class="tp">${esc(d.type||'소통')}</span></div><div class="when" style="float:none">${dt}</div><div class="ct">${esc(d.content)}</div>${d.reply?`<div class="done"><div class="dl">✅ 답변 완료</div>${esc(d.reply)}</div>`:`<textarea class="reply-ta" id="prt-${d.id}" rows="2" placeholder="답을 입력하세요..."></textarea><button class="btn" onclick="replyParent('${d.id}')">📨 답 보내기</button>`}</div>`;
+      }
+    });
+    const c=document.getElementById('pmsg-count');if(unread>0){c.textContent='새 '+unread;c.style.display='inline-block';}else c.style.display='none';
+    items.forEach(async d=>{if(d.from!=='teacher'&&!d.isRead)await sermonDoc().collection('parentMessages').doc(d.id).update({isRead:true}).catch(()=>{});});
+  }catch(e){box.innerHTML='<div style="color:#c0392b;font-size:14px">불러오기 오류</div>';}
+}
+async function replyParent(id){const ta=document.getElementById('prt-'+id);const txt=ta?ta.value.trim():'';if(!txt){alert('답 내용을 입력해 주세요.');return;}
+  try{await sermonDoc().collection('parentMessages').doc(id).update({reply:txt,repliedAt:firebase.firestore.FieldValue.serverTimestamp()});alert('답이 전송되었습니다 😊');loadParentInbox();}catch(e){alert('오류가 발생했습니다.');}}
+async function sendPraise(){
+  const sel=document.getElementById('praise-child').value;const txt=document.getElementById('praise-text').value.trim();
+  if(!sel){alert('학생을 선택해 주세요.');return;}if(!txt){alert('내용을 입력해 주세요.');return;}
+  const [num,name]=sel.split('|');
+  try{
+    await sermonDoc().collection('parentMessages').add({childNumber:num,childName:name,from:'teacher',type:'칭찬·격려',content:txt,reply:null,isRead:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    document.getElementById('praise-text').value='';alert(name+' 가정에 전했습니다 😊');loadParentInbox();
+  }catch(e){alert('오류가 발생했습니다.');console.error(e);}
+}
+</script>
+</body>
+</html>
