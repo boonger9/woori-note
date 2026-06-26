@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대구우리교회 주일학교(교사) | 두 언덕 이야기 — 미워하던 마음을 녹이시는 예수님</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#2D4A7A;--gold:#C8A000;--cream:#faf7f2;--fs:17px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:#1a2340;font-size:var(--fs);line-height:1.8;}
+.wrap{max-width:680px;margin:0 auto;padding:0 16px 60px;}
+.hero{background:linear-gradient(160deg,#243a5e,#2f4a76);color:#fff;border-radius:0 0 20px 20px;padding:28px 24px 24px;margin:0 -16px 20px;text-align:center;}
+.hero .tag{display:inline-block;background:rgba(200,160,0,.3);color:#ffe9a8;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:10px;}
+.hero h1{font-size:23px;font-weight:700;margin-bottom:8px;}.hero .verse{font-size:14px;color:#bcd0ec;}.hero .date{font-size:12px;color:#9fb8d8;margin-top:6px;}
+.sec{background:#fff;border-radius:16px;padding:20px 22px;margin-bottom:16px;box-shadow:0 1px 8px rgba(26,44,78,.06);}
+.sec.gold{border:2px solid var(--gold);}.sec.script{border-left:5px solid var(--gold);}
+.sec h2{font-size:15px;color:var(--navy);font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.sec h2 .dot{width:24px;height:24px;background:var(--navy);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+p{margin-bottom:12px;}.lbl{font-weight:700;color:var(--navy);margin:12px 0 5px;}.warn{color:#a33;}
+.verse-box{background:#f0f5fb;border-left:4px solid var(--navy);border-radius:0 10px 10px 0;padding:12px 15px;font-size:14px;line-height:1.85;margin-bottom:8px;}
+.verse-box .ref{display:block;font-size:11px;color:#5a7a9a;margin-top:5px;}
+.script p{font-size:15px;line-height:1.95;}.script .hl{background:linear-gradient(transparent 60%,#ffe9a8 60%);font-weight:700;}
+.timeline{list-style:none;}
+.timeline li{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed #eee;font-size:14px;}
+.timeline li:last-child{border-bottom:none;}
+.timeline .tm{font-weight:700;color:var(--gold);flex-shrink:0;width:54px;}
+.chk{list-style:none;}.chk li{font-size:14px;padding:4px 0;}.chk li::before{content:'☐ ';color:var(--gold);font-weight:700;}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;}
+.ci{border-radius:10px;padding:12px;font-size:13px;line-height:1.6;}.ci.bad{background:#fef3e8;border:1.5px solid #e8c880;}.ci.good{background:#e8f4f0;border:1.5px solid #7fc4a8;}.ci .h{font-weight:700;margin-bottom:6px;}.ci.bad .h{color:#8a5a00;}.ci.good .h{color:#1a6b4a;}
+.answers{background:#f0f5fb;border-radius:12px;padding:14px 16px;}.answers .v{font-size:15px;font-weight:700;color:var(--navy);line-height:2;}
+.ws-ref{font-size:14px;line-height:2;}.ws-ref .b{color:var(--gold);font-weight:700;border-bottom:1px solid var(--gold);padding:0 4px;}
+.pray-box{background:#fff8e8;border:1.5px solid var(--gold);border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.9;color:#5a4a10;}
+.parent-line{background:#eef4fb;border-radius:10px;padding:12px 14px;font-size:14px;color:var(--navy);}
+.stat{display:flex;gap:10px;text-align:center;margin-bottom:12px;}
+.stat .s{flex:1;background:#f0f5fb;border-radius:12px;padding:12px;}
+.stat .s .n{font-size:24px;font-weight:700;color:var(--navy);}.stat .s .l{font-size:12px;color:#888;}
+.ws-item,.inbox-item{border:1px solid #e6e6e6;border-radius:12px;padding:13px 15px;margin-bottom:11px;}
+.inbox-item.unread{border-color:var(--gold);background:#fffdf5;}
+.who{font-weight:700;color:var(--navy);}.when{font-size:11px;color:#999;float:right;font-weight:400;}
+.row{font-size:14px;margin:3px 0;}.k{color:var(--gold);font-weight:700;}
+.tp{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;background:#e8f0fb;color:var(--navy);margin-left:6px;}
+.ct{font-size:14px;margin:6px 0;}
+.done{background:#e8f4f0;border-radius:10px;padding:9px 12px;font-size:14px;color:#1a6b4a;}.done .dl{font-size:12px;font-weight:700;margin-bottom:3px;}
+.from-teacher{background:#fff8e8;border-radius:10px;padding:9px 12px;font-size:14px;color:#5a4a10;}
+.reply-ta,.inp,.ta{width:100%;border:1.5px solid #d8e0ec;border-radius:10px;font-family:inherit;font-size:14px;padding:9px 11px;resize:vertical;}
+.reply-ta:focus,.inp:focus,.ta:focus{outline:none;border-color:var(--navy);}
+select.inp{appearance:auto;}
+.btn{font-family:inherit;font-size:14px;font-weight:700;border-radius:10px;padding:9px 15px;cursor:pointer;border:1.5px solid var(--navy);background:var(--navy);color:#fff;margin-top:7px;}.btn.ghost{background:#fff;color:var(--navy);}
+.badge{background:var(--gold);color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:12px;margin-left:6px;}
+.roster{display:flex;flex-wrap:wrap;gap:8px;}.roster .r{background:#f0f5fb;border-radius:10px;padding:7px 12px;font-size:13px;}.roster .r b{color:var(--navy);}.roster .r .n{color:var(--gold);font-weight:700;margin-left:6px;}
+.toolbar{display:flex;gap:8px;justify-content:center;margin:20px 0;}.toolbar button{font-family:inherit;font-size:14px;border:1.5px solid var(--navy);background:#fff;color:var(--navy);border-radius:10px;padding:8px 16px;cursor:pointer;}
+.ftr{text-align:center;color:#9aa4b8;font-size:12px;margin-top:24px;}.back{display:block;text-align:center;color:var(--navy);font-size:13px;margin:10px 0 0;text-decoration:none;}
+#gate{position:fixed;inset:0;background:linear-gradient(160deg,#243a5e,#2f4a76);display:flex;align-items:center;justify-content:center;z-index:9999;padding:24px;}
+#gate .box{background:#fff;border-radius:18px;padding:30px 26px;max-width:340px;width:100%;text-align:center;}
+#gate h3{color:var(--navy);font-size:18px;margin-bottom:6px;}#gate p{font-size:13px;color:#888;margin-bottom:18px;}
+#gate input{width:100%;border:1.5px solid #d8e0ec;border-radius:10px;font-size:18px;text-align:center;letter-spacing:6px;padding:12px;margin-bottom:12px;font-family:inherit;}
+#gate button{width:100%;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:12px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;}#gate .err{color:#c0392b;font-size:13px;height:18px;margin-top:8px;}
+@media print{.toolbar,#gate{display:none!important;}body{background:#fff;}.sec{box-shadow:none;border:1px solid #ddd;}}
+@media(max-width:420px){.compare{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div id="gate"><div class="box">
+  <h3>🧑‍🏫 교사용 방</h3><p>주일학교 교사 암호를 입력해 주세요</p>
+  <input id="gate-pw" type="password" inputmode="numeric" maxlength="8" placeholder="••••">
+  <button onclick="tryGate()">들어가기</button><div class="err" id="gate-err"></div>
+</div></div>
+
+<div class="wrap">
+<div class="hero">
+  <span class="tag">초등부 · 교사용 방</span><h1>두 언덕 이야기</h1>
+  <div class="verse">요나 4:11</div><div class="date">2026년 6월 28일 주일</div>
+</div>
+<div class="toolbar"><button onclick="fz(2)">글씨 크게</button><button onclick="fz(-2)">글씨 작게</button><button onclick="window.print()">인쇄하기</button></div>
+
+<div class="sec">
+  <h2><span class="dot">📋</span>수업 진행 순서 (약 40분)</h2>
+  <ul class="timeline">
+    <li><span class="tm">5분</span>인사 · 찬양으로 마음 열기</li>
+    <li><span class="tm">5분</span>도입 활동(아래 "미운 사람 떠올리기" 열기)</li>
+    <li><span class="tm">12분</span>오늘의 이야기 들려주기 (설교 원고)</li>
+    <li><span class="tm">5분</span>복음 핵심 짚기 — "두 언덕"</li>
+    <li><span class="tm">8분</span>활동지 작성 (빈칸·질문)</li>
+    <li><span class="tm">5분</span>나눔 · 마무리 기도</li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">🧰</span>준비물 체크리스트</h2>
+  <ul class="chk">
+    <li>학생용 활동지 인쇄 (학생 수만큼)</li><li>연필 · 색연필/사인펜</li><li>성경(요나 4장)</li>
+    <li>도입용: 칠판/전지에 '언덕' 두 개를 그릴 펜(선택)</li><li>(선택) 찬양 음원/가사 PPT</li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">🎈</span>도입 활동 — 주의 집중 열기</h2>
+  <p>아이들에게 조용히 물어보세요. <b>"혹시… 잘 안 됐으면 좋겠다고 생각한 친구가 있어요? (손 들 필요는 없어요, 마음속으로만)"</b> 잠시 기다린 뒤 말합니다. <b>"오늘 성경에도 미운 사람이 잘되는 게 너무 싫었던 아저씨가 나와요. 그런데 예수님은 정반대였대요. 두 언덕 이야기를 들어 볼까요?"</b> → 자연스럽게 본문으로 연결.</p>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">📖</span>오늘의 말씀</h2>
+  <div class="verse-box">"하물며 이 큰 성읍 니느웨에는 좌우를 분변하지 못하는 자가 십이만여 명이요 가축도 많이 있나니 내가 어찌 아끼지 아니하겠느냐 하시니라"<span class="ref">— 요나 4:11</span></div>
+  <div class="verse-box">"주께서는 은혜로우시며 자비로우시며 노하기를 더디하시며 인애가 크신 하나님이신 줄 내가 알았나이다"<span class="ref">— 요나 4:2</span></div>
+</div>
+
+<div class="sec script">
+  <h2><span class="dot">📝</span>설교 원고 (이야기 전문 — 교사가 들려줄 내용)</h2>
+  <p>얘들아, 안녕! 오늘은 질문 하나로 시작해 볼게요. 내가 미워하는 친구가 있는데, 그 친구가 칭찬받고 선물도 받고 막 잘되는 거예요. 그럼 기분이 어때요? 솔직히 배가 좀 아프죠? <span class="hl">"왜 쟤가 잘되지?"</span> 이런 마음이 들죠. 오늘 성경에 바로 그런 마음을 가진 아저씨가 나와요. 이름은 요나, 하나님의 말씀을 전하는 특별한 사람 '선지자'였어요.</p>
+  <p>어느 날 하나님이 요나에게 말씀하셨어요. "니느웨라는 큰 도시로 가서 외쳐라." 그런데 니느웨는 요나네 나라를 괴롭히던 무서운 <span class="hl">원수의 도시</span>였어요. 요나는 그 도시가 너무 미워서, 하나님 말씀을 안 듣고 반대쪽으로 도망갔어요! 도망가다가 큰 풍랑을 만나고, 바다에 빠지고, 커다란 물고기 배 속에서 사흘 만에 살아났어요.</p>
+  <p>그제서야 요나는 니느웨로 가서 외쳤어요. "사십 일이 지나면 니느웨가 무너진다!" 그런데 놀랍게도 니느웨 사람들이 왕부터 백성까지 다 "하나님, 잘못했어요!" 하고 돌아섰어요. 그래서 하나님은 그 도시를 용서해 주셨어요. 그럼 요나는 기뻐했을까요? <b>아니에요!</b> 요나는 화가 났어요. 미운 사람들이 용서받는 게 싫어서, 성 밖 언덕에 앉아 니느웨가 망하는 걸 구경하려 했어요.</p>
+  <p>그때 하나님이 박넝쿨을 자라게 해서 그늘을 주셨어요. 요나는 엄청 좋아했죠. 그런데 다음 날 벌레가 박넝쿨을 갉아 먹어 시들자, 요나는 또 "죽고 싶어요!" 했어요. 풀 한 포기는 아까워하면서, 니느웨에 사는 <span class="hl">십이만 명</span>은 안 불쌍했던 거예요. 하나님이 물으셨어요. "내가 어찌 그들을 아끼지 않겠니?"</p>
+  <p>그런데 얘들아, 사실 우리도 요나하고 똑같아요. 내가 잘되는 건 당연하고, 미운 사람이 잘되는 건 싫죠. 더 놀라운 건, 우리도 사실 '니느웨'예요! 하나님 앞에 잘못이 많았는데, 하나님이 우리를 불쌍히 여기시고 <span class="hl">먼저 아껴</span> 주셨어요. 요나는 미운 사람이 망하기를 바라며 언덕에 앉았지만, 예수님은 정반대였어요. 예수님은 자기를 미워하고 십자가에 못 박을 예루살렘을 보며 <span class="hl">우셨고</span>, 그 도시 안으로 걸어 들어가셨어요.</p>
+  <p>요나는 "쟤네 망해라!" 했지만, 예수님은 우리 <span class="hl">대신</span> 십자가에서 벌을 받으셨어요. 우리가 받아야 할 벌을, 우리를 너무 사랑하셔서 다 받으신 거예요. 미워하는 마음은 우리 힘으로 못 고쳐요. 하지만 우리를 위해 우시고 죽으신 예수님을 바라보면 마음이 사르르 녹아요. "쟤 망해라" 하던 눈이 "쟤도 사랑이 필요해" 하는 눈으로 바뀌어요. 오늘 미워했던 한 사람을 떠올리고 기도해요. "예수님, 저를 먼저 사랑해 주셔서 감사해요. 저도 그 사람을 예수님 눈으로 보게 해 주세요." 우리를 먼저 아껴 주신 예수님 때문에, 우리도 그 한 사람을 다시 볼 수 있어요. 아멘!</p>
+
+</div>
+
+<div class="sec">
+  <h2><span class="dot">✨</span>복음 핵심 — 순서가 중요해요</h2>
+  <div class="compare">
+    <div class="ci bad"><div class="h">✗ 내 마음은 말해요</div>"쟤는 벌받아야 해. 미운 사람이 잘되는 건 불공평해."</div>
+    <div class="ci good"><div class="h">✓ 예수님은 말씀해요</div>"나도 너를 위해 울었고, 너 대신 십자가를 졌단다. 그 사람도 내 사랑이 필요해."</div>
+  </div>
+  <p style="text-align:center;font-weight:700;color:var(--navy)">예수님이 먼저 우리를 아끼셨기에, 우리도 그 한 사람을 긍휼로 다시 봅니다.</p>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">🎵</span>찬양 · 율동 추천</h2>
+  <p>주제(긍휼·용서·예수님의 눈)에 맞는 곡으로 마음을 열어 주세요.</p>
+  <p>· <b>「예수 사랑하심은」</b> — 내가 먼저 받은 사랑을 떠올리며 차분하게.<br>
+  · <b>「내 맘에 한 노래 있어」</b> — 미움이 녹고 평안이 채워지는 마음으로.<br>
+  <span style="font-size:13px;color:#888">※ 부서에서 늘 부르던 찬양으로 대체하셔도 좋습니다.</span></p>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">🖊</span>활동지 내용 + 정답</h2>
+  <p class="ws-ref"><b>오늘의 말씀</b><br>"내가 어찌 <span class="b">아끼</span>지 <span class="b">아니</span>하겠느냐 하시니라"</p>
+  <p class="ws-ref"><b>이야기 따라가기</b><br>
+  1단계 하나님이 요나에게 원수의 도시 <span class="b">니느웨</span>로 가라 하셨지만, 요나는 반대쪽으로 <span class="b">도망</span>갔어요.<br>
+  2단계 니느웨 사람들이 잘못을 빌자 하나님이 그들을 <span class="b">용서</span>해 주셨어요.<br>
+  3단계 요나는 미운 사람이 살아난 게 싫어서 매우 <span class="b">화</span>를 냈어요.<br>
+  4단계 예수님은 우리 <span class="b">대신</span> 십자가에서 벌을 받으셨어요.<br>
+  5단계 예수님을 바라보면 미워하던 마음이 사르르 <span class="b">녹아</span>요.</p>
+</div>
+
+<div class="sec gold">
+  <h2><span class="dot">T</span>교사 가이드</h2>
+  <div class="lbl">📍 핵심 신학 포인트</div>
+  <p>① 우리는 '요나'이기 전에, 좌우도 분변하지 못하던 <b>긍휼로 살아난 니느웨</b>입니다 — 이 고백이 먼저입니다.<br>
+  ② 미움을 이기는 힘은 결심이 아니라, <b>원수 된 우리를 위해 우시고 대신 죽으신 예수님</b>을 바라보는 데서 옵니다(시선의 회심).<br>
+  ③ 은혜→감사→순종의 순서 — 먼저 받은 긍휼이 그 한 사람을 향한 긍휼로 흘러갑니다. 그 반대가 아닙니다(반도덕주의).</p>
+  <div class="lbl">🎯 교육 목표</div>
+  <p>아이들이 ① "쟤는 망해야 해"라는 마음을 정직하게 인정하고, ② 나를 위해 우시고 대신 죽으신 예수님을 바라보며, ③ 미워하던 그 한 사람을 긍휼의 눈으로 다시 보기로 결단하게 합니다.</p>
+  <div class="lbl warn">⚠️ 주의사항</div>
+  <p>· 결론을 "그러니 친구랑 사이좋게 지내자"로 닫지 마세요. 반드시 <b>"예수님이 먼저 우리를 아껴 주셨기에"</b> 순서를 강조합니다.<br>· 아이가 떠올린 '미운 사람'을 발표시키거나 공개하지 마세요. 마음속으로만 떠올리게 합니다.</p>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">A</span>질문 도움말 · 빈칸 정답</h2>
+  <p><b>Q1</b> 니느웨가 원수의 도시였고, 그들이 용서받는 게 싫었기 때문이에요.<br><b>Q2</b> 십이만여 명(좌우도 분변하지 못하는 자들)을 아끼셨어요.<br><b>Q3</b> 자유 응답 — 공개하지 말고 마음속으로만. 충분히 들어 주세요.<br><b>Q4</b> 우리 대신 우시고 십자가를 지신 예수님 → 그 사람도 긍휼이 필요함을 보게 연결.</p>
+  <div class="answers" style="margin-top:8px"><div style="font-size:12px;font-weight:700;color:var(--gold);margin-bottom:6px">✏️ 빈칸 정답</div><div class="v">② 아끼 / 아니<br>③ 1단계: 니느웨 · 도망 | 2단계: 용서 | 3단계: 화 | 4단계: 대신 | 5단계: 녹아요</div></div>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">🙏</span>마무리 기도문 (함께 드려요)</h2>
+  <div class="pray-box">"사랑의 하나님, 자격 없는 우리를 먼저 아껴 주셔서 감사합니다. 미워하던 사람이 잘되는 게 싫었던 요나 같은 마음을 회개합니다. 우리를 위해 우시고 대신 죽으신 예수님을 바라보게 하시고, 그 한 사람을 주님의 눈으로 다시 보게 해 주세요. 예수님 이름으로 기도합니다. 아멘."</div>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">💌</span>부모 전달용 한 줄 요약</h2>
+  <div class="parent-line">"오늘 우리 아이는 요나서 4장으로 '두 언덕 이야기'를 배웠어요 — 미운 사람이 잘되는 게 싫었던 요나와 달리, 예수님은 원수 된 우리를 위해 우시고 대신 죽으셨다는 이야기였습니다. 집에서 '잘 안 됐으면 하는 친구가 있어?'라고 부드럽게 물어봐 주세요."</div>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">📊</span>제출 현황 · 학생 활동지<span class="badge" id="ws-count" style="display:none"></span></h2>
+  <div class="stat">
+    <div class="s"><div class="n" id="stat-roster">–</div><div class="l">등록 학생</div></div>
+    <div class="s"><div class="n" id="stat-submit">–</div><div class="l">활동지 제출</div></div>
+    <div class="s"><div class="n" id="stat-msg">–</div><div class="l">새 소통글</div></div>
+  </div>
+  <div id="worksheets"><div style="color:#999;font-size:14px">불러오는 중...</div></div>
+  <button class="btn ghost" onclick="loadWorksheets()">🔄 새로고침</button>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">📬</span>학생 소통함 (기도제목·질문)<span class="badge" id="msg-count" style="display:none"></span></h2>
+  <div id="inbox"><div style="color:#999;font-size:14px">불러오는 중...</div></div>
+  <button class="btn ghost" onclick="loadInbox()">🔄 새로고침</button>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">👨‍👩‍👧</span>부모 소통함<span class="badge" id="pmsg-count" style="display:none"></span></h2>
+  <div id="parent-inbox"><div style="color:#999;font-size:14px">불러오는 중...</div></div>
+  <button class="btn ghost" onclick="loadParentInbox()">🔄 새로고침</button>
+  <div style="margin-top:16px;border-top:1px dashed #ddd;padding-top:14px">
+    <div class="lbl">🌟 가정에 칭찬·격려 보내기</div>
+    <select class="inp" id="praise-child" style="margin-bottom:8px"><option value="">학생을 선택하세요</option></select>
+    <textarea class="ta" id="praise-text" rows="2" placeholder="예) 오늘 ○○이가 친구를 잘 도왔어요. 가정에서도 칭찬해 주세요!"></textarea>
+    <button class="btn" onclick="sendPraise()">부모님께 보내기</button>
+  </div>
+</div>
+
+<div class="sec">
+  <h2><span class="dot">👥</span>학생 명단 (이름 ↔ 번호)</h2>
+  <p style="font-size:13px;color:#888">번호를 잊은 학생/부모에게 알려줄 때 쓰세요.</p>
+  <div id="roster" class="roster"><div style="color:#999;font-size:14px">불러오는 중...</div></div>
+  <button class="btn ghost" onclick="loadRoster()">🔄 새로고침</button>
+</div>
+
+<a class="back" href="index.html">← 교사용 노트 목록으로</a>
+<div class="ftr">대구우리교회 주일학교 · 바른신학 · 바른교회 · 바른생활</div>
+</div>
+
+<script>
+const KIDS_KEY="2026-06-28";const PW="4341";
+const FIREBASE_CONFIG={apiKey:"AIzaSyCFIs7e7z8t2nzsgHSwcX72COjzBNTJz_s",authDomain:"daegu-woorinote.firebaseapp.com",projectId:"daegu-woorinote",storageBucket:"daegu-woorinote.firebasestorage.app",messagingSenderId:"1047053636423",appId:"1:1047053636423:web:9dfcad4b55678879403262"};
+let DB=null,fbReady=false,ROSTER=[];
+try{firebase.initializeApp(FIREBASE_CONFIG);DB=firebase.firestore();fbReady=true;}catch(e){console.warn(e);}
+let fs=17;function fz(d){fs=Math.max(14,Math.min(26,fs+d));document.documentElement.style.setProperty('--fs',fs+'px');}
+function esc(s){return (s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function sermonDoc(){return DB.collection('sermons').doc('kids-'+KIDS_KEY);}
+function ms(t){return t&&t.toMillis?t.toMillis():0;}
+function tryGate(){if(document.getElementById('gate-pw').value.trim()===PW){sessionStorage.setItem('kids_role','teacher');openRoom();}else{document.getElementById('gate-err').textContent='암호가 맞지 않습니다.';}}
+function openRoom(){document.getElementById('gate').style.display='none';loadRoster();loadWorksheets();loadInbox();loadParentInbox();}
+document.getElementById('gate-pw').addEventListener('keydown',e=>{if(e.key==='Enter')tryGate();});
+if(sessionStorage.getItem('kids_role')==='teacher'){openRoom();}
+
+const WS_LABELS=[['v1','말씀-아끼'],['v2','말씀-아니'],['s1a','1-니느웨'],['s1b','1-도망'],['s2','2(용서)'],['s3','3(화)'],['s4','4(대신)'],['s5','5(녹음)'],['q1','Q1'],['q2','Q2'],['q3','Q3'],['q4','Q4'],['decision','결단']];
+async function loadRoster(){
+  if(!fbReady)return;const box=document.getElementById('roster');
+  try{
+    const snap=await DB.collection('sermons').doc('kids-roster').collection('students').get();
+    ROSTER=[];snap.forEach(d=>ROSTER.push(Object.assign({num:d.id},d.data())));
+    ROSTER.sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko'));
+    document.getElementById('stat-roster').textContent=ROSTER.length;
+    box.innerHTML=ROSTER.length?'':'<div style="color:#999;font-size:14px">아직 등록된 학생이 없습니다.</div>';
+    const sel=document.getElementById('praise-child');sel.innerHTML='<option value="">학생을 선택하세요</option>';
+    ROSTER.forEach(d=>{
+      box.innerHTML+=`<div class="r"><b>${esc(d.name||'')}</b><span class="n">${esc(d.num)}</span></div>`;
+      sel.innerHTML+=`<option value="${esc(d.num)}|${esc(d.name||'')}">${esc(d.name||'')} (${esc(d.num)})</option>`;
+    });
+  }catch(e){box.innerHTML='<div style="color:#c0392b;font-size:14px">불러오기 오류</div>';}
+}
+async function loadWorksheets(){
+  if(!fbReady)return;const box=document.getElementById('worksheets');box.innerHTML='<div style="color:#999;font-size:14px">불러오는 중...</div>';
+  try{
+    const snap=await sermonDoc().collection('worksheets').get();
+    document.getElementById('stat-submit').textContent=snap.size;
+    if(snap.empty){box.innerHTML='<div style="color:#999;font-size:14px">아직 제출된 활동지가 없습니다.</div>';document.getElementById('ws-count').style.display='none';return;}
+    const items=[];snap.forEach(d=>items.push(d.data()));items.sort((a,b)=>ms(b.updatedAt)-ms(a.updatedAt));
+    const c=document.getElementById('ws-count');c.textContent=items.length+'명';c.style.display='inline-block';box.innerHTML='';
+    items.forEach(d=>{
+      const dt=d.updatedAt?new Date(d.updatedAt.toDate()).toLocaleString('ko-KR'):'';const w=d.ws||{};
+      const rows=WS_LABELS.filter(([k])=>(w[k]||'').trim()).map(([k,lb])=>`<div class="row"><span class="k">${lb}</span> · ${esc(w[k])}</div>`).join('')||'<div class="row" style="color:#999">(빈칸 없음)</div>';
+      box.innerHTML+=`<div class="ws-item"><span class="when">${dt}</span><div class="who">🧒 ${esc(d.studentName||'익명')} <span style="color:#bbb;font-weight:400">(${esc(d.studentNumber||'')})</span></div>${rows}</div>`;
+    });
+  }catch(e){box.innerHTML='<div style="color:#c0392b;font-size:14px">불러오기 오류</div>';}
+}
+async function loadInbox(){
+  if(!fbReady)return;const box=document.getElementById('inbox');box.innerHTML='<div style="color:#999;font-size:14px">불러오는 중...</div>';
+  try{
+    const snap=await sermonDoc().collection('messages').get();
+    if(snap.empty){box.innerHTML='<div style="color:#999;font-size:14px">아직 받은 글이 없습니다.</div>';document.getElementById('msg-count').style.display='none';document.getElementById('stat-msg').textContent='0';return;}
+    const items=[];snap.forEach(doc=>items.push(Object.assign({id:doc.id},doc.data())));items.sort((a,b)=>ms(b.createdAt)-ms(a.createdAt));
+    let unread=0;box.innerHTML='';
+    items.forEach(d=>{if(!d.isRead)unread++;const dt=d.createdAt?new Date(d.createdAt.toDate()).toLocaleString('ko-KR'):'';
+      box.innerHTML+=`<div class="inbox-item ${!d.isRead?'unread':''}"><div><span class="who">🧒 ${esc(d.studentName||'익명')} <span style="color:#bbb;font-weight:400">(${esc(d.studentNumber||'')})</span></span><span class="tp">${d.type}</span></div><div class="when" style="float:none">${dt}</div><div class="ct">${esc(d.content)}</div>${d.reply?`<div class="done"><div class="dl">✅ 답변 완료</div>${esc(d.reply)}</div>`:`<textarea class="reply-ta" id="rt-${d.id}" rows="2" placeholder="답을 입력하세요..."></textarea><button class="btn" onclick="reply('${d.id}')">📨 답 보내기</button>`}</div>`;});
+    document.getElementById('stat-msg').textContent=unread;
+    const c=document.getElementById('msg-count');if(unread>0){c.textContent='새 '+unread;c.style.display='inline-block';}else c.style.display='none';
+    items.forEach(async d=>{if(!d.isRead)await sermonDoc().collection('messages').doc(d.id).update({isRead:true}).catch(()=>{});});
+  }catch(e){box.innerHTML='<div style="color:#c0392b;font-size:14px">불러오기 오류</div>';}
+}
+async function reply(id){const ta=document.getElementById('rt-'+id);const txt=ta?ta.value.trim():'';if(!txt){alert('답 내용을 입력해 주세요.');return;}
+  try{await sermonDoc().collection('messages').doc(id).update({reply:txt,repliedAt:firebase.firestore.FieldValue.serverTimestamp()});alert('답이 전송되었습니다 😊');loadInbox();}catch(e){alert('오류가 발생했습니다.');}}
+
+async function loadParentInbox(){
+  if(!fbReady)return;const box=document.getElementById('parent-inbox');box.innerHTML='<div style="color:#999;font-size:14px">불러오는 중...</div>';
+  try{
+    const snap=await sermonDoc().collection('parentMessages').get();
+    if(snap.empty){box.innerHTML='<div style="color:#999;font-size:14px">아직 부모 글이 없습니다.</div>';document.getElementById('pmsg-count').style.display='none';return;}
+    const items=[];snap.forEach(doc=>items.push(Object.assign({id:doc.id},doc.data())));items.sort((a,b)=>ms(b.createdAt)-ms(a.createdAt));
+    let unread=0;box.innerHTML='';
+    items.forEach(d=>{
+      const dt=d.createdAt?new Date(d.createdAt.toDate()).toLocaleString('ko-KR'):'';
+      if(d.from==='teacher'){
+        box.innerHTML+=`<div class="inbox-item"><div><span class="who">🌟 ${esc(d.childName||'')} 가정에 보냄</span><span class="tp">칭찬·격려</span></div><div class="when" style="float:none">${dt}</div><div class="from-teacher">${esc(d.content)}</div></div>`;
+      }else{
+        if(!d.isRead)unread++;
+        box.innerHTML+=`<div class="inbox-item ${!d.isRead?'unread':''}"><div><span class="who">👨‍👩‍👧 ${esc(d.childName||'')} 학부모 <span style="color:#bbb;font-weight:400">(${esc(d.childNumber||'')})</span></span><span class="tp">${esc(d.type||'소통')}</span></div><div class="when" style="float:none">${dt}</div><div class="ct">${esc(d.content)}</div>${d.reply?`<div class="done"><div class="dl">✅ 답변 완료</div>${esc(d.reply)}</div>`:`<textarea class="reply-ta" id="prt-${d.id}" rows="2" placeholder="답을 입력하세요..."></textarea><button class="btn" onclick="replyParent('${d.id}')">📨 답 보내기</button>`}</div>`;
+      }
+    });
+    const c=document.getElementById('pmsg-count');if(unread>0){c.textContent='새 '+unread;c.style.display='inline-block';}else c.style.display='none';
+    items.forEach(async d=>{if(d.from!=='teacher'&&!d.isRead)await sermonDoc().collection('parentMessages').doc(d.id).update({isRead:true}).catch(()=>{});});
+  }catch(e){box.innerHTML='<div style="color:#c0392b;font-size:14px">불러오기 오류</div>';}
+}
+async function replyParent(id){const ta=document.getElementById('prt-'+id);const txt=ta?ta.value.trim():'';if(!txt){alert('답 내용을 입력해 주세요.');return;}
+  try{await sermonDoc().collection('parentMessages').doc(id).update({reply:txt,repliedAt:firebase.firestore.FieldValue.serverTimestamp()});alert('답이 전송되었습니다 😊');loadParentInbox();}catch(e){alert('오류가 발생했습니다.');}}
+async function sendPraise(){
+  const sel=document.getElementById('praise-child').value;const txt=document.getElementById('praise-text').value.trim();
+  if(!sel){alert('학생을 선택해 주세요.');return;}if(!txt){alert('내용을 입력해 주세요.');return;}
+  const [num,name]=sel.split('|');
+  try{
+    await sermonDoc().collection('parentMessages').add({childNumber:num,childName:name,from:'teacher',type:'칭찬·격려',content:txt,reply:null,isRead:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    document.getElementById('praise-text').value='';alert(name+' 가정에 전했습니다 😊');loadParentInbox();
+  }catch(e){alert('오류가 발생했습니다.');console.error(e);}
+}
+</script>
+</body>
+</html>
